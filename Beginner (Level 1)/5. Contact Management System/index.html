@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Management System</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Phosphor Icons for slick icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="navbar">
+            <div class="logo">
+                <i class="ph ph-users-three"></i>
+                <h1>Contact Management System</h1>
+            </div>
+            <button id="addContactBtn" class="btn btn-primary">
+                <i class="ph ph-plus"></i> Add Contact
+            </button>
+        </header>
+
+        <!-- Controls (Search, Filter, Sort) -->
+        <section class="controls-section">
+            <div class="search-box">
+                <i class="ph ph-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search by name, phone, email, or company...">
+            </div>
+            <div class="filters-box">
+                <div class="custom-select">
+                    <select id="sortSelect">
+                        <option value="name-asc">Sort A-Z</option>
+                        <option value="name-desc">Sort Z-A</option>
+                        <option value="newest">Newest First</option>
+                    </select>
+                </div>
+                <div class="custom-select">
+                    <select id="filterSelect">
+                        <option value="all">All Tags</option>
+                        <!-- Added dynamically -->
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state hidden">
+                <div class="empty-state-illustration">
+                    <i class="ph ph-address-book"></i>
+                </div>
+                <h2>No Contacts Found</h2>
+                <p>Get started by adding a new contact to your dashboard.</p>
+                <button id="emptyAddBtn" class="btn btn-secondary">
+                    <i class="ph ph-plus"></i> Add First Contact
+                </button>
+            </div>
+
+            <!-- Contacts Grid -->
+            <div id="contactsGrid" class="contacts-grid">
+                <!-- Contact Cards injected via JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add/Edit Modal -->
+    <div id="contactModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Contact</h2>
+                <button id="closeModalBtn" class="btn-icon"><i class="ph ph-x"></i></button>
+            </div>
+            <form id="contactForm" class="modal-body">
+                <input type="hidden" id="contactId">
+                <div class="form-group">
+                    <label for="fullName">Full Name <span>*</span></label>
+                    <input type="text" id="fullName" required placeholder="John Doe">
+                    <span class="error-text" id="nameError">Full name is required.</span>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span>*</span></label>
+                        <input type="tel" id="phone" required placeholder="+1 234 567 8900">
+                        <span class="error-text" id="phoneError">Valid phone number required.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="john@example.com">
+                        <span class="error-text" id="emailError">Please provide a valid email format.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" placeholder="123 Main St, City, Country">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" placeholder="Acme Inc.">
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">Tags (comma separated)</label>
+                        <input type="text" id="tags" placeholder="Client, VIP, Vendor">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" rows="3" placeholder="Enter any extra details..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancelModalBtn" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" id="saveContactBtn" class="btn btn-primary">Save Contact</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay hidden">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2>Confirm Deletion</h2>
+                <button id="closeDeleteBtn" class="btn-icon"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="deleteContactName">this contact</strong>? This action cannot be undone.</p>
+                <div class="modal-footer">
+                    <button type="button" id="cancelDeleteBtn" class="btn btn-secondary">Cancel</button>
+                    <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

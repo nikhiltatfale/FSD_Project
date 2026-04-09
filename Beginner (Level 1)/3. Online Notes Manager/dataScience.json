@@ -1,0 +1,16 @@
+[
+  {
+    "id": 2,
+    "title": "Requirements of Data Science",
+    "content": "Educational Background:\nEnrolled in or graduate of Data Science, Computer Science, Statistics, or related field.\n\nProgramming & Tools:\nPython (data analysis, modeling, ML)\nR (preferred)\nPandas, Scikit-learn\nTensorFlow, PyTorch\nData visualization tools: Tableau, Power BI, Matplotlib.\n\nAI & ML Knowledge:\nMachine Learning techniques\nNatural Language Processing (NLP)\nGenerative AI\nLarge Language Models (LLMs)\nRetrieval-Augmented Generation (RAG).\n\nData Handling:\nData preprocessing\nData cleansing\nData validation.\n\nSoft Skills:\nAnalytical and problem-solving skills\nStrong written and verbal communication\nTeamwork and collaboration\nAbility to work independently\nAttention to detail\nMultitasking in a fast-paced environment.",
+    "category": "education",
+    "priority": "medium",
+    "tags": ["data science", "skills", "machine learning", "ai"],
+    "color": "#1e293b",
+    "isPinned": false,
+    "isFavorite": false,
+    "isArchived": false,
+    "createdAt": "2026-01-26T17:10:00.000Z",
+    "modifiedAt": "2026-01-26T17:10:00.000Z"
+  }
+]

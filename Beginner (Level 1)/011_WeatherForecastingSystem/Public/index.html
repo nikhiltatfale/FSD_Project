@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nimbus — Weather Forecast</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Atmospheric background layers -->
+  <div class="atmo-bg">
+    <div class="atmo-orb orb-1"></div>
+    <div class="atmo-orb orb-2"></div>
+    <div class="atmo-orb orb-3"></div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <!-- Top navigation -->
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-icon">◎</span>
+      <span class="logo-text">Nimbus</span>
+    </div>
+    <nav class="header-nav">
+      <button class="nav-btn active" data-view="today">Today</button>
+      <button class="nav-btn" data-view="week">7-Day</button>
+      <button class="nav-btn" data-view="hourly">Hourly</button>
+    </nav>
+    <button class="unit-toggle" id="unitToggle">°C / °F</button>
+  </header>
+
+  <main class="app-main">
+
+    <!-- Search bar -->
+    <section class="search-section">
+      <div class="search-wrapper">
+        <span class="search-icon">⌕</span>
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search city or zip code…"
+          autocomplete="off"
+        />
+        <button class="search-btn" id="searchBtn">Search</button>
+        <button class="locate-btn" id="locateBtn" title="Use my location">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+          </svg>
+        </button>
+      </div>
+      <div class="search-suggestions" id="suggestions"></div>
+    </section>
+
+    <!-- Current weather hero -->
+    <section class="hero-card" id="heroCard">
+      <div class="hero-left">
+        <div class="location-line">
+          <span class="location-pin">📍</span>
+          <span class="location-name" id="locationName">Loading…</span>
+          <span class="location-country" id="locationCountry"></span>
+        </div>
+        <div class="current-temp" id="currentTemp">--°</div>
+        <div class="feels-like" id="feelsLike">Feels like --°</div>
+        <div class="condition-text" id="conditionText">---</div>
+        <div class="high-low">
+          <span id="highTemp">H: --°</span>
+          <span class="sep">·</span>
+          <span id="lowTemp">L: --°</span>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="weather-icon-large" id="weatherIconLarge">🌤</div>
+        <div class="last-updated" id="lastUpdated">Updated --:--</div>
+      </div>
+    </section>
+
+    <!-- Stats row -->
+    <section class="stats-row" id="statsRow">
+      <div class="stat-card" data-delay="0">
+        <div class="stat-label">Humidity</div>
+        <div class="stat-value" id="humidity">--%</div>
+        <div class="stat-bar"><div class="stat-fill" id="humidityBar" style="width:0%"></div></div>
+      </div>
+      <div class="stat-card" data-delay="1">
+        <div class="stat-label">Wind</div>
+        <div class="stat-value" id="windSpeed">-- km/h</div>
+        <div class="stat-icon wind-arrow" id="windDir">↑</div>
+      </div>
+      <div class="stat-card" data-delay="2">
+        <div class="stat-label">UV Index</div>
+        <div class="stat-value" id="uvIndex">--</div>
+        <div class="uv-badge" id="uvBadge">---</div>
+      </div>
+      <div class="stat-card" data-delay="3">
+        <div class="stat-label">Visibility</div>
+        <div class="stat-value" id="visibility">-- km</div>
+      </div>
+      <div class="stat-card" data-delay="4">
+        <div class="stat-label">Pressure</div>
+        <div class="stat-value" id="pressure">-- hPa</div>
+      </div>
+      <div class="stat-card" data-delay="5">
+        <div class="stat-label">Sunrise / Sunset</div>
+        <div class="stat-value sun-times">
+          <span id="sunrise">--:--</span>
+          <span class="sep">·</span>
+          <span id="sunset">--:--</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hourly forecast -->
+    <section class="forecast-section" id="hourlySection">
+      <h2 class="section-title">Hourly</h2>
+      <div class="hourly-scroll" id="hourlyScroll">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- 7-day forecast -->
+    <section class="forecast-section" id="weekSection">
+      <h2 class="section-title">7-Day Forecast</h2>
+      <div class="week-list" id="weekList">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- Air quality -->
+    <section class="aqi-section" id="aqiSection">
+      <h2 class="section-title">Air Quality</h2>
+      <div class="aqi-card">
+        <div class="aqi-left">
+          <div class="aqi-number" id="aqiNumber">--</div>
+          <div class="aqi-label" id="aqiLabel">---</div>
+        </div>
+        <div class="aqi-right">
+          <div class="aqi-bar-track">
+            <div class="aqi-bar-fill" id="aqiBarFill"></div>
+          </div>
+          <div class="aqi-scale">
+            <span>Good</span>
+            <span>Moderate</span>
+            <span>Unhealthy</span>
+            <span>Hazardous</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loader-ring"></div>
+    <p class="loading-text">Fetching weather…</p>
+  </div>
+
+  <!-- Error toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

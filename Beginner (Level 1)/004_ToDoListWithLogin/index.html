@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Todo App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="A beautiful and dynamic todo web application.">
+</head>
+
+<body>
+    <!-- Login View -->
+    <main id="login-view" class="view active-view login-container">
+        <div class="glass-card login-card">
+            <div class="logo-container">
+                <i class="fas fa-check-double logo-icon"></i>
+            </div>
+            <h1 class="welcome-text">Welcome Back</h1>
+            <p class="subtitle">Log in to manage your tasks</p>
+
+            <form id="login-form">
+                <div class="input-group">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn primary-btn btn-animate">Sign In</button>
+            </form>
+            <p class="hint">Use any username & password to explore.</p>
+        </div>
+    </main>
+
+    <!-- Todo View -->
+    <main id="todo-view" class="view full-page-container">
+        <div class="glass-card todo-full-card">
+            <header class="todo-header">
+                <div class="header-left">
+                    <i class="fas fa-check-double header-icon"></i>
+                    <h2>To-Do Web Application</h2>
+                </div>
+                <button id="logout-btn" class="btn icon-btn" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </header>
+
+            <div class="todo-input-section">
+                <form id="todo-form">
+                    <div class="input-group">
+                        <input type="text" id="todo-input" placeholder="What needs to be done?" required
+                            autocomplete="off">
+                        <button type="submit" class="btn primary-btn add-btn btn-animate">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="todo-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="active">Active</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+            </div>
+
+            <ul id="todo-list" class="todo-list">
+                <!-- Todos will be injected here -->
+            </ul>
+
+            <div class="todo-stats">
+                <span id="items-left">0 items left</span>
+                <button id="clear-completed" class="clear-btn">Clear completed</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notifications -->
+    <div id="notification-container"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>

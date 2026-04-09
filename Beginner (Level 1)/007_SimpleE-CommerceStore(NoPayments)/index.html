@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexShop - Premium E-Commerce</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="nav-container container">
+            <div class="logo">
+                <i class='bx bx-shopping-bag'></i>
+                <span>E-Commerce Website</span>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search for products...">
+                <button id="searchBtn"><i class='bx bx-search'></i></button>
+            </div>
+            <div class="nav-actions">
+                <button class="nav-btn" id="wishlistBtn" aria-label="Wishlist">
+                    <i class='bx bx-heart'></i>
+                    <span class="badge hidden" id="wishlistBadge">0</span>
+                </button>
+                <button class="nav-btn" id="cartBtn" aria-label="Cart">
+                    <i class='bx bx-cart-alt'></i>
+                    <span class="badge hidden" id="cartBadge">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-search container">
+        <div class="search-bar">
+            <input type="text" id="mobileSearchInput" placeholder="Search for products...">
+            <button id="mobileSearchBtn"><i class='bx bx-search'></i></button>
+        </div>
+    </div>
+
+    <nav class="category-nav">
+        <div class="container">
+            <ul id="categoryList">
+                <li><button class="category-btn active" data-category="All">All Categories</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero container">
+        <div class="hero-content">
+            <h1>Discover Top Deals Daily</h1>
+            <p>Shop from our premium collection of over 600 handpicked products. Free shipping on orders over ₹499!</p>
+            <button class="primary-btn"
+                onclick="document.getElementById('mainContent').scrollIntoView({behavior: 'smooth'})">
+                Shop Now <i class='bx bx-right-arrow-alt'></i>
+            </button>
+        </div>
+    </section>
+
+    <main class="main-content container" id="mainContent">
+        <aside class="sidebar">
+            <div class="filter-group">
+                <h3>Price Range</h3>
+                <div class="price-inputs">
+                    <input type="number" id="minPrice" placeholder="Min ₹">
+                    <span>-</span>
+                    <input type="number" id="maxPrice" placeholder="Max ₹">
+                </div>
+            </div>
+            <div class="filter-group">
+                <h3>Rating</h3>
+                <ul class="rating-filter">
+                    <li><label><input type="radio" name="rating" value="4"> 4★ & above</label></li>
+                    <li><label><input type="radio" name="rating" value="3"> 3★ & above</label></li>
+                    <li><label><input type="radio" name="rating" value="0" checked> Any Rating</label></li>
+                </ul>
+            </div>
+            <div class="filter-group">
+                <h3>Sort By</h3>
+                <select id="sortSelect">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Top Rated</option>
+                </select>
+            </div>
+            <button id="applyFiltersBtn" class="primary-btn full-width mt-1">Apply Filters</button>
+            <button id="clearFiltersBtn" class="outline-btn full-width mt-1">Clear Filters</button>
+        </aside>
+
+        <div class="product-area">
+            <div class="product-header">
+                <h2 id="productSectionTitle">All Products</h2>
+                <span id="productCount">Showing 0 results</span>
+            </div>
+
+            <div id="productGrid" class="product-grid"></div>
+
+            <div class="pagination" id="paginationControls"></div>
+
+            <div id="emptyState" class="empty-state hidden">
+                <i class='bx bx-search-alt'></i>
+                <h3>No products found</h3>
+                <p>Try adjusting your search or filters to find what you're looking for.</p>
+                <button class="outline-btn mt-1" onclick="document.getElementById('clearFiltersBtn').click()">Clear All
+                    Filters</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay hidden" id="cartModal">
+        <div class="drawer">
+            <div class="drawer-header">
+                <h2>Shopping Cart</h2>
+                <button class="close-btn" id="closeCartBtn"><i class='bx bx-x'></i></button>
+            </div>
+            <div class="drawer-body" id="cartItemsContainer"></div>
+            <div class="cart-empty-state hidden" id="cartEmptyState">
+                <i class='bx bx-cart'></i>
+                <p>Your cart is empty.</p>
+                <button class="secondary-btn mt-1" id="startShoppingBtn">Start Shopping</button>
+            </div>
+            <div class="drawer-footer" id="cartFooter">
+                <div class="cart-summary">
+                    <span>Total:</span>
+                    <strong id="cartTotal">₹0.00</strong>
+                </div>
+                <button class="primary-btn full-width" id="checkoutFlowBtn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="productModal">
+        <div class="modal-content large">
+            <button class="close-btn" id="closeProductBtn"><i class='bx bx-x'></i></button>
+            <div class="product-details" id="productDetailsContent"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="checkoutModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeCheckoutBtn"><i class='bx bx-x'></i></button>
+            <h2>Checkout</h2>
+            <form id="checkoutForm" class="checkout-form mt-1">
+                <div class="form-group">
+                    <label for="c_name">Full Name</label>
+                    <input type="text" id="c_name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="c_email">Email Address</label>
+                    <input type="email" id="c_email" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="c_phone">Phone Number</label>
+                    <input type="tel" id="c_phone" required placeholder="+1 234 567 8900">
+                </div>
+                <div class="form-group">
+                    <label for="c_address">Delivery Address</label>
+                    <textarea id="c_address" required placeholder="123 Main St, City, Country" rows="3"></textarea>
+                </div>
+                <div class="checkout-summary">
+                    <span>Order Total:</span>
+                    <strong id="checkoutTotalAmount">₹0.00</strong>
+                </div>
+                <button type="submit" class="primary-btn full-width">Place Order</button>
+            </form>
+            <div class="order-success hidden" id="orderSuccess">
+                <div class="success-icon"><i class='bx bx-check'></i></div>
+                <h3>Order Placed Successfully!</h3>
+                <p>Thank you for shopping with NexShop.</p>
+                <button class="primary-btn mt-1" id="continueShoppingBtn">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="wishlistModal">
+        <div class="drawer">
+            <div class="drawer-header">
+                <h2>Your Wishlist</h2>
+                <button class="close-btn" id="closeWishlistBtn"><i class='bx bx-x'></i></button>
+            </div>
+            <div class="drawer-body" id="wishlistItemsContainer"></div>
+            <div class="cart-empty-state hidden" id="wishlistEmptyState">
+                <i class='bx bx-heart'></i>
+                <p>Your wishlist is empty.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>

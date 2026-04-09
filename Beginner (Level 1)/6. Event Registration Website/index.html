@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Portal</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Main Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-brand" onclick="appContext.navigateTo('home')">🎓 College Event Portal</h1>
+            <div class="nav-links">
+                <button class="btn-text hidden" id="nav-logout-btn" onclick="appContext.adminLogout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- App Container -->
+    <main class="app-content">
+
+        <!-- ==============================
+             USER SIDE: HOME VIEW
+             ============================== -->
+        <section id="view-home" class="view active">
+            <header class="hero-section">
+                <h2>Welcome to the College Event Portal</h2>
+                <p>Discover and register for the latest events, sports fests, and tech competitions happening on campus.</p>
+                <div class="hero-actions">
+                    <input type="text" id="global-search" placeholder="Search events..." onkeyup="appContext.handleSearch(this.value)">
+                    <select id="global-filter" onchange="appContext.handleFilter(this.value)">
+                        <option value="All">All Categories</option>
+                        <option value="Cultural">Cultural</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Technical">Technical</option>
+                    </select>
+                </div>
+            </header>
+
+            <div class="container">
+                <div class="section-header">
+                    <h3>Featured Main Events</h3>
+                </div>
+                <div class="grid" id="main-events-grid">
+                    <!-- Main event cards render here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================
+             USER SIDE: SUB-EVENTS VIEW
+             ============================== -->
+        <section id="view-subevents" class="view">
+            <div class="container">
+                <button class="btn-secondary back-btn" onclick="appContext.navigateTo('home')">← Back to Main Events</button>
+                <div class="section-header">
+                    <h3 id="current-main-event-title">Sub-Events</h3>
+                    <p id="current-main-event-desc" class="text-muted"></p>
+                </div>
+                <div class="grid" id="sub-events-grid">
+                    <!-- Sub-event cards render here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================
+             ADMIN SIDE: LOGIN VIEW
+             ============================== -->
+        <section id="view-admin-login" class="view">
+            <div class="container flex-center">
+                <div class="card login-card">
+                    <h3>Admin Authentication</h3>
+                    <p class="text-muted">Enter your credentials to access the dashboard.</p>
+                    <form id="admin-login-form" onsubmit="appContext.handleAdminLogin(event)">
+                        <div class="form-group">
+                            <label for="admin-username">Username</label>
+                            <input type="text" id="admin-username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password">Password</label>
+                            <input type="password" id="admin-password" required>
+                        </div>
+                        <button type="submit" class="btn-primary w-full">Login</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================
+             ADMIN SIDE: DASHBOARD VIEW
+             ============================== -->
+        <section id="view-admin-dashboard" class="view">
+            <div class="container">
+                <div class="admin-header">
+                    <h2>Admin Dashboard</h2>
+                    <div class="admin-tabs">
+                        <button class="tab-btn active" onclick="appContext.switchAdminTab('main-events-manage')">Main Events</button>
+                        <button class="tab-btn" onclick="appContext.switchAdminTab('sub-events-manage')">Sub-Events</button>
+                        <button class="tab-btn" onclick="appContext.switchAdminTab('registrations-view')">Registrations</button>
+                    </div>
+                </div>
+
+                <!-- Admin Tab: Main Events -->
+                <div id="tab-main-events-manage" class="admin-tab-content active">
+                    <div class="card">
+                        <h4>Add New Main Event</h4>
+                        <form onsubmit="appContext.addMainEvent(event)" class="admin-form">
+                            <input type="text" id="add-main-name" placeholder="Event Name" required>
+                            <select id="add-main-category" required>
+                                <option value="" disabled selected>Category</option>
+                                <option value="Cultural">Cultural</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Technical">Technical</option>
+                            </select>
+                            <input type="url" id="add-main-banner" placeholder="Banner Image URL">
+                            <textarea id="add-main-desc" placeholder="Description" rows="2" required></textarea>
+                            <button type="submit" class="btn-primary">Add Main Event</button>
+                        </form>
+                    </div>
+                    <div class="table-container mt-4">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-main-events-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Admin Tab: Sub-Events -->
+                <div id="tab-sub-events-manage" class="admin-tab-content">
+                    <div class="card">
+                        <h4>Add New Sub-Event</h4>
+                        <form onsubmit="appContext.addSubEvent(event)" class="admin-form">
+                            <select id="add-sub-main_event" required>
+                                <option value="" disabled selected>Parent Main Event</option>
+                            </select>
+                            <input type="text" id="add-sub-name" placeholder="Sub-Event Name" required>
+                            <input type="date" id="add-sub-date" required>
+                            <input type="text" id="add-sub-venue" placeholder="Venue" required>
+                            <input type="text" id="add-sub-coordinator" placeholder="Coordinator Name & Contact" required>
+                            <textarea id="add-sub-desc" placeholder="Description & Rules" rows="2" required></textarea>
+                            <button type="submit" class="btn-primary">Add Sub-Event</button>
+                        </form>
+                    </div>
+                    <div class="table-container mt-4">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Sub-Event</th>
+                                    <th>Parent Event</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-sub-events-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Admin Tab: Registrations -->
+                <div id="tab-registrations-view" class="admin-tab-content">
+                    <div class="grid mb-4" id="admin-stats-grid">
+                        <!-- Stats cards injected via JS -->
+                    </div>
+                    <div class="card">
+                        <h4>Filter Registrations</h4>
+                        <div class="form-group row-flex">
+                            <select id="filter-reg-subevent" onchange="appContext.renderAdminRegistrations()">
+                                <option value="All">All Sub-Events...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-container mt-4">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Email</th>
+                                    <th>College (Year/Dept)</th>
+                                    <th>Sub-Event</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-registrations-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Area (Settings inside here) -->
+    <footer class="app-footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 EventX Portal. All rights reserved.</p>
+            <div class="footer-actions">
+                <!-- Discrete Admin Login Trigger -->
+                <button class="settings-trigger" aria-label="Admin settings" onclick="appContext.navigateTo('admin-login')" title="System Settings">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==============================
+         REGISTRATION MODAL
+         ============================== -->
+    <div id="registration-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-event-title">Register for Event</h3>
+                <span class="close-modal" onclick="appContext.closeModal()">×</span>
+            </div>
+            <div class="modal-body">
+                <div class="event-details-box">
+                    <p class="text-sm"><strong>Coordinator:</strong> <span id="modal-coord"></span></p>
+                    <p class="text-sm"><strong>Date/Venue:</strong> <span id="modal-datevenue"></span></p>
+                    <p class="text-sm text-muted mt-2" id="modal-desc"></p>
+                </div>
+                <hr>
+                <form id="registration-form" onsubmit="appContext.submitRegistration(event)">
+                    <input type="hidden" id="reg-subevent-id">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="reg-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="reg-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="reg-phone" pattern="[0-9]{10}" title="10 digit mobile number" required>
+                        </div>
+                        <div class="form-group">
+                            <label>College</label>
+                            <input type="text" id="reg-college" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Year of Study</label>
+                            <select id="reg-year" required>
+                                <option value="" disabled selected>Select Year</option>
+                                <option value="1st">1st Year</option>
+                                <option value="2nd">2nd Year</option>
+                                <option value="3rd">3rd Year</option>
+                                <option value="4th">4th Year</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Department</label>
+                            <input type="text" id="reg-dept" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary w-full mt-4">Confirm Registration</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ==============================
+         SIMULATED EMAIL MODAL (MOCKUP)
+         ============================== -->
+    <div id="email-simulation-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header" style="background: #f9fafb;">
+                <h3><span>📧</span> Inbox Simulator</h3>
+                <span class="close-modal" onclick="document.getElementById('email-simulation-modal').classList.add('hidden')">×</span>
+            </div>
+            <div class="modal-body">
+                <div style="background: #fdfdfd; padding: 1rem; border: 1px solid #e5e7eb; border-radius: var(--radius-md);">
+                    <p class="text-sm"><strong>From:</strong> system@eventxportal.edu</p>
+                    <p class="text-sm"><strong>To:</strong> <span id="sim-email-to" style="color: var(--primary);"></span></p>
+                    <p class="text-sm mb-4"><strong>Subject:</strong> <span id="sim-email-subject"></span></p>
+                    <hr>
+                    <p class="mt-4" id="sim-email-body" style="white-space: pre-wrap; font-size: 0.9rem; color: #374151;"></p>
+                </div>
+                <button class="btn-secondary w-full mt-4" onclick="document.getElementById('email-simulation-modal').classList.add('hidden')">Close Mock Email</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JavaScript Logic -->
+    <script src="script.js"></script>
+</body>
+</html>

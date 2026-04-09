@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern URL Shortener</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="loader-overlay" class="loader-overlay hidden">
+        <div class="spinner"></div>
+        <p>Shortening URL...</p>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <main class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fa-solid fa-link"></i>
+                <h1>URL Shortener</h1>
+            </div>
+            <p class="subtitle">Simplify your links, track your history.</p>
+        </header>
+
+        <section class="card input-section">
+            <form id="shorten-form" class="input-form">
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-earth-americas input-icon"></i>
+                    <input type="text" id="url-input" placeholder="Paste a long URL here (http:// or https://)" autocomplete="off">
+                </div>
+                <button type="submit" class="btn primary-btn" id="shorten-btn">
+                    <span>Shorten URL</span>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </button>
+            </form>
+            <div id="input-error" class="error-msg hidden">Please enter a valid URL starting with http:// or https://</div>
+        </section>
+
+        <section id="result-section" class="card result-section hidden">
+            <h2><i class="fa-solid fa-check-circle success-icon"></i> URL Shortened successfully!</h2>
+            <div class="result-box">
+                <div class="short-url-wrapper">
+                    <a href="#" id="short-url-display" target="_blank" class="short-url">short.ly/abc123</a>
+                </div>
+                <div class="result-actions">
+                    <button class="btn icon-btn tooltip" id="copy-result-btn" data-tooltip="Copy to clipboard">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                    <a href="#" id="open-result-btn" class="btn icon-btn tooltip" target="_blank" data-tooltip="Open in new tab">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="card history-section">
+            <div class="history-header">
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> Recent Links</h2>
+                <button id="clear-history-btn" class="btn text-btn hidden">Clear All</button>
+            </div>
+            
+            <div id="empty-history" class="empty-state">
+                <i class="fa-solid fa-box-open"></i>
+                <p>No shortened URLs yet. Your history will appear here.</p>
+            </div>
+
+            <ul id="history-list" class="history-list hidden">
+                <!-- History items will be inserted here dynamically -->
+            </ul>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

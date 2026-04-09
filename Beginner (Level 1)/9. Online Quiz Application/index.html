@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz Application</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Hidden Settings Link for Admin -->
+    <a href="#" id="admin-settings-link" class="hide-on-print" aria-label="Admin Settings" title="Admin Settings">⚙️</a>
+
+    <main class="app-container">
+
+        <!-- 1. Student Details Section -->
+        <section id="student-form-section" class="view-section active">
+            <div class="card glass-card">
+                <div class="card-header text-center">
+                    <h1>Welcome to the Quiz</h1>
+                    <p>Please enter your details to begin</p>
+                </div>
+                <form id="student-form" class="form-container">
+                    <div class="form-group">
+                        <label for="studentName">Full Name</label>
+                        <input type="text" id="studentName" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="rollNumber">Roll Number</label>
+                        <input type="text" id="rollNumber" required placeholder="Ex: 21BCA01">
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" id="department" required placeholder="Computer Science">
+                    </div>
+                    <div class="form-group">
+                        <label for="collegeName">College Name</label>
+                        <input type="text" id="collegeName" required placeholder="XYZ University">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Start Quiz</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 2. Quiz Section -->
+        <section id="quiz-section" class="view-section">
+            <div class="card quiz-card">
+                <div class="quiz-header">
+                    <div class="quiz-info">
+                        <span id="question-tracker">Question 1 of 10</span>
+                    </div>
+                    <div class="timer-badge">
+                        <span class="timer-icon">⏱️</span>
+                        <span id="time-remaining">10:00</span>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <h2 id="question-text">Loading question...</h2>
+                    <div id="options-container" class="options-grid">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+
+                <div class="quiz-footer">
+                    <button id="prev-btn" class="btn btn-outline" disabled>Previous</button>
+                    <button id="next-btn" class="btn btn-primary">Next</button>
+                    <button id="submit-quiz-btn" class="btn btn-success d-none">Submit Quiz</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Result Section -->
+        <section id="result-section" class="view-section">
+            <div class="card text-center">
+                <div class="result-icon">🎓</div>
+                <h1>Quiz Completed!</h1>
+                <h2 id="result-name">Student Name</h2>
+
+                <div class="stats-grid mt-4">
+                    <div class="stat-box">
+                        <p class="stat-label">Total Questions</p>
+                        <h3 id="res-total" class="stat-value">10</h3>
+                    </div>
+                    <div class="stat-box">
+                        <p class="stat-label">Correct Answers</p>
+                        <h3 id="res-correct" class="stat-value text-success">8</h3>
+                    </div>
+                    <div class="stat-box">
+                        <p class="stat-label">Marks Obtained</p>
+                        <h3 id="res-marks" class="stat-value text-primary">8</h3>
+                    </div>
+                    <div class="stat-box">
+                        <p class="stat-label">Percentage</p>
+                        <h3 id="res-percentage" class="stat-value">80%</h3>
+                    </div>
+                </div>
+
+                <div class="result-actions mt-4">
+                    <button id="download-cert-btn" class="btn btn-primary">Download Certificate</button>
+                    <button id="restart-btn" class="btn btn-outline">Back to Home</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Admin Login Section -->
+        <section id="admin-login-section" class="view-section">
+            <div class="card glass-card admin-login-card">
+                <div class="card-header text-center">
+                    <h2>Admin Settings</h2>
+                    <p>Enter credentials to access admin panel</p>
+                </div>
+                <form id="admin-login-form" class="form-container">
+                    <div class="form-group">
+                        <label for="adminUsername">Username</label>
+                        <input type="text" id="adminUsername" required placeholder="admin">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" id="adminPassword" required placeholder="Enter password">
+                    </div>
+                    <div class="d-flex gap-10">
+                        <button type="button" id="cancel-admin-btn" class="btn btn-outline btn-block">Cancel</button>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- 5. Admin Dashboard Section -->
+        <section id="admin-dashboard-section" class="view-section admin-wide-view">
+            <div class="admin-layout">
+                <header class="admin-header">
+                    <h2>Quiz Administrator</h2>
+                    <button id="logout-btn" class="btn btn-outline btn-sm">Logout</button>
+                </header>
+
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="students-tab">Student Results</button>
+                    <button class="tab-btn" data-tab="questions-tab">Manage Questions</button>
+                </div>
+
+                <div class="tab-content-container">
+                    <!-- Students Tab -->
+                    <div id="students-tab" class="tab-pane active">
+                        <div class="flex-between mb-3">
+                            <h3>Student Records</h3>
+                            <button id="export-csv-btn" class="btn btn-success btn-sm">📥 Export as CSV</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Name</th>
+                                        <th>Roll No</th>
+                                        <th>Department</th>
+                                        <th>College</th>
+                                        <th>Marks</th>
+                                        <th>%</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="students-table-body">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                            <div id="no-students-msg" class="empty-state d-none">No students have taken the quiz yet.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Questions Tab -->
+                    <div id="questions-tab" class="tab-pane">
+                        <div class="flex-between mb-3">
+                            <h3>Question Bank (<span id="total-q-count">0</span>)</h3>
+                            <button id="add-new-q-btn" class="btn btn-primary btn-sm">➕ Add Custom Question</button>
+                            <button id="reset-default-q-btn" class="btn btn-outline btn-sm text-danger">Reset to
+                                Defaults</button>
+                        </div>
+
+                        <!-- Question Form (Hidden by default) -->
+                        <div id="question-form-container" class="card d-none mb-4">
+                            <h4 id="q-form-title">Add New Question</h4>
+                            <form id="manage-question-form">
+                                <input type="hidden" id="edit-q-id">
+                                <div class="form-group mt-2">
+                                    <label>Question Text</label>
+                                    <textarea id="q-text" rows="2" required></textarea>
+                                </div>
+                                <div class="options-inputs-grid">
+                                    <div class="form-group">
+                                        <label>Option 1</label>
+                                        <input type="text" id="q-opt1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Option 2</label>
+                                        <input type="text" id="q-opt2" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Option 3</label>
+                                        <input type="text" id="q-opt3" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Option 4</label>
+                                        <input type="text" id="q-opt4" required>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label>Correct Answer (1-4)</label>
+                                    <select id="q-correct" required>
+                                        <option value="0">Option 1</option>
+                                        <option value="1">Option 2</option>
+                                        <option value="2">Option 3</option>
+                                        <option value="3">Option 4</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex gap-10 mt-3">
+                                    <button type="submit" class="btn btn-success">Save Question</button>
+                                    <button type="button" id="cancel-q-btn" class="btn btn-outline">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="questions-list" id="admin-questions-list">
+                            <!-- Dynamic Question Cards -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 6. Certificate Section (Rendered on a standalone page for printing) -->
+    <section id="certificate-section" class="view-section certificate-view">
+        <div class="cert-wrapper">
+            <div class="cert-border-outer">
+                <div class="cert-border-inner">
+                    <div class="cert-header">
+                        <h1>Certificate of Excellence</h1>
+                        <p class="cert-subtitle">This is to certify that</p>
+                    </div>
+                    <div class="cert-body">
+                        <h2 class="cert-name" id="cert-name">Student Name</h2>
+                        <div class="cert-details">
+                            <p><strong>Roll No:</strong> <span id="cert-roll">123</span></p>
+                            <p><strong>Department:</strong> <span id="cert-dept">CS</span></p>
+                            <p><strong>College:</strong> <span id="cert-college">ABC</span></p>
+                        </div>
+                        <p class="cert-statement">
+                            has successfully completed the <strong>JavaScript Online Quiz</strong>
+                            achieving a score of <strong id="cert-score">0</strong> out of <strong
+                                id="cert-out-of">10</strong>
+                            (<strong id="cert-perc">0%</strong>).
+                        </p>
+                    </div>
+                    <div class="cert-footer">
+                        <div class="cert-date">
+                            <span class="line"></span>
+                            <p>Date: <span id="cert-date-val">--</span></p>
+                        </div>
+                        <div class="cert-signature">
+                            <span class="line"></span>
+                            <p>Course Director</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="print-actions hide-on-print">
+            <button class="btn btn-primary" onclick="window.print()">Print / Save PDF</button>
+            <button class="btn btn-outline" id="close-cert-btn">Close Certificate</button>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

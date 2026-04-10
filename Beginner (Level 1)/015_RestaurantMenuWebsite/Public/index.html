@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spice Garden — Fine Indian Dining</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">✦</span>
+        <div class="logo-text">
+          <span class="logo-name">Spice Garden</span>
+          <span class="logo-tag">Fine Indian Dining</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search dishes…" />
+        </div>
+        <button class="cart-btn" id="cartBtn" aria-label="Open cart">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Est. 1998 · Mumbai</p>
+      <h1 class="hero-title">A Journey of<br /><em>Flavour & Spice</em></h1>
+      <p class="hero-sub">Authentic recipes, lovingly crafted with heritage spices</p>
+      <a href="#menu" class="hero-cta">Explore the Menu</a>
+    </div>
+    <div class="hero-orbs">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY FILTERS -->
+  <section class="filters-section" id="menu">
+    <div class="filters-inner">
+      <button class="filter-btn active" data-cat="All">All</button>
+      <button class="filter-btn" data-cat="Starter">Starters</button>
+      <button class="filter-btn" data-cat="Main Course">Main Course</button>
+      <button class="filter-btn" data-cat="Desserts">Desserts</button>
+      <button class="filter-btn" data-cat="Drinks">Drinks</button>
+    </div>
+  </section>
+
+  <!-- MENU GRID -->
+  <main class="menu-section">
+    <div class="section-header">
+      <h2 class="section-title" id="sectionTitle">Our Menu</h2>
+      <span class="item-count" id="itemCount"></span>
+    </div>
+    <div class="menu-grid" id="menuGrid">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading dishes…</p>
+      </div>
+    </div>
+    <div class="no-results hidden" id="noResults">
+      <p>🍽️ No dishes found. Try a different search!</p>
+    </div>
+  </main>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h2>Your Order</h2>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-body" id="cartBody">
+      <div class="cart-empty" id="cartEmpty">
+        <div class="empty-icon">🛒</div>
+        <p>Your cart is empty</p>
+        <span>Add some delicious dishes!</span>
+      </div>
+      <ul class="cart-list" id="cartList"></ul>
+    </div>
+    <div class="cart-footer" id="cartFooter">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button class="order-btn" id="orderBtn" disabled>Place Order</button>
+    </div>
+  </aside>
+
+  <!-- SUCCESS POPUP -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <div class="popup-icon">🎉</div>
+      <h3>Order Placed!</h3>
+      <p id="popupMsg">Your food is being prepared with love.</p>
+      <button class="popup-close" id="popupClose">Back to Menu</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">✦</span>
+        <span class="logo-name">Spice Garden</span>
+      </div>
+      <div class="footer-info">
+        <div>
+          <h4>Contact</h4>
+          <p>📍 42, Marine Drive, Mumbai</p>
+          <p>📞 +91 98765 43210</p>
+          <p>✉️ hello@spicegarden.in</p>
+        </div>
+        <div>
+          <h4>Hours</h4>
+          <p>Mon – Thu: 12pm – 10pm</p>
+          <p>Fri – Sat: 12pm – 11pm</p>
+          <p>Sunday: 1pm – 9pm</p>
+        </div>
+      </div>
+      <p class="footer-copy">© 2026 Spice Garden. All rights reserved. <a href="/admin">Admin</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

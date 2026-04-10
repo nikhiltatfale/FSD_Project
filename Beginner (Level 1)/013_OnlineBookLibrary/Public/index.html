@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudLibrary | Modern Online Book System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fa-solid fa-book-open"></i>
+                <span>CloudLibrary</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active" data-target="catalog">Home</a></li>
+                <li><a href="#catalog" data-target="catalog">Catalog</a></li>
+                <li><a href="#my-books" data-target="my-books">My Books</a></li>
+            </ul>
+            <div class="user-actions">
+                <button class="btn btn-outline" id="loginBtn">Login</button>
+            </div>
+            <div class="menu-toggle" id="mobileMenuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </nav>
+        
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Discover Your Next Great Read</h1>
+                <p>Access thousands of digital books instantly. Read anywhere, anytime, on any device.</p>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search by title, author, or genre...">
+                    <button id="searchBtn"><i class="fa-solid fa-search"></i> Search</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="catalog" class="catalog-section">
+            <div class="section-header">
+                <h2>Trending Books</h2>
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="fiction">Fiction</button>
+                    <button class="filter-btn" data-filter="science">Science</button>
+                    <button class="filter-btn" data-filter="history">History</button>
+                </div>
+            </div>
+            
+            <div class="book-grid" id="bookGrid">
+                <!-- Books will be injected here by JS -->
+            </div>
+        </section>
+        
+        <section id="my-books" class="my-books-section" style="display: none;">
+            <div class="section-header">
+                <h2>My Borrowed Books</h2>
+            </div>
+            <div class="book-grid" id="borrowedGrid">
+                <!-- Borrowed books will be injected here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fa-solid fa-book-open"></i> CloudLibrary
+            </div>
+            <p>&copy; 2026 CloudLibrary System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for Book Details -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modalDetails" class="modal-details"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

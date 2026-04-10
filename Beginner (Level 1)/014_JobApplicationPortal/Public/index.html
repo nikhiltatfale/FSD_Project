@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Portal | Find Your Dream Job</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="app.navigate('home')">
+                <i class="fa-solid fa-briefcase"></i> JobPortal
+            </div>
+            <div class="nav-links">
+                <a href="#" onclick="app.navigate('home')" class="nav-item active" data-target="home">Home</a>
+                <a href="#" onclick="app.navigate('jobs-section')" class="nav-item" data-target="jobs-section">Jobs</a>
+                <a href="#" onclick="app.navigate('track-section')" class="nav-item" data-target="track-section">Track Status</a>
+                <a href="#" onclick="app.navigate('admin-login-section')" id="nav-admin-link" class="nav-item" data-target="admin-login-section">Admin Panel</a>
+                <a href="#" onclick="app.logout()" id="nav-logout-btn" class="nav-item hidden">Logout</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#" onclick="app.navigate('home')">Home</a>
+        <a href="#" onclick="app.navigate('jobs-section')">Jobs</a>
+        <a href="#" onclick="app.navigate('track-section')">Track Status</a>
+        <a href="#" onclick="app.navigate('admin-login-section')" id="mobile-admin-link">Admin Panel</a>
+        <a href="#" onclick="app.logout()" id="mobile-logout-link" class="hidden">Logout</a>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Main Content Area -->
+    <main id="main-content">
+
+        <!-- 1. Home Section -->
+        <section id="home" class="page-section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Discover Your Next <span class="highlight">Career Move</span></h1>
+                    <p>Explore thousands of job opportunities and find the perfect fit for your skills and aspirations.</p>
+                    <div class="search-bar">
+                        <input type="text" id="home-search-input" placeholder="Job title, keywords, or company">
+                        <button onclick="app.searchFromHome()"><i class="fa-solid fa-search"></i> Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <h3>Easy Search</h3>
+                    <p>Find relevant jobs quickly with our intuitive search and filtering.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <h3>Quick Apply</h3>
+                    <p>Submit your application in seconds without creating an account.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-satellite-dish"></i>
+                    <h3>Track Status</h3>
+                    <p>Monitor your application progress simply using your email address.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Jobs Section -->
+        <section id="jobs-section" class="page-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Latest Opportunities</h2>
+                    <p>Browse through our handpicked job listings</p>
+                </div>
+                
+                <div class="jobs-controls">
+                    <div class="search-wrap">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="jobs-search-input" placeholder="Search by title or location..." />
+                    </div>
+                    <div class="filter-wrap">
+                        <select id="jobs-filter-type">
+                            <option value="all">All Types</option>
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Internship">Internship</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="jobs-grid" id="public-jobs-grid">
+                    <!-- Job cards injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Apply Section -->
+        <section id="apply-section" class="page-section">
+            <div class="container apply-container">
+                <button class="back-btn" onclick="app.navigate('jobs-section')"><i class="fa-solid fa-arrow-left"></i> Back to Jobs</button>
+                <div class="apply-card">
+                    <div class="apply-header" id="apply-job-details">
+                        <!-- Populated dynamically -->
+                    </div>
+                    <form id="apply-form" class="form-standard">
+                        <input type="hidden" id="apply-job-id">
+                        
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="apply-name" required placeholder="John Doe">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="apply-email" required placeholder="john@example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="apply-phone" required placeholder="+1 234 567 890">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Resume Link (URL) *</label>
+                            <input type="url" id="apply-resume" required placeholder="https://linkedin.com/in/johndoe or Drive link">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Cover Letter</label>
+                            <textarea id="apply-cover" rows="4" placeholder="Tell us why you are a great fit..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary w-100">Submit Application</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Track Application Section -->
+        <section id="track-section" class="page-section">
+            <div class="container track-container">
+                <div class="track-card">
+                    <h2>Track Your Applications</h2>
+                    <p>Enter the email address you used to apply to check your application status.</p>
+                    <form id="track-form" class="form-horizontal">
+                        <input type="email" id="track-email-input" required placeholder="Enter your email address">
+                        <button type="submit" class="btn-primary">Track</button>
+                    </form>
+                </div>
+
+                <div class="tracking-results" id="tracking-results">
+                    <!-- Track items injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Admin Login Section -->
+        <section id="admin-login-section" class="page-section">
+            <div class="container login-container">
+                <div class="login-card">
+                    <h2>Admin Login</h2>
+                    <p>Enter your credentials to access the admin dashboard.</p>
+                    <span class="hint">Hint: admin / password123</span>
+                    <form id="admin-login-form" class="form-standard">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" id="login-username" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="login-password" required>
+                        </div>
+                        <button type="submit" class="btn-primary w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Admin Dashboard Section -->
+        <section id="admin-dashboard-section" class="page-section">
+            <div class="admin-layout">
+                <div class="admin-sidebar">
+                    <div class="admin-user"><i class="fa-solid fa-user-shield"></i> Administrator</div>
+                    <ul class="admin-menu">
+                        <li class="active" onclick="app.switchAdminTab('manage-jobs')" data-tab="manage-jobs"><i class="fa-solid fa-briefcase"></i> Manage Jobs</li>
+                        <li onclick="app.switchAdminTab('manage-apps')" data-tab="manage-apps"><i class="fa-solid fa-users"></i> Applications</li>
+                    </ul>
+                </div>
+                
+                <div class="admin-content">
+                    <!-- Manage Jobs Tab -->
+                    <div id="manage-jobs" class="admin-tab active">
+                        <div class="admin-header">
+                            <h2>Job Listings</h2>
+                            <button class="btn-primary btn-sm" onclick="app.openJobModal()"><i class="fa-solid fa-plus"></i> Post New Job</button>
+                        </div>
+                        <div class="table-container">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Company</th>
+                                        <th>Type</th>
+                                        <th>Posted On</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-jobs-table">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Manage Applications Tab -->
+                    <div id="manage-apps" class="admin-tab">
+                        <div class="admin-header">
+                            <h2>Candidate Applications</h2>
+                        </div>
+                        <div class="table-container">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Candidate</th>
+                                        <th>Applied Role</th>
+                                        <th>Date</th>
+                                        <th>Links</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-apps-table">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Job Form Modal -->
+    <div class="modal-overlay" id="job-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="job-modal-title">Post New Job</h3>
+                <button class="close-modal" onclick="app.closeJobModal()"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="job-form" class="form-standard">
+                    <input type="hidden" id="admin-job-id">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Job Title</label>
+                            <input type="text" id="admin-job-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Company</label>
+                            <input type="text" id="admin-job-company" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="admin-job-location" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Salary Range</label>
+                            <input type="text" id="admin-job-salary" placeholder="e.g. $80k - $100k" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Job Type</label>
+                        <select id="admin-job-type" required>
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Internship">Internship</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="admin-job-desc" rows="5" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-outline" onclick="app.closeJobModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Job</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Details Modal -->
+     <div class="modal-overlay" id="app-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Application Details</h3>
+                <button class="close-modal" onclick="app.closeAppModal()"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="app-modal-body">
+                <!-- Content -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Newsletter — Subscribe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="badge">✦ Weekly Digest</div>
+    <h1>Stay in the Loop</h1>
+    <p>Curated reads on design, tech &amp; ideas — delivered every Tuesday. No spam, ever.</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="card-icon">✉️</div>
+      <h2>Subscribe to Our Newsletter</h2>
+      <p class="card-sub">Join <strong>4,200+</strong> curious minds already subscribed.</p>
+
+      <form id="sub-form" novalidate>
+        <div class="input-group">
+          <input type="email" id="email" placeholder="your@email.com" autocomplete="email" />
+          <button type="submit">Subscribe →</button>
+        </div>
+        <div id="msg" class="msg" aria-live="polite"></div>
+      </form>
+
+      <p class="privacy">🔒 No spam. Unsubscribe anytime.</p>
+      <div class="divider"></div>
+      <p class="alt-link">Already subscribed? <a href="login.html">Login here →</a></p>
+    </div>
+  </main>
+
+  <footer><p>© 2026 Newsletter Co. All rights reserved.</p></footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

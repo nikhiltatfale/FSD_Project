@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Newsletter — Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="badge">✦ Members Area</div>
+    <h1>Welcome Back</h1>
+    <p>Enter your subscribed email to access your newsletters.</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="card-icon">🔑</div>
+      <h2>Login</h2>
+      <p class="card-sub">Use the email you subscribed with.</p>
+
+      <form id="login-form" novalidate>
+        <div class="input-group stacked">
+          <input type="email" id="email" placeholder="your@email.com" autocomplete="email" />
+          <button type="submit">Login →</button>
+        </div>
+        <div id="msg" class="msg" aria-live="polite"></div>
+      </form>
+
+      <div class="divider"></div>
+      <p class="alt-link">Not subscribed yet? <a href="index.html">Subscribe here →</a></p>
+    </div>
+  </main>
+
+  <footer><p>© 2026 Newsletter Co. All rights reserved.</p></footer>
+
+  <script>
+    const form = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const msg = document.getElementById('msg');
+
+    function isValidEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+    function showMsg(text, type) {
+      msg.textContent = text;
+      msg.className = 'msg show ' + type;
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = emailInput.value.trim().toLowerCase();
+
+      if (!email) { showMsg('⚠️ Please enter your email.', 'error'); return; }
+      if (!isValidEmail(email)) { showMsg('⚠️ Invalid email format.', 'error'); return; }
+
+      const subscribers = JSON.parse(localStorage.getItem('subscribers') || '[]');
+      if (!subscribers.includes(email)) {
+        showMsg('❌ Email not found. Please subscribe first.', 'error');
+        return;
+      }
+
+      // Save session
+      localStorage.setItem('nl_session', email);
+      showMsg('✅ Logging you in…', 'success');
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+    });
+
+    emailInput.addEventListener('input', () => { msg.className = 'msg'; msg.textContent = ''; });
+  </script>
+</body>
+</html>

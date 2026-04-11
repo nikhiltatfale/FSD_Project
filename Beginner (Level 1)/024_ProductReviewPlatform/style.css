@@ -1,0 +1,216 @@
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #f4f4f4; color: #222; font-size: 15px; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
+input, select, textarea { font-family: inherit; font-size: 15px; }
+
+/* ── Utility ── */
+.hidden { display: none !important; }
+.mt-8 { margin-top: 8px; }
+.full-width { width: 100%; }
+
+/* ── Header ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: #1a1a2e; color: #fff;
+  padding: 0 16px; height: 56px;
+  display: flex; align-items: center;
+}
+.header-inner {
+  width: 100%; max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; gap: 12px;
+}
+.logo { font-size: 1.2rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+.search-bar {
+  flex: 1; padding: 7px 12px;
+  border: 1px solid #444; border-radius: 6px;
+  background: #2a2a3e; color: #fff;
+  min-width: 0;
+}
+.search-bar::placeholder { color: #aaa; }
+.search-bar:focus { outline: none; border-color: #888; }
+.header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.header-username { font-size: 0.85rem; color: #ccc; }
+.btn-icon { background: none; border: none; color: #fff; font-size: 1.2rem; padding: 4px; }
+
+/* ── Buttons ── */
+.btn {
+  padding: 8px 16px; border-radius: 6px;
+  border: 1px solid #ccc; background: #fff;
+  font-size: 0.875rem; font-weight: 500;
+  transition: background 0.15s;
+}
+.btn:hover { background: #f0f0f0; }
+.btn-primary { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+.btn-primary:hover { background: #2d2d4e; }
+.btn-outline { background: transparent; border: 1px solid #1a1a2e; color: #1a1a2e; }
+.btn-outline:hover { background: #f0f0f0; }
+.btn-danger { background: #c0392b; color: #fff; border-color: #c0392b; }
+.btn-danger:hover { background: #a93226; }
+.btn-sm { padding: 5px 12px; font-size: 0.8rem; }
+
+/* ── Views ── */
+.view { padding: 16px; max-width: 1200px; margin: 0 auto; }
+
+/* ── Auth Box ── */
+.auth-box {
+  max-width: 420px; margin: 40px auto;
+  background: #fff; border-radius: 10px;
+  padding: 32px 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+.auth-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; }
+.auth-sub { color: #666; margin-bottom: 20px; }
+.tab-bar { display: flex; border-bottom: 2px solid #eee; margin-bottom: 20px; }
+.tab {
+  flex: 1; padding: 10px; background: none; border: none;
+  font-size: 0.95rem; font-weight: 600; color: #666;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+}
+.tab.active { color: #1a1a2e; border-bottom-color: #1a1a2e; }
+
+/* ── Form Fields ── */
+.field-group { margin-bottom: 14px; }
+.field-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #555; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
+.field-group input,
+.field-group select,
+.field-group textarea {
+  width: 100%; padding: 9px 12px;
+  border: 1px solid #ccc; border-radius: 6px;
+  background: #fafafa; color: #222;
+  transition: border-color 0.15s;
+}
+.field-group input:focus,
+.field-group select:focus,
+.field-group textarea:focus { outline: none; border-color: #1a1a2e; background: #fff; }
+.field-group textarea { resize: vertical; min-height: 80px; }
+
+/* ── Messages ── */
+.msg { font-size: 0.85rem; padding: 6px 0; min-height: 22px; }
+.msg.error { color: #c0392b; }
+.msg.success { color: #27ae60; }
+
+/* ── Filter Bar ── */
+.filter-bar {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.filter-bar select { padding: 7px 10px; border: 1px solid #ccc; border-radius: 6px; background: #fff; }
+.product-count { font-size: 0.85rem; color: #666; }
+
+/* ── Product Grid ── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* ── Product Card ── */
+.product-card {
+  background: #fff; border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.product-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); transform: translateY(-2px); }
+.product-img {
+  width: 100%; height: 160px; object-fit: cover;
+  background: #ddd; display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; color: #999;
+}
+.product-img-placeholder {
+  width: 100%; height: 160px;
+  background: #e8e8e8; display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem;
+}
+.product-body { padding: 12px; }
+.product-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+.product-category {
+  font-size: 0.75rem; color: #fff; background: #1a1a2e;
+  display: inline-block; padding: 2px 8px; border-radius: 12px; margin-bottom: 6px;
+}
+.product-desc { font-size: 0.8rem; color: #666; margin-bottom: 10px; line-height: 1.4; }
+.product-rating { font-size: 0.85rem; margin-bottom: 10px; }
+.stars { color: #f39c12; }
+.rating-count { color: #888; font-size: 0.78rem; }
+
+/* ── Detail View ── */
+.detail-container { max-width: 760px; margin: 0 auto; }
+.detail-header { background: #fff; border-radius: 8px; padding: 24px; margin: 16px 0; border: 1px solid #e0e0e0; }
+.detail-img-placeholder {
+  width: 100%; max-width: 300px; height: 220px;
+  background: #e8e8e8; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem; margin-bottom: 16px;
+}
+.detail-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+.detail-desc { color: #555; margin-bottom: 12px; line-height: 1.6; }
+.detail-avg-rating { font-size: 1.1rem; margin-bottom: 6px; }
+.detail-review-count { color: #666; font-size: 0.85rem; }
+
+/* ── Review Form ── */
+.review-form-box {
+  background: #fff; border-radius: 8px;
+  border: 1px solid #e0e0e0; padding: 20px; margin-bottom: 20px;
+}
+.review-form-box h3 { margin-bottom: 14px; font-size: 1.05rem; }
+.star-picker { display: flex; gap: 6px; margin-bottom: 12px; }
+.star-picker span {
+  font-size: 1.6rem; cursor: pointer; color: #ccc;
+  transition: color 0.1s;
+}
+.star-picker span.active, .star-picker span:hover { color: #f39c12; }
+#reviewMsg { font-size: 0.85rem; }
+
+/* ── Reviews List ── */
+.reviews-section h3 { font-size: 1.05rem; margin-bottom: 12px; }
+.review-card {
+  background: #fff; border: 1px solid #e0e0e0;
+  border-radius: 8px; padding: 14px; margin-bottom: 10px;
+}
+.review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.review-author { font-weight: 700; font-size: 0.9rem; }
+.review-date { font-size: 0.75rem; color: #888; }
+.review-comment { font-size: 0.9rem; color: #444; line-height: 1.5; margin-top: 6px; }
+.no-reviews { color: #888; font-style: italic; padding: 12px 0; }
+.login-prompt {
+  background: #fff8e1; border: 1px solid #f0c040;
+  border-radius: 8px; padding: 14px; margin-bottom: 20px;
+  font-size: 0.9rem; color: #666;
+}
+.login-prompt a { color: #1a1a2e; font-weight: 600; cursor: pointer; text-decoration: underline; }
+
+/* ── Admin ── */
+.admin-box {
+  max-width: 500px; margin: 40px auto;
+  background: #fff; border-radius: 10px;
+  padding: 32px 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+.admin-box h2 { margin-bottom: 20px; }
+.admin-stats { display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap; }
+.stat-card {
+  flex: 1; min-width: 100px;
+  background: #f4f4f4; border-radius: 8px;
+  padding: 16px; text-align: center;
+}
+.stat-num { font-size: 2rem; font-weight: 700; color: #1a1a2e; }
+.stat-label { font-size: 0.8rem; color: #666; margin-top: 4px; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 20px; right: 20px;
+  background: #222; color: #fff;
+  padding: 12px 20px; border-radius: 8px;
+  font-size: 0.9rem; z-index: 999;
+  transition: opacity 0.3s;
+}
+.toast.hidden { opacity: 0; pointer-events: none; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .auth-box, .admin-box { margin: 16px auto; padding: 20px 16px; }
+  .header-username { display: none; }
+  .search-bar { max-width: 140px; }
+}

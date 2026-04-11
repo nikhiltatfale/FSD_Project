@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduVerse — Course Enrollment Platform</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span class="logo-icon">◈</span>
+        <span>Edu<em>Verse</em></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#courses" onclick="closeMenu()">Courses</a></li>
+        <li><a href="#my-courses" onclick="closeMenu()">My Courses</a></li>
+        <li><a href="#about" onclick="closeMenu()">About</a></li>
+        <li>
+          <button class="btn-nav" onclick="scrollToCourses(); closeMenu()">Enroll Now</button>
+        </li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="home">
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">🎓 Over 1,200 students enrolled</div>
+      <h1 class="hero-title">Learn Without<br/><em>Limits</em></h1>
+      <p class="hero-subtitle">Discover world-class courses taught by industry experts. Build real skills, earn certificates, and accelerate your career — all in one place.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="scrollToCourses()">Explore Courses</button>
+        <button class="btn-ghost" onclick="document.getElementById('my-courses').scrollIntoView({behavior:'smooth'})">My Enrollments</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Courses</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">120+</span><span class="stat-label">Instructors</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">98%</span><span class="stat-label">Satisfaction</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-float card-float-1">
+        <span class="float-icon">💻</span>
+        <div><strong>Web Development</strong><small>4,200 enrolled</small></div>
+      </div>
+      <div class="hero-card-float card-float-2">
+        <span class="float-icon">🎨</span>
+        <div><strong>UI/UX Design</strong><small>3,100 enrolled</small></div>
+      </div>
+      <div class="hero-card-float card-float-3">
+        <span class="float-icon">📊</span>
+        <div><strong>Data Science</strong><small>2,800 enrolled</small></div>
+      </div>
+      <div class="hero-image-block">
+        <div class="hero-img-inner">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&q=80" alt="Students learning" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COURSES SECTION ===== -->
+  <section class="courses-section" id="courses">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-badge">All Courses</div>
+        <h2 class="section-title">Find Your Perfect Course</h2>
+        <p class="section-subtitle">Browse our curated selection of expert-led courses across multiple disciplines.</p>
+      </div>
+
+      <!-- Search & Filter -->
+      <div class="search-filter-bar">
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input type="text" id="searchInput" placeholder="Search courses, topics, instructors…" oninput="filterCourses()" />
+          <button class="clear-search" id="clearSearch" onclick="clearSearch()" style="display:none">✕</button>
+        </div>
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-cat="All" onclick="setFilter(this)">All</button>
+          <button class="filter-tab" data-cat="Programming" onclick="setFilter(this)">Programming</button>
+          <button class="filter-tab" data-cat="Design" onclick="setFilter(this)">Design</button>
+          <button class="filter-tab" data-cat="Business" onclick="setFilter(this)">Business</button>
+          <button class="filter-tab" data-cat="Data Science" onclick="setFilter(this)">Data Science</button>
+          <button class="filter-tab" data-cat="Marketing" onclick="setFilter(this)">Marketing</button>
+        </div>
+      </div>
+
+      <!-- Results count -->
+      <p class="results-count" id="resultsCount"></p>
+
+      <!-- Course Grid -->
+      <div class="courses-grid" id="coursesGrid">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="no-results" id="noResults" style="display:none">
+        <div class="no-results-icon">🔍</div>
+        <h3>No courses found</h3>
+        <p>Try adjusting your search or filter criteria.</p>
+        <button class="btn-primary" onclick="clearSearch(); setFilterByName('All')">Show All Courses</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MY COURSES SECTION ===== -->
+  <section class="my-courses-section" id="my-courses">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-badge">Dashboard</div>
+        <h2 class="section-title">My Enrolled Courses</h2>
+        <p class="section-subtitle">Track your learning journey and access all your enrollments.</p>
+      </div>
+      <div class="my-courses-grid" id="myCoursesGrid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">📚</div>
+        <h3>No enrollments yet</h3>
+        <p>Start learning today by enrolling in a course above.</p>
+        <button class="btn-primary" onclick="scrollToCourses()">Browse Courses</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section class="about-section" id="about">
+    <div class="about-container">
+      <div class="about-text">
+        <div class="section-badge">Why EduVerse</div>
+        <h2 class="section-title">Learning, <em>Reimagined</em></h2>
+        <p>EduVerse brings together the world's best instructors and learners in one seamless platform. Whether you're a beginner or a seasoned professional, we have something for everyone.</p>
+        <ul class="about-list">
+          <li><span class="about-check">✦</span> Expert-curated content updated regularly</li>
+          <li><span class="about-check">✦</span> Downloadable certificates upon completion</li>
+          <li><span class="about-check">✦</span> Lifetime access to enrolled courses</li>
+          <li><span class="about-check">✦</span> Community forums and peer learning</li>
+        </ul>
+      </div>
+      <div class="about-grid-imgs">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&q=80" alt="Teaching" class="about-img about-img-1"/>
+        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=300&q=80" alt="Learning" class="about-img about-img-2"/>
+        <div class="about-badge-box">
+          <strong>10,000+</strong><span>Happy Learners</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="logo-icon">◈</span>
+        <span class="footer-logo">Edu<em>Verse</em></span>
+        <p>Empowering learners worldwide with world-class education.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#my-courses">My Courses</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="#" onclick="setFilterByName('Programming')">Programming</a></li>
+          <li><a href="#" onclick="setFilterByName('Design')">Design</a></li>
+          <li><a href="#" onclick="setFilterByName('Business')">Business</a></li>
+          <li><a href="#" onclick="setFilterByName('Data Science')">Data Science</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p>📧 hello@eduverse.io</p>
+        <p>📞 +1 (800) 123-4567</p>
+        <p>📍 San Francisco, CA</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 EduVerse. All rights reserved.</p>
+      <button class="admin-trigger" onclick="openAdminLogin()" title="Admin Panel">Admin</button>
+    </div>
+  </footer>
+
+  <!-- ===== COURSE DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="courseModal" onclick="closeModal('courseModal')">
+    <div class="modal-box modal-large" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('courseModal')">✕</button>
+      <div id="courseModalContent"></div>
+    </div>
+  </div>
+
+  <!-- ===== ENROLLMENT FORM MODAL ===== -->
+  <div class="modal-overlay" id="enrollModal" onclick="closeModal('enrollModal')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('enrollModal')">✕</button>
+      <div class="modal-header">
+        <h2>Enroll in Course</h2>
+        <p id="enrollCourseName" class="enroll-course-name"></p>
+      </div>
+      <form id="enrollForm" onsubmit="submitEnrollment(event)" novalidate>
+        <div class="form-group">
+          <label for="studentName">Full Name *</label>
+          <input type="text" id="studentName" placeholder="John Doe" required />
+          <span class="field-error" id="nameError"></span>
+        </div>
+        <div class="form-group">
+          <label for="studentEmail">Email Address *</label>
+          <input type="email" id="studentEmail" placeholder="john@example.com" required />
+          <span class="field-error" id="emailError"></span>
+        </div>
+        <div class="form-group">
+          <label for="studentPhone">Phone Number *</label>
+          <input type="tel" id="studentPhone" placeholder="+1 234 567 8900" required />
+          <span class="field-error" id="phoneError"></span>
+        </div>
+        <div class="form-group">
+          <label for="studentCollege">College / Institution *</label>
+          <input type="text" id="studentCollege" placeholder="MIT, Stanford, etc." required />
+          <span class="field-error" id="collegeError"></span>
+        </div>
+        <input type="hidden" id="enrollCourseId" />
+        <button type="submit" class="btn-primary btn-full">Confirm Enrollment</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== SUCCESS MODAL ===== -->
+  <div class="modal-overlay" id="successModal" onclick="closeModal('successModal')">
+    <div class="modal-box modal-sm" onclick="event.stopPropagation()">
+      <div class="success-content">
+        <div class="success-icon">🎉</div>
+        <h2>Enrollment Successful!</h2>
+        <p id="successMessage">You have successfully enrolled in the course.</p>
+        <div class="success-actions">
+          <button class="btn-primary" onclick="downloadReceipt()">⬇ Download Receipt</button>
+          <button class="btn-ghost" onclick="closeModal('successModal')">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN LOGIN MODAL ===== -->
+  <div class="modal-overlay" id="adminLoginModal" onclick="closeModal('adminLoginModal')">
+    <div class="modal-box modal-sm" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('adminLoginModal')">✕</button>
+      <div class="modal-header">
+        <div class="admin-lock">🔐</div>
+        <h2>Admin Login</h2>
+        <p>Access restricted to administrators only.</p>
+      </div>
+      <form onsubmit="adminLogin(event)" novalidate>
+        <div class="form-group">
+          <label for="adminUser">Username</label>
+          <input type="text" id="adminUser" placeholder="admin" required />
+        </div>
+        <div class="form-group">
+          <label for="adminPass">Password</label>
+          <input type="password" id="adminPass" placeholder="••••••" required />
+        </div>
+        <span class="field-error" id="adminLoginError"></span>
+        <button type="submit" class="btn-primary btn-full">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN PANEL ===== -->
+  <div class="admin-panel-overlay" id="adminPanel" style="display:none">
+    <div class="admin-panel">
+      <div class="admin-sidebar">
+        <div class="admin-brand">
+          <span class="logo-icon">◈</span> Admin Panel
+        </div>
+        <nav class="admin-nav">
+          <button class="admin-nav-item active" onclick="showAdminTab('courses', this)">📚 Courses</button>
+          <button class="admin-nav-item" onclick="showAdminTab('enrollments', this)">👥 Enrollments</button>
+        </nav>
+        <button class="admin-logout" onclick="adminLogout()">↩ Logout</button>
+      </div>
+      <div class="admin-main">
+        <!-- Courses Tab -->
+        <div class="admin-tab" id="adminCoursesTab">
+          <div class="admin-tab-header">
+            <h2>Manage Courses</h2>
+            <button class="btn-primary" onclick="openAddCourseForm()">+ Add Course</button>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table" id="adminCoursesTable">
+              <thead>
+                <tr>
+                  <th>Title</th><th>Category</th><th>Instructor</th><th>Price</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminCoursesBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Enrollments Tab -->
+        <div class="admin-tab" id="adminEnrollmentsTab" style="display:none">
+          <div class="admin-tab-header">
+            <h2>All Enrollments</h2>
+            <div class="search-wrap admin-search">
+              <span class="search-icon">⌕</span>
+              <input type="text" id="enrollmentSearch" placeholder="Search by name or course…" oninput="filterEnrollments()" />
+            </div>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table" id="adminEnrollmentsTable">
+              <thead>
+                <tr>
+                  <th>Name</th><th>Email</th><th>Phone</th><th>College</th><th>Course</th><th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="adminEnrollmentsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN COURSE FORM MODAL ===== -->
+  <div class="modal-overlay" id="adminCourseFormModal" onclick="closeModal('adminCourseFormModal')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal('adminCourseFormModal')">✕</button>
+      <div class="modal-header">
+        <h2 id="courseFormTitle">Add New Course</h2>
+      </div>
+      <form id="courseForm" onsubmit="saveCourse(event)" novalidate>
+        <input type="hidden" id="courseFormId" />
+        <div class="form-row">
+          <div class="form-group">
+            <label>Course Title *</label>
+            <input type="text" id="cf_title" required />
+          </div>
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="cf_category" required>
+              <option value="">Select…</option>
+              <option>Programming</option>
+              <option>Design</option>
+              <option>Business</option>
+              <option>Data Science</option>
+              <option>Marketing</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Instructor *</label>
+            <input type="text" id="cf_instructor" required />
+          </div>
+          <div class="form-group">
+            <label>Duration *</label>
+            <input type="text" id="cf_duration" placeholder="e.g. 24 hours" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Price (USD) *</label>
+            <input type="number" id="cf_price" min="0" required />
+          </div>
+          <div class="form-group">
+            <label>Rating (0–5) *</label>
+            <input type="number" id="cf_rating" min="0" max="5" step="0.1" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Image URL</label>
+          <input type="url" id="cf_image" placeholder="https://…" />
+        </div>
+        <div class="form-group">
+          <label>Description *</label>
+          <textarea id="cf_description" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary btn-full">Save Course</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

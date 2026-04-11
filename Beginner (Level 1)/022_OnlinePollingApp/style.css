@@ -1,0 +1,103 @@
+* { box-sizing: border-box; }
+
+body {
+  font-family: sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Top nav bar */
+#topNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #4a90e2;
+  color: #fff;
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+#appTitle { font-size: 18px; font-weight: bold; }
+
+#settingsIcon {
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+#settingsIcon:hover { background: rgba(255,255,255,0.2); }
+
+/* Pages */
+.page {
+  width: 100%;
+  max-width: 520px;
+  margin: 24px auto;
+  padding: 24px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.hidden { display: none !important; }
+
+input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+button {
+  padding: 10px 16px;
+  margin: 6px 4px 6px 0;
+  background: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+button:hover { background: #357abd; }
+
+.candidate-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  background: #f9f9f9;
+}
+.candidate-btn button { margin: 0; }
+
+.error   { color: red;   font-size: 13px; margin: 4px 0; }
+.success { color: green; font-size: 14px; margin: 8px 0; font-weight: bold; }
+
+hr { border: none; border-top: 1px solid #eee; margin: 12px 0; }
+
+/* Result bars */
+.bar-row   { margin: 8px 0; }
+.bar-label { font-size: 13px; margin-bottom: 3px; }
+.bar-bg    { background: #e0e0e0; border-radius: 4px; height: 20px; }
+.bar-fill  { background: #4a90e2; height: 100%; border-radius: 4px; transition: width 0.4s; min-width: 2px; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background: #f0f2f5; }
+
+@media (max-width: 480px) {
+  .page  { padding: 16px; margin: 12px auto; }
+  table  { font-size: 11px; }
+  button { font-size: 13px; padding: 9px 12px; }
+}

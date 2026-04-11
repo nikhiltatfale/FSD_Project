@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CivicVoice – Complaint Registration System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="logo">Civic<span>Voice</span></a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#register" class="nav-link">Register</a>
+        <a href="#track" class="nav-link">Track</a>
+        <a href="#mycomplaints" class="nav-link">My Complaints</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HOME SECTION -->
+  <section class="section hero-section" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Your Voice, Our Priority</div>
+      <h1 class="hero-title">Register &amp; Track<br/><span>Your Complaints</span></h1>
+      <p class="hero-desc">Submit your complaints securely, track real-time status updates, and get resolutions — all in one place. No account needed.</p>
+      <div class="hero-btns">
+        <a href="#register" class="btn btn-primary">Register Complaint</a>
+        <a href="#track" class="btn btn-outline">Track Status</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span id="statTotal">0</span><label>Registered</label></div>
+        <div class="stat"><span id="statPending">0</span><label>Pending</label></div>
+        <div class="stat"><span id="statResolved">0</span><label>Resolved</label></div>
+      </div>
+    </div>
+    <div class="hero-illustration">
+      <div class="ill-card">
+        <div class="ill-dot green"></div>
+        <div class="ill-line w80"></div>
+        <div class="ill-line w50"></div>
+        <div class="ill-tag">Resolved ✓</div>
+      </div>
+      <div class="ill-card mid">
+        <div class="ill-dot yellow"></div>
+        <div class="ill-line w60"></div>
+        <div class="ill-line w40"></div>
+        <div class="ill-tag">In Progress ⟳</div>
+      </div>
+      <div class="ill-card back">
+        <div class="ill-dot red"></div>
+        <div class="ill-line w70"></div>
+        <div class="ill-line w45"></div>
+        <div class="ill-tag">Pending ◉</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER SECTION -->
+  <section class="section" id="register">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">New Complaint</div>
+        <h2>Register a Complaint</h2>
+        <p>Fill in the details below. You'll receive a unique Complaint ID on submission.</p>
+      </div>
+      <div class="form-card">
+        <form id="complaintForm" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="fullName">Full Name <span>*</span></label>
+              <input type="text" id="fullName" placeholder="e.g. Nikhil Sharma" autocomplete="off" />
+              <span class="err" id="errName"></span>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address <span>*</span></label>
+              <input type="email" id="email" placeholder="you@example.com" />
+              <span class="err" id="errEmail"></span>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" placeholder="10-digit number" maxlength="10" />
+              <span class="err" id="errPhone"></span>
+            </div>
+            <div class="form-group">
+              <label for="category">Complaint Category <span>*</span></label>
+              <select id="category">
+                <option value="">Select category…</option>
+                <option>Infrastructure</option>
+                <option>Water Supply</option>
+                <option>Electricity</option>
+                <option>Sanitation</option>
+                <option>Road &amp; Transport</option>
+                <option>Public Safety</option>
+                <option>Other</option>
+              </select>
+              <span class="err" id="errCategory"></span>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label for="description">Complaint Description <span>*</span></label>
+            <textarea id="description" rows="4" placeholder="Describe the issue in detail (minimum 20 characters)…"></textarea>
+            <span class="char-count" id="charCount">0 / 20 min</span>
+            <span class="err" id="errDesc"></span>
+          </div>
+          <div class="form-group full">
+            <label>Priority <span>*</span></label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="priority" value="Low" /> <span class="radio-chip low">Low</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="priority" value="Medium" /> <span class="radio-chip medium">Medium</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="priority" value="High" /> <span class="radio-chip high">High</span>
+              </label>
+            </div>
+            <span class="err" id="errPriority"></span>
+          </div>
+          <div class="form-group full">
+            <label for="imageUpload">Attach Image <small>(Optional)</small></label>
+            <div class="file-drop" id="fileDrop">
+              <input type="file" id="imageUpload" accept="image/*" />
+              <div class="file-drop-text">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Click or drag image here</span>
+              </div>
+              <img id="imagePreview" class="image-preview hidden" alt="preview" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Submit Complaint</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRACK SECTION -->
+  <section class="section alt-bg" id="track">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Status Check</div>
+        <h2>Track Your Complaint</h2>
+        <p>Enter your Complaint ID to see the current status.</p>
+      </div>
+      <div class="track-box">
+        <div class="track-input-row">
+          <input type="text" id="trackInput" placeholder="Enter Complaint ID (e.g. CMP-1234567890)" />
+          <button class="btn btn-primary" onclick="trackComplaint()">Track</button>
+        </div>
+        <div id="trackResult"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MY COMPLAINTS SECTION -->
+  <section class="section" id="mycomplaints">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">History</div>
+        <h2>My Complaints</h2>
+        <p>All complaints submitted from this browser.</p>
+      </div>
+      <div id="myComplaintsList" class="complaints-grid"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">CivicVoice &copy; 2025</div>
+      <div class="footer-links">
+        <button class="admin-link" onclick="openAdminLogin()">Admin</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL: Complaint Success -->
+  <div class="modal-overlay hidden" id="successModal">
+    <div class="modal">
+      <div class="modal-icon success-icon">✓</div>
+      <h3>Complaint Registered!</h3>
+      <p>Your complaint has been submitted. Save your ID below.</p>
+      <div class="complaint-id-box" id="generatedId"></div>
+      <button class="btn btn-primary" onclick="closeModal('successModal')">Done</button>
+    </div>
+  </div>
+
+  <!-- MODAL: Complaint Details -->
+  <div class="modal-overlay hidden" id="detailsModal">
+    <div class="modal modal-wide">
+      <button class="modal-close" onclick="closeModal('detailsModal')">✕</button>
+      <h3>Complaint Details</h3>
+      <div id="detailsContent"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: Admin Login -->
+  <div class="modal-overlay hidden" id="adminLoginModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('adminLoginModal')">✕</button>
+      <div class="modal-icon admin-icon">🔐</div>
+      <h3>Admin Login</h3>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="adminUser" placeholder="admin" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="adminPass" placeholder="••••" />
+      </div>
+      <span class="err" id="adminErr"></span>
+      <button class="btn btn-primary btn-full" onclick="adminLogin()">Login</button>
+    </div>
+  </div>
+
+  <!-- MODAL: Admin Panel -->
+  <div class="modal-overlay hidden" id="adminPanel">
+    <div class="modal modal-fullish">
+      <div class="admin-header">
+        <h3>Admin Panel</h3>
+        <div class="admin-controls">
+          <input type="text" id="adminSearch" placeholder="Search by ID…" oninput="renderAdminTable()" />
+          <select id="adminFilter" onchange="renderAdminTable()">
+            <option value="">All Status</option>
+            <option>Pending</option>
+            <option>In Progress</option>
+            <option>Resolved</option>
+          </select>
+          <button class="btn btn-outline btn-sm" onclick="closeModal('adminPanel')">Close</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="admin-table" id="adminTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

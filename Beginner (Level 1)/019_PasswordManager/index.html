@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Password Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f13;
+    --surface: #1a1a24;
+    --surface2: #23232f;
+    --accent: #c8f564;
+    --accent2: #5f6fff;
+    --text: #f0f0f5;
+    --muted: #7a7a90;
+    --danger: #ff5f5f;
+    --border: #2e2e3e;
+    --radius: 12px;
+  }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+    padding-top: 12px;
+  }
+  header .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  header .logo-icon {
+    width: 38px; height: 38px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* FORM CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .card h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media(max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-family: 'Space Mono', monospace;
+  }
+  .form-group input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: 'Syne', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus { border-color: var(--accent); }
+  .form-group input::placeholder { color: var(--muted); }
+
+  .pw-wrap { position: relative; }
+  .pw-wrap input { padding-right: 44px; width: 100%; }
+  .pw-toggle {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; color: var(--muted);
+    font-size: 1.1rem; padding: 2px;
+  }
+  .pw-toggle:hover { color: var(--accent); }
+
+  .form-actions {
+    margin-top: 18px;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+
+  /* BUTTONS */
+  .btn {
+    padding: 11px 22px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.18s;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #0f0f13;
+  }
+  .btn-primary:hover { background: #b5e050; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { color: var(--text); border-color: var(--muted); }
+  .btn-icon {
+    padding: 7px 10px;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.15s;
+    font-family: 'Space Mono', monospace;
+  }
+  .btn-copy { background: var(--surface2); color: var(--accent2); border: 1px solid var(--border); }
+  .btn-copy:hover { background: var(--accent2); color: #fff; }
+  .btn-edit { background: var(--surface2); color: var(--accent); border: 1px solid var(--border); }
+  .btn-edit:hover { background: var(--accent); color: #0f0f13; }
+  .btn-del { background: var(--surface2); color: var(--danger); border: 1px solid var(--border); }
+  .btn-del:hover { background: var(--danger); color: #fff; }
+
+  /* SEARCH */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .search-wrap input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px 12px 42px;
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: 'Syne', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap input::placeholder { color: var(--muted); }
+  .search-icon {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-size: 1rem; pointer-events: none;
+  }
+
+  /* STATS */
+  .stats {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+  }
+  .stat-pill span { color: var(--accent); font-weight: 700; }
+
+  /* TABLE */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    min-width: 580px;
+  }
+  thead tr {
+    background: var(--surface2);
+  }
+  th {
+    padding: 13px 16px;
+    text-align: left;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-weight: 400;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 13px 16px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr { transition: background 0.15s; }
+  tbody tr:hover { background: var(--surface2); }
+
+  .site-name { font-weight: 600; color: var(--text); }
+  .site-url {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    display: block;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .pw-cell {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+  }
+  .actions { display: flex; gap: 6px; }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--muted);
+  }
+  .empty .emoji { font-size: 2.5rem; display: block; margin-bottom: 12px; }
+  .empty p { font-family: 'Space Mono', monospace; font-size: 0.85rem; }
+
+  /* TOAST */
+  #toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--accent);
+    color: #0f0f13;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s;
+    pointer-events: none;
+    z-index: 999;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🔐</div>
+      <h1>Pass<span>Vault</span></h1>
+    </div>
+    <p>// local-first password manager</p>
+  </header>
+
+  <!-- FORM -->
+  <div class="card">
+    <h2 id="form-title">+ Add Credential</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Website Name *</label>
+        <input type="text" id="inp-website" placeholder="e.g. GitHub" />
+      </div>
+      <div class="form-group">
+        <label>Website URL *</label>
+        <input type="url" id="inp-url" placeholder="https://github.com" />
+      </div>
+      <div class="form-group">
+        <label>Username / Email *</label>
+        <input type="text" id="inp-username" placeholder="you@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Password *</label>
+        <div class="pw-wrap">
+          <input type="password" id="inp-password" placeholder="Enter password" />
+          <button class="pw-toggle" onclick="toggleFormPw()" id="form-eye" title="Show/Hide">👁</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="saveCredential()">💾 Save</button>
+      <button class="btn btn-secondary" onclick="cancelEdit()" id="cancel-btn" style="display:none">✕ Cancel</button>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="Search by website or username…" oninput="searchCredential()" />
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-pill">Total: <span id="count">0</span></div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Website</th>
+          <th>Username</th>
+          <th>Password</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+  const KEY = 'passvault_creds';
+  let editId = null;
+
+  function getData() {
+    return JSON.parse(localStorage.getItem(KEY) || '[]');
+  }
+  function setData(data) {
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }
+  function uid() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2);
+  }
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  function saveCredential() {
+    const website  = document.getElementById('inp-website').value.trim();
+    const url      = document.getElementById('inp-url').value.trim();
+    const username = document.getElementById('inp-username').value.trim();
+    const password = document.getElementById('inp-password').value;
+
+    if (!website || !url || !username || !password) { toast('⚠️ All fields required!'); return; }
+
+    // Basic URL validation
+    try { new URL(url); } catch { toast('⚠️ Enter a valid URL'); return; }
+
+    let data = getData();
+
+    if (editId) {
+      // Edit mode
+      data = data.map(d => d.id === editId ? { ...d, website, url, username, password } : d);
+      editId = null;
+      document.getElementById('form-title').textContent = '+ Add Credential';
+      document.getElementById('cancel-btn').style.display = 'none';
+      toast('✅ Updated!');
+    } else {
+      // Duplicate check
+      const dup = data.find(d => d.website.toLowerCase() === website.toLowerCase() && d.username.toLowerCase() === username.toLowerCase());
+      if (dup) { toast('⚠️ Entry already exists!'); return; }
+      data.push({ id: uid(), website, url, username, password });
+      toast('✅ Saved!');
+    }
+
+    setData(data);
+    clearForm();
+    displayCredentials(getData());
+  }
+
+  function clearForm() {
+    ['inp-website','inp-url','inp-username','inp-password'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('inp-password').type = 'password';
+    document.getElementById('form-eye').textContent = '👁';
+  }
+
+  function cancelEdit() {
+    editId = null;
+    clearForm();
+    document.getElementById('form-title').textContent = '+ Add Credential';
+    document.getElementById('cancel-btn').style.display = 'none';
+  }
+
+  function displayCredentials(data) {
+    const tbody = document.getElementById('table-body');
+    document.getElementById('count').textContent = data.length;
+
+    if (!data.length) {
+      tbody.innerHTML = `<tr><td colspan="4">
+        <div class="empty">
+          <span class="emoji">🗄️</span>
+          <p>No credentials yet. Add your first one above!</p>
+        </div>
+      </td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = data.map(d => `
+      <tr>
+        <td>
+          <span class="site-name">${esc(d.website)}</span>
+          <a href="${esc(d.url)}" target="_blank" class="site-url">${esc(d.url)}</a>
+        </td>
+        <td>${esc(d.username)}</td>
+        <td>
+          <div class="pw-cell">
+            <span id="pw-${d.id}">••••••••</span>
+            <button class="btn-icon btn-edit" onclick="togglePassword('${d.id}')" title="Show/Hide" style="font-size:0.9rem">👁</button>
+          </div>
+        </td>
+        <td>
+          <div class="actions">
+            <button class="btn-icon btn-copy" onclick="copyPassword('${d.id}')" title="Copy">📋</button>
+            <button class="btn-icon btn-edit" onclick="editCredential('${d.id}')" title="Edit">✏️</button>
+            <button class="btn-icon btn-del" onclick="deleteCredential('${d.id}')" title="Delete">🗑</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+
+    // Store actual passwords as data attrs (hidden in DOM attribute, never in visible text unless toggled)
+    data.forEach(d => {
+      const el = document.getElementById('pw-' + d.id);
+      if (el) el.dataset.pw = d.password;
+    });
+  }
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  function togglePassword(id) {
+    const el = document.getElementById('pw-' + id);
+    if (!el) return;
+    if (el.textContent === '••••••••') {
+      el.textContent = el.dataset.pw;
+    } else {
+      el.textContent = '••••••••';
+    }
+  }
+
+  function copyPassword(id) {
+    const data = getData();
+    const entry = data.find(d => d.id === id);
+    if (!entry) return;
+    navigator.clipboard.writeText(entry.password).then(() => toast('📋 Copied!'));
+  }
+
+  function editCredential(id) {
+    const data = getData();
+    const entry = data.find(d => d.id === id);
+    if (!entry) return;
+    document.getElementById('inp-website').value = entry.website;
+    document.getElementById('inp-url').value = entry.url;
+    document.getElementById('inp-username').value = entry.username;
+    document.getElementById('inp-password').value = entry.password;
+    editId = id;
+    document.getElementById('form-title').textContent = '✏️ Edit Credential';
+    document.getElementById('cancel-btn').style.display = 'inline-block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function deleteCredential(id) {
+    if (!confirm('Delete this credential?')) return;
+    let data = getData().filter(d => d.id !== id);
+    setData(data);
+    displayCredentials(data);
+    toast('🗑 Deleted');
+  }
+
+  function searchCredential() {
+    const q = document.getElementById('search').value.toLowerCase();
+    const data = getData().filter(d =>
+      d.website.toLowerCase().includes(q) || d.username.toLowerCase().includes(q)
+    );
+    displayCredentials(data);
+  }
+
+  function toggleFormPw() {
+    const inp = document.getElementById('inp-password');
+    const btn = document.getElementById('form-eye');
+    if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+    else { inp.type = 'password'; btn.textContent = '👁'; }
+  }
+
+  // Init
+  displayCredentials(getData());
+</script>
+</body>
+</html>

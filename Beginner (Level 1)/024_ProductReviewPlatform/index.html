@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ReviewHub</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- STICKY HEADER -->
+  <header id="siteHeader" class="hidden">
+    <div class="header-inner">
+      <div class="logo" onclick="showView('products')" style="cursor:pointer">ReviewHub</div>
+      <input type="text" id="searchInput" class="search-bar" placeholder="Search products..." oninput="renderProducts()"/>
+      <div class="header-actions">
+        <span id="headerUserName" class="header-username"></span>
+        <button id="btnLogout" class="btn hidden" onclick="handleLogout()">Logout</button>
+        <button id="btnGoLogin" class="btn hidden" onclick="showView('auth')">Login</button>
+        <button id="btnAdminGear" class="btn-icon" title="Admin Panel" onclick="showView('admin')">⚙️</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="appMain">
+
+    <!-- AUTH VIEW -->
+    <div id="viewAuth" class="view">
+      <div class="auth-box">
+        <h1 class="auth-title">ReviewHub</h1>
+        <p class="auth-sub">Discover & review products</p>
+        <div class="tab-bar">
+          <button class="tab active" id="tabLogin" onclick="switchTab('login')">Login</button>
+          <button class="tab" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+        </div>
+
+        <div id="formLogin">
+          <div class="field-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com"/>
+          </div>
+          <div class="field-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="Password"/>
+          </div>
+          <div id="loginMsg" class="msg"></div>
+          <button class="btn btn-primary full-width" onclick="handleLogin()">Login</button>
+          <button class="btn btn-outline full-width mt-8" onclick="handleGuestBrowse()">Browse as Guest</button>
+        </div>
+
+        <div id="formSignup" class="hidden">
+          <div class="field-group">
+            <label>Full Name</label>
+            <input type="text" id="signupName" placeholder="Your Name"/>
+          </div>
+          <div class="field-group">
+            <label>Email</label>
+            <input type="email" id="signupEmail" placeholder="you@example.com"/>
+          </div>
+          <div class="field-group">
+            <label>Password</label>
+            <input type="password" id="signupPassword" placeholder="Min 6 characters"/>
+          </div>
+          <div id="signupMsg" class="msg"></div>
+          <button class="btn btn-primary full-width" onclick="handleSignup()">Create Account</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT LIST VIEW -->
+    <div id="viewProducts" class="view hidden">
+      <div class="filter-bar">
+        <select id="categoryFilter" onchange="renderProducts()">
+          <option value="">All Categories</option>
+          <option>Electronics</option>
+          <option>Books</option>
+          <option>Clothing</option>
+          <option>Home</option>
+          <option>Sports</option>
+          <option>Beauty</option>
+          <option>Toys</option>
+          <option>Food</option>
+        </select>
+        <span id="productCount" class="product-count"></span>
+      </div>
+      <div id="productGrid" class="product-grid"></div>
+    </div>
+
+    <!-- PRODUCT DETAIL VIEW -->
+    <div id="viewDetail" class="view hidden">
+      <div class="detail-container">
+        <button class="btn mt-8" onclick="showView('products')">← Back</button>
+        <div id="detailContent"></div>
+      </div>
+    </div>
+
+    <!-- ADMIN VIEW -->
+    <div id="viewAdmin" class="view hidden">
+      <div class="admin-box">
+
+        <div id="adminLoginSection">
+          <h2>Admin Access</h2>
+          <div class="field-group">
+            <label>Username</label>
+            <input type="text" id="adminUser" placeholder="admin"/>
+          </div>
+          <div class="field-group">
+            <label>Password</label>
+            <input type="password" id="adminPass" placeholder="password"/>
+          </div>
+          <div id="adminLoginMsg" class="msg"></div>
+          <button class="btn btn-primary" onclick="handleAdminLogin()">Enter</button>
+          <button class="btn btn-outline mt-8" onclick="showView('products')">Cancel</button>
+        </div>
+
+        <div id="adminDashboard" class="hidden">
+          <h2>Admin Dashboard</h2>
+          <div class="admin-stats">
+            <div class="stat-card">
+              <div class="stat-num" id="statUsers">0</div>
+              <div class="stat-label">Registered Users</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="statReviews">0</div>
+              <div class="stat-label">Total Reviews</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="statProducts">0</div>
+              <div class="stat-label">Products</div>
+            </div>
+          </div>
+          <div id="adminMsg" class="msg mt-8"></div>
+          <button class="btn btn-danger" onclick="adminReset()">⚠ Reset All Data</button>
+          <button class="btn btn-outline mt-8" onclick="adminLogout()">Exit Admin</button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

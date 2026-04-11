@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Newsletter — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: #f4f1ec; padding: 0; display: block; }
+
+    /* NAV */
+    nav {
+      background: #1a1a1a;
+      color: #f4f1ec;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      position: sticky; top: 0; z-index: 10;
+    }
+    nav .brand { font-family: 'DM Serif Display', serif; font-size: 1.2rem; letter-spacing: 0.3px; }
+    nav .user-info { display: flex; align-items: center; gap: 14px; font-size: 0.85rem; color: #aaa; }
+    nav .user-info span { color: #f4f1ec; }
+    nav button {
+      background: #333;
+      color: #f4f1ec;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    nav button:hover { background: #c0392b; }
+
+    /* DASHBOARD */
+    .dash-wrap { max-width: 860px; margin: 0 auto; padding: 36px 20px 60px; }
+
+    .dash-header { margin-bottom: 28px; }
+    .dash-header h1 { font-family: 'DM Serif Display', serif; font-size: 2rem; color: #1a1a1a; margin-bottom: 6px; }
+    .dash-header p { color: #888; font-size: 0.9rem; }
+
+    /* FILTER TABS */
+    .tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .tab {
+      padding: 7px 18px;
+      border-radius: 20px;
+      border: 1.5px solid #ddd;
+      background: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      color: #888;
+      transition: all 0.18s;
+    }
+    .tab.active, .tab:hover { background: #1a1a1a; color: #f4f1ec; border-color: #1a1a1a; }
+
+    /* CARDS GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .nl-card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .nl-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.12); }
+
+    .nl-card .thumb {
+      height: 140px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+    }
+    .nl-card .body { padding: 18px; }
+    .nl-card .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .nl-card h3 { font-size: 1rem; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; line-height: 1.4; }
+    .nl-card p  { font-size: 0.83rem; color: #888; line-height: 1.6; margin-bottom: 14px; }
+    .nl-card .meta { display: flex; justify-content: space-between; font-size: 0.75rem; color: #bbb; }
+
+    /* Read modal */
+    .overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 100;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 560px; width: 100%;
+      padding: 32px;
+      position: relative;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .modal .close {
+      position: absolute; top: 16px; right: 18px;
+      background: none; border: none; font-size: 1.3rem; cursor: pointer; color: #aaa;
+    }
+    .modal .close:hover { color: #1a1a1a; }
+    .modal .m-tag { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; display: inline-block; }
+    .modal h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: #1a1a1a; margin-bottom: 10px; line-height: 1.3; }
+    .modal .m-meta { font-size: 0.78rem; color: #aaa; margin-bottom: 18px; }
+    .modal .m-body { font-size: 0.93rem; color: #444; line-height: 1.75; }
+    .modal .m-body p { margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="brand">✦ Weekly Digest</div>
+    <div class="user-info">
+      Logged in as <span id="user-email">—</span>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="dash-wrap">
+    <div class="dash-header">
+      <h1>Your Newsletters 📬</h1>
+      <p>Browse all editions — click any card to read.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="filterCards('all', this)">All</button>
+      <button class="tab" onclick="filterCards('Design', this)">Design</button>
+      <button class="tab" onclick="filterCards('Tech', this)">Tech</button>
+      <button class="tab" onclick="filterCards('Business', this)">Business</button>
+      <button class="tab" onclick="filterCards('Productivity', this)">Productivity</button>
+    </div>
+
+    <div class="grid" id="card-grid"></div>
+  </div>
+
+  <!-- READ MODAL -->
+  <div class="overlay" id="overlay" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+      <button class="close" onclick="closeModal()">✕</button>
+      <div class="m-tag" id="m-tag"></div>
+      <h2 id="m-title"></h2>
+      <div class="m-meta" id="m-meta"></div>
+      <div class="m-body" id="m-body"></div>
+    </div>
+  </div>
+
+  <script>
+    // Auth guard
+    const session = localStorage.getItem('nl_session');
+    if (!session) { window.location.href = 'login.html'; }
+    document.getElementById('user-email').textContent = session;
+
+    function logout() {
+      localStorage.removeItem('nl_session');
+      window.location.href = 'login.html';
+    }
+
+    // Newsletter data
+    const newsletters = [
+      {
+        id: 1, tag: 'Design', color: '#fde8f0', tagColor: '#c0306a',
+        emoji: '🎨', date: 'April 8, 2026', readTime: '4 min read',
+        title: 'The Return of Brutalism in Web Design',
+        summary: 'Bold fonts, raw layouts, and intentional ugliness — brutalism is making a loud comeback in modern UI.',
+        body: `<p>For years, design trends leaned toward clean whites, soft shadows, and rounded corners. Now designers are deliberately breaking those rules.</p><p>Brutalist web design embraces raw HTML aesthetics — stark typography, unconventional layouts, and a rejection of polished perfection. Companies like Bloomberg and Hacker News have long embodied this style, but now mainstream brands are experimenting with it too.</p><p>Why the shift? Users are fatigued by sameness. When every app looks identical, being different is the new luxury. Brutalism is a statement: we care more about substance than surface.</p><p>Key traits of modern brutalism: oversized type, monospaced fonts, visible grids, flat colors, and deliberate asymmetry. The goal isn't ugliness — it's honesty.</p>`
+      },
+      {
+        id: 2, tag: 'Tech', color: '#e8f0fd', tagColor: '#1a56c0',
+        emoji: '🤖', date: 'April 1, 2026', readTime: '5 min read',
+        title: 'What AI Agents Mean for Developers in 2026',
+        summary: 'Autonomous agents are reshaping how software gets built — and what it means to be a developer.',
+        body: `<p>AI agents are no longer a research topic — they're shipping. Tools like Claude Code and Copilot Workspace are giving developers a genuine co-pilot that can plan, write, and debug across entire codebases.</p><p>The shift is profound: developers are becoming more like architects and reviewers, directing agents rather than writing every line themselves. This doesn't mean fewer developers — it means developers who can ship more, faster.</p><p>The skills that matter most now: clear thinking, system design, prompt engineering, and knowing when to trust the output. The boilerplate is automated. The judgment is still yours.</p><p>Expect agent-native IDEs, multi-agent pipelines, and a new generation of tools built around orchestration rather than autocomplete.</p>`
+      },
+      {
+        id: 3, tag: 'Business', color: '#fdf5e8', tagColor: '#b06a10',
+        emoji: '💼', date: 'March 25, 2026', readTime: '3 min read',
+        title: 'Why Micro-SaaS Is Having a Moment',
+        summary: 'Small, focused software products built by solo founders are quietly generating serious revenue.',
+        body: `<p>Micro-SaaS isn't a new idea, but the tools available in 2026 have made it radically more accessible. A single developer can now build, deploy, and market a product in a weekend — and find paying customers within days.</p><p>The model works because it targets underserved niches. Instead of competing with Salesforce, a micro-SaaS might handle one specific workflow for plumbers, or automate one repetitive task for e-commerce store owners.</p><p>Revenue ranges from $500/month to $50k/month. The ceiling is lower, but so is the risk — and there's no VC pressure, no headcount, no runway to burn.</p><p>The formula: find a painful niche problem, build the simplest solution, charge a fair monthly fee. Repeat.</p>`
+      },
+      {
+        id: 4, tag: 'Productivity', color: '#e8fdf0', tagColor: '#1a7a4a',
+        emoji: '⚡', date: 'March 18, 2026', readTime: '4 min read',
+        title: 'The Case Against Multitasking (Again)',
+        summary: 'Science keeps saying it — multitasking tanks your output. Here's what actually works.',
+        body: `<p>Every few years a new study confirms what we already know: multitasking is a myth. The human brain doesn't process two tasks simultaneously — it rapidly switches between them, losing context each time.</p><p>The cost? Studies suggest task-switching can reduce productivity by up to 40%. That notification you glanced at during deep work? It cost you 20 minutes of full focus.</p><p>What works instead: time blocking, single-tasking, and ruthless prioritization. Pick one thing. Do it until it's done. Then pick the next.</p><p>Tools can help — Do Not Disturb modes, website blockers, paper to-do lists — but the real shift is mental. Protect your attention like it's your most valuable asset. Because it is.</p>`
+      },
+      {
+        id: 5, tag: 'Design', color: '#fde8f0', tagColor: '#c0306a',
+        emoji: '🖋️', date: 'March 11, 2026', readTime: '3 min read',
+        title: 'Typography Trends Taking Over 2026',
+        summary: 'Variable fonts, oversized serifs, and kinetic type are defining this year's visual language.',
+        body: `<p>Typography is having a renaissance. After years of safe sans-serifs and system fonts, designers are reaching for character and expression — and the tools are finally there to do it well.</p><p>Variable fonts allow a single font file to span the entire weight and width spectrum, making responsive typography effortless. Designers are using this to create dramatic transitions from thin to ultra-bold as users scroll.</p><p>Oversized display serifs are everywhere — think editorial magazines transplanted into digital. The effect feels authoritative and timeless.</p><p>And kinetic type — text that moves, morphs, and reacts to interaction — is making words the visual centerpiece of an experience, not just a container for meaning.</p>`
+      },
+      {
+        id: 6, tag: 'Tech', color: '#e8f0fd', tagColor: '#1a56c0',
+        emoji: '🔐', date: 'March 4, 2026', readTime: '5 min read',
+        title: 'Passkeys Are Finally Going Mainstream',
+        summary: 'The password killer has arrived — here's how passkeys work and why adoption is accelerating.',
+        body: `<p>Passwords have been broken for decades. Reuse, phishing, data breaches — the problems are well documented. Passkeys are the industry's agreed-upon solution, and in 2026, adoption is finally reaching critical mass.</p><p>A passkey is a cryptographic key pair. The private key never leaves your device. Authentication happens locally — face ID, fingerprint, or PIN — and a signed challenge is sent to the server. There's nothing to phish and nothing to breach.</p><p>Apple, Google, and Microsoft have all shipped passkey support across their platforms. Password managers like 1Password and Bitwarden now sync passkeys across devices. And a growing list of major services — from GitHub to Shopify — have made passkeys their primary login method.</p><p>The transition will take years, but the direction is clear: passwords are legacy technology.</p>`
+      }
+    ];
+
+    let currentFilter = 'all';
+
+    function renderCards(filter) {
+      const grid = document.getElementById('card-grid');
+      const filtered = filter === 'all' ? newsletters : newsletters.filter(n => n.tag === filter);
+      grid.innerHTML = filtered.map(n => `
+        <div class="nl-card" onclick="openModal(${n.id})">
+          <div class="thumb" style="background:${n.color}">${n.emoji}</div>
+          <div class="body">
+            <span class="tag" style="background:${n.color};color:${n.tagColor}">${n.tag}</span>
+            <h3>${n.title}</h3>
+            <p>${n.summary}</p>
+            <div class="meta">
+              <span>${n.date}</span>
+              <span>${n.readTime}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterCards(tag, btn) {
+      currentFilter = tag;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      renderCards(tag);
+    }
+
+    function openModal(id) {
+      const n = newsletters.find(x => x.id === id);
+      if (!n) return;
+      document.getElementById('m-tag').textContent = n.tag;
+      document.getElementById('m-tag').style.cssText = `background:${n.color};color:${n.tagColor}`;
+      document.getElementById('m-title').textContent = n.title;
+      document.getElementById('m-meta').textContent = `${n.date} · ${n.readTime}`;
+      document.getElementById('m-body').innerHTML = n.body;
+      document.getElementById('overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(e) {
+      if (e && e.target !== document.getElementById('overlay') && !e.target.classList.contains('close')) return;
+      document.getElementById('overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    renderCards('all');
+  </script>
+</body>
+</html>

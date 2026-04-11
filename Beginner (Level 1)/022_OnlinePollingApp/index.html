@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Online Polling App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Top nav -->
+  <div id="topNav">
+    <span id="appTitle">🗳️ Online Poll</span>
+    <span id="settingsIcon" title="Settings" onclick="showPage('settings')">⚙️</span>
+  </div>
+
+  <!-- PAGE: Voter -->
+  <div id="page-voter" class="page card">
+    <h1>Cast Your Vote</h1>
+    <div id="voteForm">
+      <input type="text" id="voterName" placeholder="Full Name" />
+      <input type="text" id="voterID"   placeholder="Voter ID (unique)" />
+      <p id="formError" class="error"></p>
+      <div id="candidateList"></div>
+    </div>
+    <p id="voteMessage" class="success"></p>
+  </div>
+
+  <!-- PAGE: Settings (admin login lives here) -->
+  <div id="page-settings" class="page card hidden">
+    <h2>⚙️ Settings</h2>
+    <p style="color:#888;font-size:13px;">App version 1.0 &nbsp;|&nbsp; Pure JS Poll App</p>
+    <hr/>
+    <h3>Admin Access</h3>
+    <input type="text"     id="adminUser" placeholder="Username" />
+    <input type="password" id="adminPass" placeholder="Password" />
+    <p id="adminError" class="error"></p>
+    <button onclick="adminLogin()">Login as Admin</button>
+    <button onclick="showPage('voter')">← Back</button>
+  </div>
+
+  <!-- PAGE: Admin Dashboard -->
+  <div id="page-admin" class="page card hidden">
+    <h2>Admin Dashboard</h2>
+    <p>Total Votes: <strong id="totalVotes">0</strong></p>
+
+    <h3>Results</h3>
+    <div id="resultBars"></div>
+
+    <h3>Voter Log</h3>
+    <table>
+      <thead><tr><th>Name</th><th>Voter ID</th><th>Voted For</th></tr></thead>
+      <tbody id="logBody"></tbody>
+    </table>
+
+    <br/>
+    <button onclick="resetVotes()">🗑 Reset All Votes</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ATS Resume Builder</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- ===== SITE HEADER ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-mark">▣</span>
+        <span class="logo-text">ATS <em>Resume</em> Builder</span>
+      </div>
+      <div class="header-actions">
+        <button id="btnClearData" class="btn-ghost" title="Clear saved data">↺ Clear Data</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN APP ===== -->
+  <main id="app">
+
+    <!-- STEP 1: DOMAIN SELECTION -->
+    <section id="sectionDomain" class="step-section active">
+      <div class="step-card domain-card">
+        <div class="step-label">Step 1 of 2</div>
+        <h1 class="step-title">Choose Your Domain</h1>
+        <p class="step-sub">We'll tailor the form fields specifically for your field.</p>
+
+        <div class="domain-grid">
+          <button class="domain-btn" data-domain="software">
+            <span class="domain-icon">⌨</span>
+            <span class="domain-name">Software / IT</span>
+            <span class="domain-desc">Dev, Engineering, Data</span>
+          </button>
+          <button class="domain-btn" data-domain="core">
+            <span class="domain-icon">⚙</span>
+            <span class="domain-name">Core Engineering</span>
+            <span class="domain-desc">Mech, Civil, Electrical</span>
+          </button>
+          <button class="domain-btn" data-domain="design">
+            <span class="domain-icon">◈</span>
+            <span class="domain-name">Design</span>
+            <span class="domain-desc">UI/UX, Graphic, Motion</span>
+          </button>
+          <button class="domain-btn" data-domain="management">
+            <span class="domain-icon">◻</span>
+            <span class="domain-name">Management</span>
+            <span class="domain-desc">MBA, HR, Operations</span>
+          </button>
+          <button class="domain-btn" data-domain="other">
+            <span class="domain-icon">◎</span>
+            <span class="domain-name">Other</span>
+            <span class="domain-desc">Arts, Science, Commerce</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: FORM -->
+    <section id="sectionForm" class="step-section">
+      <div class="form-layout">
+
+        <!-- Sidebar Nav -->
+        <aside class="form-nav">
+          <div class="nav-domain-tag" id="navDomainTag">Software / IT</div>
+          <ul class="nav-list">
+            <li><a href="#secPersonal" class="nav-link active">Personal Info</a></li>
+            <li><a href="#secObjective" class="nav-link">Objective</a></li>
+            <li><a href="#secEducation" class="nav-link">Education</a></li>
+            <li><a href="#secSkills" class="nav-link">Skills</a></li>
+            <li><a href="#secDomain" class="nav-link">Domain Fields</a></li>
+            <li><a href="#secProjects" class="nav-link">Projects</a></li>
+            <li><a href="#secExperience" class="nav-link">Experience</a></li>
+            <li><a href="#secCerts" class="nav-link">Certifications</a></li>
+            <li><a href="#secAchievements" class="nav-link">Achievements</a></li>
+            <li><a href="#secLanguages" class="nav-link">Languages</a></li>
+          </ul>
+          <div class="nav-actions">
+            <button id="btnGenerate" class="btn-primary full-width">Generate Resume →</button>
+            <button id="btnBackDomain" class="btn-ghost full-width mt-8">← Change Domain</button>
+          </div>
+        </aside>
+
+        <!-- Form Content -->
+        <div class="form-content" id="formContent">
+
+          <!-- Error banner -->
+          <div id="errorBanner" class="error-banner hidden"></div>
+
+          <!-- Personal Info -->
+          <div class="form-section" id="secPersonal">
+            <h2 class="section-heading">Personal Information</h2>
+            <div class="form-grid-2">
+              <div class="field-group">
+                <label>Full Name <span class="req">*</span></label>
+                <input type="text" id="fullName" placeholder="e.g. Arjun Sharma" maxlength="80"/>
+              </div>
+              <div class="field-group">
+                <label>Phone <span class="req">*</span></label>
+                <input type="tel" id="phone" placeholder="+91 98765 43210" maxlength="20"/>
+              </div>
+              <div class="field-group">
+                <label>Email <span class="req">*</span></label>
+                <input type="email" id="email" placeholder="arjun@email.com"/>
+              </div>
+              <div class="field-group">
+                <label>LinkedIn</label>
+                <input type="text" id="linkedin" placeholder="linkedin.com/in/arjun"/>
+              </div>
+              <div class="field-group">
+                <label>GitHub / Portfolio</label>
+                <input type="text" id="portfolio" placeholder="github.com/arjun"/>
+              </div>
+              <div class="field-group">
+                <label>Address</label>
+                <input type="text" id="address" placeholder="Mumbai, Maharashtra"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Career Objective -->
+          <div class="form-section" id="secObjective">
+            <h2 class="section-heading">Career Objective</h2>
+            <div class="field-group">
+              <label>Objective Statement <span class="req">*</span></label>
+              <textarea id="objective" rows="4" placeholder="A motivated Computer Science graduate seeking a software engineering role where I can apply my skills in..."></textarea>
+              <span class="field-hint">2–4 sentences. Be specific and keyword-rich.</span>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="form-section" id="secEducation">
+            <h2 class="section-heading">Education</h2>
+            <div id="educationEntries"></div>
+            <button class="btn-add" id="btnAddEducation">+ Add Education</button>
+          </div>
+
+          <!-- Skills -->
+          <div class="form-section" id="secSkills">
+            <h2 class="section-heading">Skills</h2>
+            <div class="field-group">
+              <label>Technical / Core Skills</label>
+              <input type="text" id="skills" placeholder="Python, JavaScript, AutoCAD, Teamwork, ..."/>
+              <span class="field-hint">Comma separated. Include tools, technologies, soft skills.</span>
+            </div>
+          </div>
+
+          <!-- Domain-Specific Section -->
+          <div class="form-section" id="secDomain">
+            <h2 class="section-heading" id="domainSectionTitle">Domain Fields</h2>
+            <div id="domainFields"></div>
+          </div>
+
+          <!-- Projects -->
+          <div class="form-section" id="secProjects">
+            <h2 class="section-heading">Projects</h2>
+            <div id="projectEntries"></div>
+            <button class="btn-add" id="btnAddProject">+ Add Project</button>
+          </div>
+
+          <!-- Experience -->
+          <div class="form-section" id="secExperience">
+            <h2 class="section-heading">Experience / Internships</h2>
+            <div id="experienceEntries"></div>
+            <button class="btn-add" id="btnAddExperience">+ Add Experience</button>
+          </div>
+
+          <!-- Certifications -->
+          <div class="form-section" id="secCerts">
+            <h2 class="section-heading">Certifications</h2>
+            <div class="field-group">
+              <label>Certifications</label>
+              <textarea id="certifications" rows="3" placeholder="AWS Certified Cloud Practitioner (2024)&#10;Google Analytics Certified&#10;..."></textarea>
+              <span class="field-hint">One per line.</span>
+            </div>
+          </div>
+
+          <!-- Achievements -->
+          <div class="form-section" id="secAchievements">
+            <h2 class="section-heading">Achievements</h2>
+            <div class="field-group">
+              <label>Achievements & Awards</label>
+              <textarea id="achievements" rows="3" placeholder="1st Place, National Hackathon 2023&#10;Merit Scholarship, ABC University&#10;..."></textarea>
+              <span class="field-hint">One per line.</span>
+            </div>
+          </div>
+
+          <!-- Languages -->
+          <div class="form-section" id="secLanguages">
+            <h2 class="section-heading">Languages</h2>
+            <div class="field-group">
+              <label>Languages Known</label>
+              <input type="text" id="languages" placeholder="English (Fluent), Hindi (Native), Marathi"/>
+              <span class="field-hint">Comma separated.</span>
+            </div>
+          </div>
+
+          <div class="form-bottom-actions">
+            <button id="btnGenerateBottom" class="btn-primary">Generate Resume →</button>
+          </div>
+
+        </div><!-- /form-content -->
+      </div><!-- /form-layout -->
+    </section>
+
+    <!-- STEP 3: PREVIEW -->
+    <section id="sectionPreview" class="step-section">
+      <div class="preview-toolbar">
+        <div class="toolbar-left">
+          <button id="btnEdit" class="btn-ghost">← Edit Resume</button>
+        </div>
+        <div class="toolbar-right">
+          <button id="btnDownloadTxt" class="btn-secondary">↓ TXT</button>
+          <button id="btnDownloadPdf" class="btn-primary">↓ PDF</button>
+        </div>
+      </div>
+
+      <!-- A4 Preview -->
+      <div class="a4-wrapper">
+        <div id="resumePreview" class="resume-a4">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

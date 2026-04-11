@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Dairy Manager</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon">🥛</span>
+        <span class="brand-name">Digital Dairy</span>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" data-section="dashboard"><i class="fas fa-chart-bar"></i><span>Dashboard</span></button>
+        <button class="nav-btn" data-section="customers"><i class="fas fa-users"></i><span>Customers</span></button>
+        <button class="nav-btn" data-section="milk-entry"><i class="fas fa-tint"></i><span>Milk Entry</span></button>
+        <button class="nav-btn" data-section="monthly"><i class="fas fa-calendar-alt"></i><span>Monthly</span></button>
+        <button class="nav-btn" data-section="payments"><i class="fas fa-wallet"></i><span>Payments</span></button>
+      </nav>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <button class="nav-btn active" data-section="dashboard"><i class="fas fa-chart-bar"></i> Dashboard</button>
+      <button class="nav-btn" data-section="customers"><i class="fas fa-users"></i> Customers</button>
+      <button class="nav-btn" data-section="milk-entry"><i class="fas fa-tint"></i> Milk Entry</button>
+      <button class="nav-btn" data-section="monthly"><i class="fas fa-calendar-alt"></i> Monthly</button>
+      <button class="nav-btn" data-section="payments"><i class="fas fa-wallet"></i> Payments</button>
+    </nav>
+  </header>
+
+  <main class="main">
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ── DASHBOARD ───────────────────────────────── -->
+    <section class="section active" id="section-dashboard">
+      <h2 class="section-title">Today's Dashboard</h2>
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-icon"><i class="fas fa-tint"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="statTotalMilk">0 L</span>
+            <span class="stat-label">Total Milk Today</span>
+          </div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="statTotalAmount">₹0</span>
+            <span class="stat-label">Total Amount Today</span>
+          </div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon"><i class="fas fa-users"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="statCustomerCount">0</span>
+            <span class="stat-label">Total Customers</span>
+          </div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-icon"><i class="fas fa-exclamation-circle"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="statPending">₹0</span>
+            <span class="stat-label">Total Pending</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-list"></i> Today's Entries</h3>
+          <button class="btn btn-sm btn-outline" onclick="loadDashboard()"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="table-wrapper">
+          <table class="table" id="todayTable">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Type</th>
+                <th>Morning</th>
+                <th>Evening</th>
+                <th>Total (L)</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody id="todayBody">
+              <tr><td colspan="6" class="empty-state">No entries today</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CUSTOMERS ───────────────────────────────── -->
+    <section class="section" id="section-customers">
+      <h2 class="section-title">Customer Management</h2>
+
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-user-plus"></i> <span id="customerFormTitle">Add Customer</span></h3>
+        </div>
+        <form id="customerForm" class="form-grid">
+          <input type="hidden" id="editCustomerId" />
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="custName" placeholder="e.g. Ramesh Patil" required />
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" id="custPhone" placeholder="10-digit number" maxlength="10" required />
+          </div>
+          <div class="form-group">
+            <label>Address *</label>
+            <input type="text" id="custAddress" placeholder="Village / Area" required />
+          </div>
+          <div class="form-group">
+            <label>Milk Type *</label>
+            <select id="custMilkType" required>
+              <option value="">Select type</option>
+              <option value="Cow">🐄 Cow</option>
+              <option value="Buffalo">🐃 Buffalo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Rate per Liter (₹) *</label>
+            <input type="number" id="custRate" placeholder="e.g. 55" min="1" step="0.5" required />
+          </div>
+          <div class="form-group form-actions">
+            <button type="submit" class="btn btn-primary" id="customerSubmitBtn"><i class="fas fa-save"></i> Save Customer</button>
+            <button type="button" class="btn btn-outline" id="cancelEditBtn" style="display:none" onclick="cancelEdit()"><i class="fas fa-times"></i> Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-users"></i> Customer List</h3>
+          <span class="badge" id="customerCountBadge">0</span>
+        </div>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Type</th>
+                <th>Rate/L</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="customerBody">
+              <tr><td colspan="6" class="empty-state">No customers added yet</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MILK ENTRY ──────────────────────────────── -->
+    <section class="section" id="section-milk-entry">
+      <h2 class="section-title">Daily Milk Entry</h2>
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-tint"></i> Add Milk Record</h3>
+        </div>
+        <form id="milkForm" class="form-grid">
+          <div class="form-group">
+            <label>Customer *</label>
+            <select id="milkCustomer" required>
+              <option value="">Select customer</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="milkDate" required />
+          </div>
+          <div class="form-group">
+            <label>Morning (Liters)</label>
+            <input type="number" id="milkMorning" placeholder="0.0" min="0" step="0.1" value="0" />
+          </div>
+          <div class="form-group">
+            <label>Evening (Liters)</label>
+            <input type="number" id="milkEvening" placeholder="0.0" min="0" step="0.1" value="0" />
+          </div>
+          <div class="form-group">
+            <div class="calc-preview" id="calcPreview">
+              <span>Total: <strong id="prevTotal">0 L</strong></span>
+              <span>Amount: <strong id="prevAmount">₹0</strong></span>
+            </div>
+          </div>
+          <div class="form-group form-actions">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Add Entry</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── MONTHLY REPORT ──────────────────────────── -->
+    <section class="section" id="section-monthly">
+      <h2 class="section-title">Monthly Report</h2>
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-calendar-alt"></i> Select Period</h3>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Customer</label>
+            <select id="monthlyCustomer">
+              <option value="">Select customer</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Month</label>
+            <select id="monthlyMonth">
+              <option value="1">January</option><option value="2">February</option>
+              <option value="3">March</option><option value="4">April</option>
+              <option value="5">May</option><option value="6">June</option>
+              <option value="7">July</option><option value="8">August</option>
+              <option value="9">September</option><option value="10">October</option>
+              <option value="11">November</option><option value="12">December</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <input type="number" id="monthlyYear" value="2026" min="2020" max="2099" />
+          </div>
+          <div class="form-group form-actions">
+            <button class="btn btn-primary" onclick="loadMonthly()"><i class="fas fa-search"></i> Generate Report</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="monthlyResult" style="display:none">
+        <div class="card-header">
+          <h3><i class="fas fa-file-alt"></i> Report Summary</h3>
+        </div>
+        <div class="stats-grid mini" id="monthlyStats"></div>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr><th>Date</th><th>Morning</th><th>Evening</th><th>Total (L)</th><th>Amount</th></tr>
+            </thead>
+            <tbody id="monthlyBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PAYMENTS ────────────────────────────────── -->
+    <section class="section" id="section-payments">
+      <h2 class="section-title">Payment Tracking</h2>
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-wallet"></i> Customer Dues</h3>
+          <button class="btn btn-sm btn-outline" onclick="loadPayments()"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Total Due</th>
+                <th>Paid</th>
+                <th>Pending</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="paymentBody">
+              <tr><td colspan="7" class="empty-state">No payment records</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Payment Modal -->
+      <div class="modal-overlay" id="paymentModal" style="display:none">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Record Payment</h3>
+            <button onclick="closePaymentModal()"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="form-grid">
+            <input type="hidden" id="payCustomerId" />
+            <div class="form-group">
+              <label>Amount Paid (₹)</label>
+              <input type="number" id="payAmount" placeholder="Enter amount" min="0" />
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select id="payStatus">
+                <option value="Paid">Paid</option>
+                <option value="Partial">Partial</option>
+                <option value="Unpaid">Unpaid</option>
+              </select>
+            </div>
+            <div class="form-group form-actions">
+              <button class="btn btn-primary" onclick="submitPayment()"><i class="fas fa-check"></i> Save Payment</button>
+              <button class="btn btn-outline" onclick="closePaymentModal()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

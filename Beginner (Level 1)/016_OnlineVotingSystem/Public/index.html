@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoteSecure — Online Voting System</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo" id="logoClick">
+        <span class="logo-icon">🗳️</span>
+        <span class="logo-text">VoteSecure</span>
+      </div>
+      <nav class="header-nav">
+        <button class="nav-btn" onclick="showSection('register')">Vote</button>
+        <button class="nav-btn" onclick="loadResults(); showSection('results')">Results</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ========== SECTION: REGISTER ========== -->
+    <section id="section-register" class="section active">
+      <div class="section-hero">
+        <div class="hero-badge">General Election 2025</div>
+        <h1 class="hero-title">Your Voice.<br/>Your Vote.</h1>
+        <p class="hero-sub">Cast your vote securely and anonymously. Every vote counts.</p>
+      </div>
+
+      <div class="card form-card">
+        <div class="card-header">
+          <h2>Voter Registration</h2>
+          <p>Fill in your details to proceed</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="voterName">Full Name</label>
+            <input type="text" id="voterName" placeholder="e.g. Nikhil Sharma" autocomplete="name" />
+          </div>
+
+          <div class="form-group">
+            <label for="voterId">Voter ID</label>
+            <input type="text" id="voterId" placeholder="e.g. MH2025001" autocomplete="off" />
+          </div>
+
+          <div class="form-group">
+            <label for="voterAge">Age</label>
+            <input type="number" id="voterAge" placeholder="18+" min="1" max="120" />
+          </div>
+
+          <div class="form-group full">
+            <label for="voterDept">Department / Area</label>
+            <input type="text" id="voterDept" placeholder="e.g. Computer Science, Ward 5" />
+          </div>
+        </div>
+
+        <div id="registerError" class="error-msg hidden"></div>
+
+        <button class="btn btn-primary btn-full" onclick="validateAndProceed()">
+          <span>Proceed to Vote</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========== SECTION: VOTE ========== -->
+    <section id="section-vote" class="section">
+      <div class="section-title-row">
+        <div>
+          <h2 class="section-heading">Choose Your Candidate</h2>
+          <p class="section-sub">Select one candidate and confirm your vote</p>
+        </div>
+        <div class="voter-badge" id="voterBadge">—</div>
+      </div>
+
+      <div id="candidatesGrid" class="candidates-grid">
+        <!-- Dynamically filled -->
+        <div class="candidate-skeleton"></div>
+        <div class="candidate-skeleton"></div>
+        <div class="candidate-skeleton"></div>
+        <div class="candidate-skeleton"></div>
+        <div class="candidate-skeleton"></div>
+        <div class="candidate-skeleton"></div>
+      </div>
+
+      <div id="voteError" class="error-msg hidden"></div>
+    </section>
+
+    <!-- ========== SECTION: SUCCESS ========== -->
+    <section id="section-success" class="section">
+      <div class="success-container">
+        <div class="success-icon">✅</div>
+        <h2 class="success-title">Vote Recorded!</h2>
+        <p class="success-msg">Your vote has been successfully and securely recorded.<br/>Thank you for participating in the democratic process.</p>
+        <div class="success-card">
+          <div class="success-detail" id="successVoterName">—</div>
+          <div class="success-detail-label">Voter</div>
+          <div class="success-detail" id="successCandidateName">—</div>
+          <div class="success-detail-label">Voted For</div>
+        </div>
+        <button class="btn btn-primary" onclick="loadResults(); showSection('results')">
+          View Live Results →
+        </button>
+      </div>
+    </section>
+
+    <!-- ========== SECTION: RESULTS ========== -->
+    <section id="section-results" class="section">
+      <div class="section-title-row">
+        <div>
+          <h2 class="section-heading">Live Results</h2>
+          <p class="section-sub" id="totalVotesLabel">Loading...</p>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="loadResults()">↻ Refresh</button>
+      </div>
+
+      <div id="resultsContainer" class="results-list">
+        <!-- Dynamically filled -->
+      </div>
+    </section>
+
+    <!-- ========== SECTION: ADMIN ========== -->
+    <section id="section-admin" class="section">
+      <div class="admin-header">
+        <div class="admin-badge">🔐 Admin Panel</div>
+        <h2 class="section-heading">Detailed Vote Report</h2>
+        <p class="section-sub" id="adminTotalLabel">—</p>
+      </div>
+
+      <div id="adminResults" class="results-list"></div>
+
+      <div class="admin-log-wrap">
+        <h3 class="log-title">Voter Log</h3>
+        <div class="table-wrap">
+          <table id="voterLogTable" class="voter-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Voter ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Age</th>
+                <th>Voted For</th>
+              </tr>
+            </thead>
+            <tbody id="voterLogBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <button class="btn btn-outline" onclick="showSection('results')">← Back to Results</button>
+    </section>
+
+  </main>
+
+  <!-- ========== CONFIRMATION MODAL ========== -->
+  <div id="modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-icon" id="modalCandidateSymbol">🌟</div>
+      <h3 class="modal-title">Confirm Your Vote</h3>
+      <p class="modal-sub">You are voting for:</p>
+      <div class="modal-candidate">
+        <strong id="modalCandidateName">—</strong>
+        <span id="modalCandidateParty">—</span>
+      </div>
+      <p class="modal-warn">⚠️ This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="confirmVoteBtn" onclick="submitVote()">Confirm Vote</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ADMIN LOGIN MODAL ========== -->
+  <div id="adminModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-icon">🔐</div>
+      <h3 class="modal-title">Admin Access</h3>
+      <p class="modal-sub">Enter admin password to continue</p>
+      <input type="password" id="adminPassword" class="admin-input" placeholder="Password" />
+      <div id="adminError" class="error-msg hidden"></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeAdminModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="adminLogin()">Login</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

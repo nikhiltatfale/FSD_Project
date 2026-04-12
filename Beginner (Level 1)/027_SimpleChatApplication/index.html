@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ChatApp</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="screen">
+    <div class="card">
+      <h1>💬 ChatApp</h1>
+      <p class="subtitle">Simple private 1-to-1 chat</p>
+      <input type="text" id="usernameInput" placeholder="Enter your username" maxlength="30" />
+      <button id="loginBtn" onclick="handleLogin()">Get Started</button>
+    </div>
+  </div>
+
+  <!-- HOME SCREEN -->
+  <div id="homeScreen" class="screen hidden">
+    <div class="card">
+      <div class="home-header">
+        <h2 id="welcomeText">Welcome!</h2>
+        <button class="btn-small btn-danger" onclick="handleLogout()">Logout</button>
+      </div>
+
+      <div class="id-box">
+        <label>Your User ID</label>
+        <div class="id-row">
+          <span id="displayUserId" class="id-text"></span>
+          <button class="btn-icon" onclick="copyUserId()" title="Copy ID">📋</button>
+        </div>
+        <small>Share this ID so others can find you</small>
+      </div>
+
+      <hr/>
+
+      <div class="find-section">
+        <label>Find a User</label>
+        <input type="text" id="searchIdInput" placeholder="Paste user ID here" />
+        <button onclick="findUser()">Search</button>
+      </div>
+
+      <!-- Confirmation Card -->
+      <div id="confirmCard" class="confirm-card hidden">
+        <p id="confirmText"></p>
+        <div class="confirm-btns">
+          <button class="btn-success" onclick="startChat()">Yes, Chat</button>
+          <button class="btn-danger" onclick="cancelFind()">Cancel</button>
+        </div>
+      </div>
+
+      <div id="homeMsg" class="msg-info"></div>
+    </div>
+  </div>
+
+  <!-- CHAT SCREEN -->
+  <div id="chatScreen" class="screen hidden">
+    <div class="chat-wrapper">
+      <div class="chat-header">
+        <button class="btn-back" onclick="backToHome()">← Back</button>
+        <span id="chatWithName"></span>
+        <button class="btn-small btn-danger" onclick="clearChat()">Clear</button>
+      </div>
+      <div id="messagesContainer" class="messages-container">
+        <div id="emptyState" class="empty-state">No messages yet. Say hi! 👋</div>
+      </div>
+      <div class="chat-input-bar">
+        <input type="text" id="msgInput" placeholder="Type a message..." onkeydown="handleEnter(event)" />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- THEME TOGGLE -->
+  <button id="themeToggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

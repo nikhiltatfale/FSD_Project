@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendance Management System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ========== TOAST NOTIFICATION ========== -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- ========== LOGIN PAGE ========== -->
+<section id="loginPage" class="page active">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>📚 AttendEase</h1>
+        <p>Attendance Management System</p>
+      </div>
+
+      <div class="tab-row">
+        <button class="tab-btn active" onclick="switchLoginTab('admin')">Admin Login</button>
+        <button class="tab-btn" onclick="switchLoginTab('student')">Student Login</button>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <input type="hidden" id="loginRole" value="admin" />
+
+        <div class="form-group">
+          <label id="loginIdLabel">Admin ID</label>
+          <input type="text" id="loginId" placeholder="Enter your ID" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter password" required />
+        </div>
+
+        <div class="hint-box" id="loginHint">
+          <strong>Demo:</strong> ID: <code>admin1</code> | Pass: <code>admin123</code>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="loginBtn">Login</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ADMIN DASHBOARD ========== -->
+<section id="adminPage" class="page hidden">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">📚 AttendEase <span class="badge-admin">Admin</span></div>
+    <div class="nav-user">
+      <span id="adminName">Admin</span>
+      <button class="btn btn-sm btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Tab Navigation -->
+  <div class="dashboard-tabs">
+    <button class="dtab active" onclick="showAdminTab('tabStudents')">Students</button>
+    <button class="dtab" onclick="showAdminTab('tabAttendance')">Take Attendance</button>
+    <button class="dtab" onclick="showAdminTab('tabReports')">Reports</button>
+    <button class="dtab" onclick="showAdminTab('tabSubjects')">Subjects</button>
+  </div>
+
+  <div class="dashboard-content">
+
+    <!-- ===== STUDENTS TAB ===== -->
+    <div id="tabStudents" class="dtab-content active">
+      <div class="section-header">
+        <h2>Student Management</h2>
+        <button class="btn btn-primary" onclick="openStudentModal()">+ Add Student</button>
+      </div>
+
+      <div id="studentsTable" class="table-wrapper">
+        <p class="loading">Loading students...</p>
+      </div>
+    </div>
+
+    <!-- ===== TAKE ATTENDANCE TAB ===== -->
+    <div id="tabAttendance" class="dtab-content hidden">
+      <h2>Take Attendance</h2>
+
+      <div class="attend-controls card">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="attendDate" />
+          </div>
+          <div class="form-group">
+            <label>Subject</label>
+            <select id="attendSubject">
+              <option value="">Select Subject</option>
+            </select>
+          </div>
+          <div class="form-group align-end">
+            <button class="btn btn-primary" onclick="loadAttendanceSheet()">Load Students</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="attendanceSheet" class="hidden">
+        <div class="section-header">
+          <h3 id="attendSheetTitle">Attendance Sheet</h3>
+          <div>
+            <button class="btn btn-sm btn-success" onclick="markAll('Present')">All Present</button>
+            <button class="btn btn-sm btn-danger" onclick="markAll('Absent')">All Absent</button>
+          </div>
+        </div>
+        <div id="attendanceList" class="attend-list"></div>
+        <button class="btn btn-primary btn-block mt" onclick="submitAttendance()">💾 Save Attendance</button>
+      </div>
+    </div>
+
+    <!-- ===== REPORTS TAB ===== -->
+    <div id="tabReports" class="dtab-content hidden">
+      <h2>Attendance Reports</h2>
+
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Filter by Date</label>
+            <input type="date" id="filterDate" />
+          </div>
+          <div class="form-group">
+            <label>Filter by Subject</label>
+            <select id="filterSubject">
+              <option value="">All Subjects</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Filter by Student</label>
+            <select id="filterStudent">
+              <option value="">All Students</option>
+            </select>
+          </div>
+          <div class="form-group align-end">
+            <button class="btn btn-primary" onclick="loadReport()">View Report</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="reportSummary" class="stats-row hidden"></div>
+      <div id="reportTable" class="table-wrapper"></div>
+
+      <div id="downloadSection" class="hidden mt">
+        <button class="btn btn-success" onclick="downloadCSV()">⬇️ Download CSV</button>
+      </div>
+    </div>
+
+    <!-- ===== SUBJECTS TAB ===== -->
+    <div id="tabSubjects" class="dtab-content hidden">
+      <h2>Subjects & Classes</h2>
+
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Add New Subject</label>
+            <input type="text" id="newSubjectInput" placeholder="Subject name" />
+          </div>
+          <div class="form-group align-end">
+            <button class="btn btn-primary" onclick="addSubject()">Add Subject</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="subjectsList" class="chips-container"></div>
+    </div>
+
+  </div><!-- end dashboard-content -->
+</section>
+
+<!-- ========== STUDENT DASHBOARD ========== -->
+<section id="studentPage" class="page hidden">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">📚 AttendEase <span class="badge-student">Student</span></div>
+    <div class="nav-user">
+      <span id="studentName">Student</span>
+      <button class="btn btn-sm btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="dashboard-tabs">
+    <button class="dtab active" onclick="showStudentTab('tabMyStats')">My Attendance</button>
+    <button class="dtab" onclick="showStudentTab('tabMyHistory')">History</button>
+  </div>
+
+  <div class="dashboard-content">
+
+    <!-- ===== MY STATS TAB ===== -->
+    <div id="tabMyStats" class="dtab-content active">
+      <h2>My Attendance Overview</h2>
+
+      <div id="studentSummaryCards" class="stats-row">
+        <p class="loading">Loading...</p>
+      </div>
+
+      <h3>By Subject</h3>
+      <div id="subjectBreakdown" class="table-wrapper"></div>
+    </div>
+
+    <!-- ===== MY HISTORY TAB ===== -->
+    <div id="tabMyHistory" class="dtab-content hidden">
+      <h2>Attendance History</h2>
+      <div id="historyTable" class="table-wrapper">
+        <p class="loading">Loading...</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== ADD/EDIT STUDENT MODAL ========== -->
+<div id="studentModal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add Student</h3>
+      <button class="modal-close" onclick="closeStudentModal()">✕</button>
+    </div>
+    <form onsubmit="saveStudent(event)">
+      <div class="form-group">
+        <label>Student ID</label>
+        <input type="text" id="modalStudentId" placeholder="e.g. S104" required />
+      </div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="modalStudentName" placeholder="Full name" required />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="modalStudentEmail" placeholder="Email address" required />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="modalStudentPassword" placeholder="Login password" required />
+      </div>
+      <div class="form-group">
+        <label>Class</label>
+        <select id="modalStudentClass">
+          <option value="Class 10A">Class 10A</option>
+          <option value="Class 10B">Class 10B</option>
+          <option value="Class 11A">Class 11A</option>
+          <option value="Class 11B">Class 11B</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeStudentModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="modalSaveBtn">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback Analyzer</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <span class="navbar-title">Feedback Analyzer</span>
+    <button id="adminLoginBtn" onclick="openAdminModal()">Admin Login</button>
+    <button id="adminLogoutBtn" style="display:none" onclick="adminLogout()">Logout</button>
+  </nav>
+
+  <!-- FEEDBACK FORM SECTION -->
+  <section id="feedbackSection" class="section">
+    <h2>Submit Your Feedback</h2>
+    <form id="feedbackForm">
+      <label>Name</label>
+      <input type="text" id="name" placeholder="Your name" required />
+
+      <label>Email</label>
+      <input type="email" id="email" placeholder="your@email.com" required />
+
+      <label>Rating (1–5 Stars)</label>
+      <div id="starRating">
+        <span class="star" data-value="1">&#9733;</span>
+        <span class="star" data-value="2">&#9733;</span>
+        <span class="star" data-value="3">&#9733;</span>
+        <span class="star" data-value="4">&#9733;</span>
+        <span class="star" data-value="5">&#9733;</span>
+      </div>
+      <input type="hidden" id="rating" value="" />
+
+      <label>Feedback</label>
+      <textarea id="feedbackText" rows="4" placeholder="Write your feedback here..." required></textarea>
+
+      <button type="submit" id="submitBtn">Submit Feedback</button>
+    </form>
+
+    <!-- Loading Spinner -->
+    <div id="spinner" style="display:none">Submitting...</div>
+
+    <!-- Result Message -->
+    <div id="resultMsg" style="display:none"></div>
+  </section>
+
+  <!-- ADMIN DASHBOARD (hidden until login) -->
+  <section id="adminDashboard" class="section" style="display:none">
+    <h2>Admin Dashboard</h2>
+
+    <!-- Stats Cards -->
+    <div class="cards">
+      <div class="card">
+        <h3>Total</h3>
+        <p id="totalCount">0</p>
+      </div>
+      <div class="card positive">
+        <h3>Positive</h3>
+        <p id="positiveCount">0</p>
+      </div>
+      <div class="card neutral">
+        <h3>Neutral</h3>
+        <p id="neutralCount">0</p>
+      </div>
+      <div class="card negative">
+        <h3>Negative</h3>
+        <p id="negativeCount">0</p>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-container">
+      <canvas id="sentimentChart"></canvas>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-bar">
+      <label>Filter by Sentiment:</label>
+      <select id="filterSelect" onchange="filterFeedbacks()">
+        <option value="all">All</option>
+        <option value="Positive">Positive</option>
+        <option value="Neutral">Neutral</option>
+        <option value="Negative">Negative</option>
+      </select>
+    </div>
+
+    <!-- Feedback Table -->
+    <div class="table-wrapper">
+      <table id="feedbackTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Rating</th>
+            <th>Feedback</th>
+            <th>Sentiment</th>
+            <th>Score</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="feedbackTableBody">
+          <!-- Rows inserted by JS -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ADMIN LOGIN MODAL -->
+  <div id="adminModal" class="modal" style="display:none">
+    <div class="modal-content">
+      <h3>Admin Login</h3>
+      <label>Username</label>
+      <input type="text" id="adminUser" placeholder="admin" />
+      <label>Password</label>
+      <input type="password" id="adminPass" placeholder="admin123" />
+      <div id="loginError" style="color:red;display:none">Invalid credentials.</div>
+      <button onclick="doAdminLogin()">Login</button>
+      <button onclick="closeAdminModal()" style="margin-left:8px">Cancel</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FAQ Help Center</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <h1>FAQ Help Center</h1>
+      <p>Find answers to your questions below.</p>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <!-- Search + Filter -->
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search questions or answers..." aria-label="Search FAQs" />
+      <select id="categoryFilter" aria-label="Filter by category">
+        <option value="all">All Categories</option>
+      </select>
+      <button id="adminToggleBtn" title="Admin Panel (Ctrl+Shift+A)">Admin</button>
+    </div>
+
+    <!-- FAQ List -->
+    <section id="faqList" aria-label="FAQ Accordion"></section>
+    <p id="noResults" style="display:none; text-align:center; color:#666;">No FAQs found.</p>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 FAQ Help Center. Press <kbd>Ctrl+Shift+A</kbd> to toggle Admin mode.</p>
+  </footer>
+
+  <!-- ADMIN MODAL -->
+  <div id="adminModal" class="modal" role="dialog" aria-modal="true" aria-label="Admin Panel" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Admin Panel</h2>
+        <button id="closeModal" aria-label="Close Admin Panel">&times;</button>
+      </div>
+
+      <!-- Add / Edit Form -->
+      <form id="faqForm">
+        <input type="hidden" id="editId" />
+        <label for="faqQuestion">Question</label>
+        <input type="text" id="faqQuestion" placeholder="Enter question..." required />
+
+        <label for="faqAnswer">Answer</label>
+        <textarea id="faqAnswer" rows="4" placeholder="Enter answer..." required></textarea>
+
+        <label for="faqCategory">Category</label>
+        <input type="text" id="faqCategory" placeholder="e.g. General, Account, Technical" required />
+
+        <div class="form-actions">
+          <button type="submit" id="submitBtn">Add FAQ</button>
+          <button type="button" id="cancelEdit" style="display:none;">Cancel Edit</button>
+        </div>
+      </form>
+
+      <hr />
+
+      <!-- Admin FAQ list for edit/delete -->
+      <h3>Manage FAQs</h3>
+      <div id="adminFaqList"></div>
+    </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div id="overlay" style="display:none;"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

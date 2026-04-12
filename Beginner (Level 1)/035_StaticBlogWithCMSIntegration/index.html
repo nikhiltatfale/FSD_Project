@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BlogCMS</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <!-- LOADER -->
+  <div id="loader"><div class="spinner"></div></div>
+
+  <!-- SCROLL TO TOP -->
+  <button id="scrollTop" title="Back to top">↑</button>
+
+  <!-- ========== PUBLIC SITE ========== -->
+  <div id="publicSite">
+
+    <!-- NAVBAR -->
+    <nav id="navbar">
+      <div class="nav-inner">
+        <a href="#" id="blogLogo" onclick="showHome()">📝 BlogCMS</a>
+        <div class="nav-right">
+          <button id="darkToggle">🌙</button>
+          <button onclick="showHome()">Home</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HOME VIEW -->
+    <div id="homeView">
+      <div class="container">
+        <h1 class="page-title">Latest Posts</h1>
+
+        <!-- CONTROLS -->
+        <div id="controls">
+          <input type="text" id="searchInput" placeholder="Search posts..." oninput="applyFilters()"/>
+          <select id="categoryFilter" onchange="applyFilters()">
+            <option value="">All Categories</option>
+          </select>
+          <select id="sortOrder" onchange="applyFilters()">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+
+        <!-- POST GRID -->
+        <div id="postGrid"></div>
+
+        <!-- EMPTY STATE -->
+        <div id="emptyState" style="display:none">
+          <p>No posts found. Be the first to write something!</p>
+          <small>Press <strong>Ctrl+Shift+A</strong> to open Admin CMS.</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- SINGLE POST VIEW -->
+    <div id="postView" style="display:none">
+      <div class="container" id="postContent"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <p>© 2025 BlogCMS · Built with ❤️</p>
+        <div class="social-links">
+          <a href="#">Twitter</a>
+          <a href="#">GitHub</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ========== ADMIN OVERLAY ========== -->
+  <div id="adminOverlay" style="display:none">
+
+    <!-- LOGIN -->
+    <div id="adminLogin">
+      <div class="admin-box">
+        <h2>🔐 Admin Login</h2>
+        <input type="text" id="adminUser" placeholder="Username"/>
+        <input type="password" id="adminPass" placeholder="Password"/>
+        <button onclick="adminLogin()">Login</button>
+        <button class="cancel-btn" onclick="closeAdmin()">Cancel</button>
+        <p id="loginError" class="error"></p>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="adminDash" style="display:none">
+      <div class="dash-header">
+        <h2>📋 CMS Dashboard</h2>
+        <button onclick="openPostForm(null)">➕ New Post</button>
+        <button class="cancel-btn" onclick="closeAdmin()">Logout & Close</button>
+      </div>
+
+      <!-- POST FORM -->
+      <div id="postForm" style="display:none">
+        <div class="form-box">
+          <h3 id="formTitle">New Post</h3>
+          <input type="hidden" id="editId"/>
+          <label>Title</label>
+          <input type="text" id="fTitle" placeholder="Post title"/>
+          <label>Author</label>
+          <input type="text" id="fAuthor" placeholder="Author name"/>
+          <label>Category</label>
+          <input type="text" id="fCategory" placeholder="e.g. Technology"/>
+          <label>Tags (comma separated)</label>
+          <input type="text" id="fTags" placeholder="e.g. css, html, js"/>
+          <label>Short Description</label>
+          <textarea id="fDesc" rows="2" placeholder="Short summary..."></textarea>
+          <label>Content (HTML supported)</label>
+          <textarea id="fContent" rows="10" placeholder="Full post content..."></textarea>
+          <label>Featured Image</label>
+          <input type="file" id="fImage" accept="image/*" onchange="handleImageUpload(event)"/>
+          <div id="imagePreview"></div>
+          <div class="form-actions">
+            <button onclick="previewPost()">👁 Preview</button>
+            <button onclick="savePost()">💾 Save Post</button>
+            <button class="cancel-btn" onclick="closePostForm()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- PREVIEW PANE -->
+        <div id="previewPane" style="display:none">
+          <h3>Preview</h3>
+          <div id="previewContent"></div>
+        </div>
+      </div>
+
+      <!-- POSTS TABLE -->
+      <div id="adminPostList">
+        <table id="adminTable">
+          <thead>
+            <tr><th>Title</th><th>Author</th><th>Category</th><th>Date</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="adminTableBody"></tbody>
+        </table>
+        <p id="adminEmpty" style="display:none">No posts yet. Create one!</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

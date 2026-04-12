@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>File Upload System</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>📁 File Upload System</h1>
+    <button id="themeToggle">🌙 Dark Mode</button>
+  </header>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer"></div>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- DRAG & DROP UPLOAD AREA -->
+    <section id="dropZone">
+      <div id="dropContent">
+        <div id="dropIcon">⬆️</div>
+        <p><strong>Drag & Drop files here</strong></p>
+        <p>or</p>
+        <button id="browseBtn">Browse Files</button>
+        <input type="file" id="fileInput" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.docx,.txt" hidden/>
+        <p id="dropHint">Allowed: Images, PDF, DOCX, TXT &nbsp;|&nbsp; Max: 5MB each</p>
+      </div>
+    </section>
+
+    <!-- TOTAL PROGRESS -->
+    <section id="totalProgressSection" style="display:none;">
+      <label>Total Progress: <span id="totalProgressText">0%</span></label>
+      <div id="totalProgressBar"><div id="totalProgressFill"></div></div>
+    </section>
+
+    <!-- FILE LIST (before upload) -->
+    <section id="fileListSection" style="display:none;">
+      <div id="fileListHeader">
+        <h2>Files to Upload (<span id="fileCount">0</span>)</h2>
+        <div>
+          <button id="uploadBtn">⬆ Upload All</button>
+          <button id="clearAllBtn">🗑 Clear All</button>
+        </div>
+      </div>
+      <div id="fileList"></div>
+    </section>
+
+    <!-- UPLOADED FILES GALLERY -->
+    <section id="gallerySection" style="display:none;">
+      <div id="galleryHeader">
+        <h2>Uploaded Files (<span id="galleryCount">0</span>)</h2>
+        <div id="galleryControls">
+          <input type="text" id="searchInput" placeholder="🔍 Search files..." />
+          <select id="sortSelect">
+            <option value="name">Sort: Name</option>
+            <option value="size">Sort: Size</option>
+            <option value="date">Sort: Date</option>
+          </select>
+        </div>
+      </div>
+      <div id="gallery"></div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

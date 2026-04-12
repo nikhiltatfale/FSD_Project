@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Certificate Generator</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<div class="app-container">
+  <h1 class="app-title">Online Certificate Generator</h1>
+
+  <!-- FORM -->
+  <div class="form-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Full Name *</label>
+        <input type="text" id="fullName" placeholder="e.g. John Doe"/>
+      </div>
+      <div class="form-group">
+        <label>Domain *</label>
+        <select id="domain">
+          <option value="">-- Select Domain --</option>
+          <option>Web Development</option>
+          <option>Data Science</option>
+          <option>Artificial Intelligence</option>
+          <option>Cyber Security</option>
+          <option>Cloud Computing</option>
+          <option>UI/UX Design</option>
+          <option>Blockchain</option>
+          <option>Machine Learning</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Course / Training Title *</label>
+        <input type="text" id="courseTitle" placeholder="e.g. Full Stack Web Development"/>
+      </div>
+      <div class="form-group">
+        <label>Organization / Institute Name *</label>
+        <input type="text" id="orgName" placeholder="e.g. TechAcademy Inc."/>
+      </div>
+      <div class="form-group">
+        <label>Instructor Name *</label>
+        <input type="text" id="instructorName" placeholder="e.g. Dr. Sarah Johnson"/>
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="certDate"/>
+      </div>
+      <div class="form-group">
+        <label>Certificate ID</label>
+        <input type="text" id="certId" readonly/>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button id="downloadBtn" onclick="downloadCert()">⬇ Download Certificate</button>
+      <button id="resetBtn" onclick="resetForm()">↺ Reset</button>
+    </div>
+  </div>
+
+  <!-- CERTIFICATE PREVIEW -->
+  <div id="cert-wrapper">
+    <div id="certificate">
+      <div class="cert-watermark">Verified Certificate</div>
+      <div class="cert-border-outer">
+        <div class="cert-border-inner">
+
+          <!-- Logo -->
+          <div class="cert-logo">
+            <div class="logo-circle">✦</div>
+            <span id="c-orgLogo">Your Organization</span>
+          </div>
+
+          <div class="cert-top-line"></div>
+
+          <p class="cert-presents">proudly presents this</p>
+          <h1 class="cert-main-title">Certificate of Completion</h1>
+          <p class="cert-awarded">This is to certify that</p>
+
+          <div class="cert-name-block">
+            <p id="c-name" class="cert-name">Recipient Name</p>
+            <div class="cert-name-underline"></div>
+          </div>
+
+          <p class="cert-body-text">has successfully completed the course</p>
+
+          <p id="c-course" class="cert-course">"Course Title"</p>
+          <p class="cert-body-text">in the domain of</p>
+          <p id="c-domain" class="cert-domain">Domain</p>
+
+          <p class="cert-body-text" style="margin-top:10px;">organized by</p>
+          <p id="c-org" class="cert-org">Organization Name</p>
+
+          <div class="cert-footer">
+            <div class="cert-sig-block">
+              <div class="sig-line"></div>
+              <p id="c-instructor" class="sig-name">Instructor Name</p>
+              <p class="sig-label">Instructor / Trainer</p>
+            </div>
+            <div class="cert-meta">
+              <p><span class="meta-label">Date:</span> <span id="c-date">--</span></p>
+              <p><span class="meta-label">Certificate ID:</span> <span id="c-id">CERT-2026-XXXX</span></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

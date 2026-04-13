@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Address Book</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header>
+    <h1>🔐 Admin Panel</h1>
+    <button id="logout-btn" style="display:none">Logout</button>
+  </header>
+
+  <main>
+    <!-- Login Form -->
+    <section id="login-section">
+      <div class="login-box">
+        <h2>Admin Login</h2>
+        <form id="login-form" novalidate>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="admin" required/>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="••••••••" required/>
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        <div id="login-error" class="error-msg" style="display:none"></div>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard-section" style="display:none">
+      <div class="admin-stats">
+        <div class="stat-card">
+          <span class="stat-number" id="total-contacts">0</span>
+          <span class="stat-label">Total Contacts</span>
+        </div>
+      </div>
+      <div class="contacts-header">
+        <h2>All Contacts</h2>
+        <button id="refresh-btn">Refresh</button>
+      </div>
+      <div id="admin-loading" style="display:none">Loading...</div>
+      <table id="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Notes</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="admin-tbody"></tbody>
+      </table>
+      <div id="admin-empty" style="display:none"><p>No contacts yet.</p></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" style="display:none"></div>
+  <script src="admin.js"></script>
+</body>
+</html>

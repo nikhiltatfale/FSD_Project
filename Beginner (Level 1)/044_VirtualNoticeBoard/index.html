@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Virtual Notice Board</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="main-header">
+    <h1>📋 Virtual Notice Board</h1>
+    <div id="admin-status-bar" style="display:none;">
+      <span>Logged in as <strong>Admin</strong></span>
+      <button id="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <!-- USER VIEW -->
+  <div id="user-view">
+    <div id="controls">
+      <input type="text" id="search-input" placeholder="Search notices..." />
+      <select id="category-filter">
+        <option value="all">All Categories</option>
+        <option value="Exam">Exam</option>
+        <option value="Event">Event</option>
+        <option value="Holiday">Holiday</option>
+        <option value="Important">Important</option>
+        <option value="General">General</option>
+      </select>
+    </div>
+    <div id="notices-container"></div>
+  </div>
+
+  <!-- ADMIN LOGIN MODAL -->
+  <div id="login-modal" style="display:none;">
+    <div id="login-box">
+      <h2>Admin Login</h2>
+      <input type="text" id="login-username" placeholder="Username" />
+      <input type="password" id="login-password" placeholder="Password" />
+      <p id="login-error" style="color:red;display:none;">Invalid credentials</p>
+      <button id="login-submit-btn">Login</button>
+      <button id="login-cancel-btn">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD -->
+  <div id="admin-view" style="display:none;">
+    <h2>Admin Dashboard</h2>
+
+    <!-- ADD / EDIT FORM -->
+    <div id="notice-form-section">
+      <h3 id="form-heading">Add New Notice</h3>
+      <input type="hidden" id="edit-id" />
+      <input type="text" id="notice-title" placeholder="Notice Title *" />
+      <textarea id="notice-desc" placeholder="Description *" rows="4"></textarea>
+      <select id="notice-category">
+        <option value="General">General</option>
+        <option value="Exam">Exam</option>
+        <option value="Event">Event</option>
+        <option value="Holiday">Holiday</option>
+        <option value="Important">Important</option>
+      </select>
+      <input type="url" id="notice-attachment" placeholder="Attachment URL (optional)" />
+      <label><input type="checkbox" id="notice-pin" /> Pin this notice</label>
+      <br/>
+      <button id="save-notice-btn">Save Notice</button>
+      <button id="cancel-edit-btn" style="display:none;">Cancel Edit</button>
+    </div>
+
+    <!-- ADMIN NOTICE LIST -->
+    <div id="admin-notices-container"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>Virtual Notice Board &copy; 2025</span>
+    <button id="admin-toggle-btn">⚙ Admin</button>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

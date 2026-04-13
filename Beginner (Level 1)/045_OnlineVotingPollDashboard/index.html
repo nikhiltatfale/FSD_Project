@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Voting System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- VOTER SECTION -->
+<div id="voterSection">
+  <button id="adminGearBtn" title="Admin">⚙️</button>
+
+  <!-- Landing / Login Form -->
+  <div id="voterForm" class="section-card">
+    <div class="brand">🗳️ Online Voting System</div>
+    <p class="subtitle">Cast your vote securely. One person, one vote.</p>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="voterName" placeholder="Enter your full name">
+    </div>
+    <div class="form-group">
+      <label>Voter ID</label>
+      <input type="text" id="voterID" placeholder="Enter your unique Voter ID">
+    </div>
+    <div id="voterFormError" class="error-msg"></div>
+    <button class="btn btn-primary" onclick="checkVoter()">Proceed to Vote</button>
+  </div>
+
+  <!-- Candidates Section -->
+  <div id="candidatesSection" class="hidden">
+    <div class="section-header">
+      <h2>Select Your Candidate</h2>
+      <p id="voterGreeting"></p>
+    </div>
+    <div id="candidatesList" class="candidates-grid"></div>
+  </div>
+
+  <!-- Thank You Screen -->
+  <div id="thankYouScreen" class="section-card hidden">
+    <div class="thankyou-icon">✅</div>
+    <h2>Vote Cast Successfully!</h2>
+    <p id="thankYouMsg"></p>
+    <p class="small-text">Your Voter ID has been recorded. You cannot vote again.</p>
+  </div>
+
+  <!-- Already Voted Screen -->
+  <div id="alreadyVotedScreen" class="section-card hidden">
+    <div class="thankyou-icon">⚠️</div>
+    <h2>Already Voted</h2>
+    <p id="alreadyVotedMsg"></p>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="adminDashboard" class="hidden">
+  <div class="admin-topbar">
+    <span>🗳️ Admin Dashboard</span>
+    <button class="btn btn-danger sm" onclick="adminLogout()">Logout</button>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="tab-btn active" onclick="showTab('candidates')">Candidates</button>
+    <button class="tab-btn" onclick="showTab('results')">Live Results</button>
+    <button class="tab-btn" onclick="showTab('logs')">Voting Logs</button>
+  </div>
+
+  <!-- Candidates Tab -->
+  <div id="tab-candidates" class="tab-content">
+    <div class="tab-header">
+      <h3>Candidate Management</h3>
+      <button class="btn btn-primary sm" onclick="openAddCandidateModal()">+ Add Candidate</button>
+    </div>
+    <div id="adminCandidatesList" class="admin-candidates-grid"></div>
+  </div>
+
+  <!-- Results Tab -->
+  <div id="tab-results" class="tab-content hidden">
+    <h3>Live Results</h3>
+    <div id="resultsContainer"></div>
+  </div>
+
+  <!-- Logs Tab -->
+  <div id="tab-logs" class="tab-content hidden">
+    <div class="tab-header">
+      <h3>Voting Logs</h3>
+      <button class="btn btn-danger sm" onclick="resetElection()">🔄 Reset Election</button>
+    </div>
+    <div class="table-wrap">
+      <table id="logsTable">
+        <thead>
+          <tr><th>Voter Name</th><th>Voter ID</th><th>Candidate</th><th>Time</th></tr>
+        </thead>
+        <tbody id="logsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+
+<!-- Admin Login Modal -->
+<div id="adminLoginModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>🔐 Admin Login</h3>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="adminUser" placeholder="Username">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="adminPass" placeholder="Password">
+    </div>
+    <div id="adminLoginError" class="error-msg"></div>
+    <div class="modal-btns">
+      <button class="btn btn-primary" onclick="adminLogin()">Login</button>
+      <button class="btn btn-secondary" onclick="closeModal('adminLoginModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Vote Confirmation Modal -->
+<div id="voteConfirmModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3>Confirm Your Vote</h3>
+    <p id="voteConfirmText"></p>
+    <div class="modal-btns">
+      <button class="btn btn-primary" onclick="confirmVote()">Yes, Vote</button>
+      <button class="btn btn-secondary" onclick="closeModal('voteConfirmModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Candidate Modal -->
+<div id="candidateModal" class="modal-overlay hidden">
+  <div class="modal">
+    <h3 id="candidateModalTitle">Add Candidate</h3>
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" id="cName" placeholder="Candidate name">
+    </div>
+    <div class="form-group">
+      <label>Party</label>
+      <input type="text" id="cParty" placeholder="Party name">
+    </div>
+    <div class="form-group">
+      <label>Photo URL</label>
+      <input type="text" id="cPhoto" placeholder="https://...">
+    </div>
+    <input type="hidden" id="cEditId">
+    <div id="candidateModalError" class="error-msg"></div>
+    <div class="modal-btns">
+      <button class="btn btn-primary" onclick="saveCandidate()">Save</button>
+      <button class="btn btn-secondary" onclick="closeModal('candidateModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

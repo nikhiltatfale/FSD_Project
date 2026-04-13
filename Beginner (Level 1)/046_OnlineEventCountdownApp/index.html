@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Countdown</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- MAIN USER VIEW -->
+  <div id="main-view" class="hidden">
+    <div class="card" id="event-card">
+      <img id="event-banner" src="" alt="Event Banner" class="hidden"/>
+      <h1 id="event-title">Event Countdown</h1>
+      <p id="event-desc"></p>
+      <p id="event-datetime"></p>
+      <div id="countdown" class="countdown-grid">
+        <div class="box"><span id="days">00</span><label>Days</label></div>
+        <div class="box"><span id="hours">00</span><label>Hours</label></div>
+        <div class="box"><span id="minutes">00</span><label>Minutes</label></div>
+        <div class="box"><span id="seconds">00</span><label>Seconds</label></div>
+      </div>
+      <div id="event-started" class="hidden">🎉 The Event Has Started!</div>
+      <div id="no-event" class="hidden">No event scheduled. Contact admin.</div>
+    </div>
+  </div>
+
+  <!-- ADMIN LOGIN MODAL -->
+  <div id="admin-login-modal" class="modal hidden">
+    <div class="modal-box">
+      <h2>Admin Login</h2>
+      <input type="text" id="admin-user" placeholder="Username" autocomplete="off"/>
+      <input type="password" id="admin-pass" placeholder="Password"/>
+      <button id="login-btn">Login</button>
+      <button id="close-login-btn" class="secondary">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD -->
+  <div id="admin-panel" class="hidden">
+    <div class="admin-container">
+      <div class="admin-header">
+        <h2>Admin Panel</h2>
+        <div>
+          <button id="reset-btn" class="danger">Reset Event</button>
+          <button id="logout-btn" class="secondary">Logout</button>
+        </div>
+      </div>
+
+      <div class="admin-body">
+        <!-- Form -->
+        <div class="admin-form">
+          <h3>Event Settings</h3>
+          <label>Event Title *</label>
+          <input type="text" id="a-title" placeholder="Enter event title"/>
+
+          <label>Event Description</label>
+          <textarea id="a-desc" placeholder="Enter description" rows="3"></textarea>
+
+          <label>Event Date & Time *</label>
+          <input type="datetime-local" id="a-datetime"/>
+
+          <label>Banner Image</label>
+          <input type="file" id="a-image" accept="image/*"/>
+          <img id="a-preview" src="" alt="Preview" class="hidden"/>
+
+          <button id="save-btn">Save Event</button>
+        </div>
+
+        <!-- Live Preview -->
+        <div class="admin-preview">
+          <h3>Live Preview</h3>
+          <div class="preview-card">
+            <img id="p-banner" src="" alt="" class="hidden"/>
+            <h2 id="p-title">Event Title</h2>
+            <p id="p-desc">Description here...</p>
+            <p id="p-datetime"></p>
+            <div class="countdown-grid small">
+              <div class="box"><span id="p-days">00</span><label>Days</label></div>
+              <div class="box"><span id="p-hours">00</span><label>Hours</label></div>
+              <div class="box"><span id="p-minutes">00</span><label>Minutes</label></div>
+              <div class="box"><span id="p-seconds">00</span><label>Seconds</label></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span id="footer-text">Event Countdown App</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

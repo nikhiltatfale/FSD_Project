@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Digital Clock & Alarm System</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div id="toast-container"></div>
+
+<!-- Ringing Overlay -->
+<div id="ringing-overlay" class="hidden">
+  <div class="ring-box">
+    <div class="ring-icon">⏰</div>
+    <div id="ring-label">Alarm</div>
+    <div id="ring-time"></div>
+    <button id="snooze-btn">Snooze 5 min</button>
+    <button id="dismiss-btn">Dismiss</button>
+  </div>
+</div>
+
+<!-- Admin Login Modal -->
+<div id="admin-login-modal" class="modal hidden">
+  <div class="modal-box">
+    <h2>Admin Login</h2>
+    <input type="text" id="admin-user" placeholder="Username"/>
+    <input type="password" id="admin-pass" placeholder="Password"/>
+    <div class="modal-btns">
+      <button id="admin-login-btn">Login</button>
+      <button id="admin-cancel-btn">Cancel</button>
+    </div>
+    <div id="admin-login-err" class="err-msg"></div>
+  </div>
+</div>
+
+<!-- Admin Dashboard Modal -->
+<div id="admin-dashboard-modal" class="modal hidden">
+  <div class="modal-box wide">
+    <h2>Admin Panel</h2>
+    <div id="admin-stats"></div>
+    <div id="admin-alarm-list"></div>
+    <div class="modal-btns">
+      <button id="admin-reset-btn">Reset All Alarms</button>
+      <button id="admin-logout-btn">Logout</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <!-- Clock Section -->
+  <section class="clock-section">
+    <div id="clock-display" title="Click 5 times for Admin">
+      <div id="clock-time">00:00:00</div>
+      <div id="clock-date"></div>
+      <div id="clock-day"></div>
+    </div>
+    <button id="toggle-format">Switch to 12H</button>
+  </section>
+
+  <!-- Alarm Form -->
+  <section class="form-section">
+    <h2>Add Alarm</h2>
+    <div class="alarm-form">
+      <input type="text" id="alarm-label" placeholder="Alarm label (e.g. Wake Up)"/>
+      <div class="time-inputs">
+        <select id="alarm-hour"></select>
+        <select id="alarm-minute"></select>
+        <select id="alarm-ampm">
+          <option value="AM">AM</option>
+          <option value="PM">PM</option>
+        </select>
+      </div>
+      <select id="alarm-tone">
+        <option value="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3">Tone 1 - Bell</option>
+        <option value="https://www.soundjay.com/button/sounds/beep-07.mp3">Tone 2 - Beep</option>
+        <option value="https://www.soundjay.com/misc/sounds/clock-ticking-2.mp3">Tone 3 - Clock</option>
+      </select>
+      <button id="add-alarm-btn">Add Alarm</button>
+    </div>
+  </section>
+
+  <!-- Alarm List -->
+  <section class="alarm-section">
+    <h2>Alarms</h2>
+    <div id="alarm-list"></div>
+  </section>
+</main>
+
+<audio id="alarm-audio" loop></audio>
+<script src="script.js"></script>
+</body>
+</html>

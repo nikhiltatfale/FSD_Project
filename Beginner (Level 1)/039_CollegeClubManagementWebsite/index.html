@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>College Club Management</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-brand">🎓 ClubHub</div>
+  <button class="hamburger" id="hamburger">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" onclick="showSection('home')">Home</a></li>
+    <li><a href="#" onclick="showSection('clubs')">Clubs</a></li>
+    <li><a href="#" onclick="showSection('events')">Events</a></li>
+    <li><a href="#" onclick="showSection('announcements')">Announcements</a></li>
+    <li id="navLogin"><a href="#" onclick="showSection('auth')">Login/Register</a></li>
+    <li id="navDashboard" style="display:none"><a href="#" onclick="showSection('dashboard')">Dashboard</a></li>
+    <li id="navLogout" style="display:none"><a href="#" onclick="logoutStudent()">Logout</a></li>
+  </ul>
+</nav>
+
+<!-- ALERT BOX -->
+<div id="alertBox" class="alert" style="display:none"></div>
+
+<!-- ===== HOME SECTION ===== -->
+<section id="home" class="section active">
+  <div class="hero">
+    <h1>Welcome to ClubHub</h1>
+    <p>Discover, join, and participate in your college's clubs and events.</p>
+    <button onclick="showSection('clubs')">Explore Clubs</button>
+    <button onclick="showSection('auth')" style="margin-left:10px">Get Started</button>
+  </div>
+  <div class="about">
+    <h2>About Our Clubs</h2>
+    <p>Our college hosts a vibrant community of clubs spanning technical, cultural, sports, and social domains. Every student is encouraged to participate and grow.</p>
+  </div>
+</section>
+
+<!-- ===== CLUBS SECTION ===== -->
+<section id="clubs" class="section">
+  <h2>All Clubs</h2>
+  <input type="text" id="clubSearch" placeholder="Search clubs..." oninput="renderClubs()"/>
+  <div id="clubsContainer" class="cards-grid"></div>
+</section>
+
+<!-- ===== EVENTS SECTION ===== -->
+<section id="events" class="section">
+  <h2>Upcoming Events</h2>
+  <input type="text" id="eventSearch" placeholder="Search events..." oninput="renderEvents()"/>
+  <div id="eventsContainer" class="cards-grid"></div>
+</section>
+
+<!-- ===== ANNOUNCEMENTS SECTION ===== -->
+<section id="announcements" class="section">
+  <h2>Announcements</h2>
+  <div id="announcementsContainer"></div>
+</section>
+
+<!-- ===== AUTH SECTION ===== -->
+<section id="auth" class="section">
+  <div class="auth-tabs">
+    <button id="tabLogin" onclick="switchTab('login')" class="active-tab">Login</button>
+    <button id="tabRegister" onclick="switchTab('register')">Register</button>
+  </div>
+
+  <div id="loginForm">
+    <h3>Student Login</h3>
+    <input type="email" id="loginEmail" placeholder="Email"/>
+    <input type="password" id="loginPassword" placeholder="Password"/>
+    <button onclick="studentLogin()">Login</button>
+  </div>
+
+  <div id="registerForm" style="display:none">
+    <h3>Student Register</h3>
+    <input type="text" id="regName" placeholder="Full Name"/>
+    <input type="text" id="regRoll" placeholder="Roll No"/>
+    <input type="email" id="regEmail" placeholder="Email"/>
+    <input type="password" id="regPassword" placeholder="Password"/>
+    <button onclick="studentRegister()">Register</button>
+  </div>
+</section>
+
+<!-- ===== STUDENT DASHBOARD ===== -->
+<section id="dashboard" class="section">
+  <h2>Student Dashboard</h2>
+  <p>Welcome, <strong id="dashName"></strong>!</p>
+  <h3>My Clubs</h3>
+  <div id="myClubs" class="cards-grid"></div>
+  <h3>My Events</h3>
+  <div id="myEvents" class="cards-grid"></div>
+</section>
+
+<!-- ===== ADMIN LOGIN ===== -->
+<section id="adminLogin" class="section">
+  <h2>Admin Login</h2>
+  <input type="text" id="adminUser" placeholder="Username"/>
+  <input type="password" id="adminPass" placeholder="Password"/>
+  <button onclick="adminLogin()">Login</button>
+</section>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<section id="adminDash" class="section">
+  <h2>Admin Dashboard</h2>
+  <button onclick="adminLogout()">Logout</button>
+
+  <div class="admin-tabs">
+    <button onclick="showAdminTab('aClubs')">Clubs</button>
+    <button onclick="showAdminTab('aEvents')">Events</button>
+    <button onclick="showAdminTab('aAnnouncements')">Announcements</button>
+    <button onclick="showAdminTab('aStudents')">Students</button>
+  </div>
+
+  <!-- Admin: Clubs -->
+  <div id="aClubs" class="admin-tab-content">
+    <h3>Manage Clubs</h3>
+    <button onclick="openModal('clubModal')">+ Add Club</button>
+    <div id="adminClubsList"></div>
+  </div>
+
+  <!-- Admin: Events -->
+  <div id="aEvents" class="admin-tab-content" style="display:none">
+    <h3>Manage Events</h3>
+    <button onclick="openModal('eventModal')">+ Add Event</button>
+    <div id="adminEventsList"></div>
+  </div>
+
+  <!-- Admin: Announcements -->
+  <div id="aAnnouncements" class="admin-tab-content" style="display:none">
+    <h3>Manage Announcements</h3>
+    <button onclick="openModal('annModal')">+ Post Announcement</button>
+    <div id="adminAnnList"></div>
+  </div>
+
+  <!-- Admin: Students -->
+  <div id="aStudents" class="admin-tab-content" style="display:none">
+    <h3>Registered Students</h3>
+    <div id="adminStudentsList"></div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>© 2025 ClubHub | College Club Management System</p>
+  <p>📧 clubs@college.edu | 📞 +91-9876543210</p>
+  <p><a href="#" onclick="showSection('adminLogin')" style="color:#aaa;font-size:0.8em">Admin Panel</a></p>
+</footer>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Club Modal -->
+<div id="clubModal" class="modal" style="display:none">
+  <div class="modal-content">
+    <span onclick="closeModal('clubModal')" class="close">✕</span>
+    <h3 id="clubModalTitle">Add Club</h3>
+    <input type="hidden" id="clubEditId"/>
+    <input type="text" id="clubName" placeholder="Club Name"/>
+    <textarea id="clubDesc" placeholder="Description"></textarea>
+    <input type="text" id="clubImg" placeholder="Image URL (optional)"/>
+    <input type="text" id="clubCategory" placeholder="Category (Tech/Cultural/Sports...)"/>
+    <button onclick="saveClub()">Save</button>
+  </div>
+</div>
+
+<!-- Event Modal -->
+<div id="eventModal" class="modal" style="display:none">
+  <div class="modal-content">
+    <span onclick="closeModal('eventModal')" class="close">✕</span>
+    <h3 id="eventModalTitle">Add Event</h3>
+    <input type="hidden" id="eventEditId"/>
+    <input type="text" id="eventName" placeholder="Event Name"/>
+    <textarea id="eventDesc" placeholder="Description"></textarea>
+    <input type="date" id="eventDate"/>
+    <input type="time" id="eventTime"/>
+    <input type="text" id="eventClub" placeholder="Club Name"/>
+    <button onclick="saveEvent()">Save</button>
+  </div>
+</div>
+
+<!-- Announcement Modal -->
+<div id="annModal" class="modal" style="display:none">
+  <div class="modal-content">
+    <span onclick="closeModal('annModal')" class="close">✕</span>
+    <h3>Post Announcement</h3>
+    <input type="text" id="annTitle" placeholder="Title"/>
+    <textarea id="annBody" placeholder="Announcement body..."></textarea>
+    <button onclick="saveAnnouncement()">Post</button>
+  </div>
+</div>
+
+<!-- Members Modal -->
+<div id="membersModal" class="modal" style="display:none">
+  <div class="modal-content">
+    <span onclick="closeModal('membersModal')" class="close">✕</span>
+    <h3>Club Members</h3>
+    <div id="membersList"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

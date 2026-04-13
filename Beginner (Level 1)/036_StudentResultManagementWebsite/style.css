@@ -1,0 +1,105 @@
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #f0f4f8; color: #222; min-height: 100vh; }
+
+/* ===== HEADER ===== */
+header { background: #1a73e8; color: #fff; text-align: center; padding: 18px 12px; }
+header h1 { font-size: 1.5rem; }
+header p { font-size: 0.9rem; margin-top: 4px; opacity: 0.85; }
+
+/* ===== MAIN ===== */
+main { max-width: 700px; margin: 30px auto; padding: 0 14px; }
+
+/* ===== CARD ===== */
+.card { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.12); padding: 24px; margin-bottom: 24px; }
+.card h2 { margin-bottom: 18px; font-size: 1.25rem; color: #1a73e8; }
+.card h3 { margin-bottom: 16px; font-size: 1.1rem; color: #333; }
+
+/* ===== FORM ===== */
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; }
+.form-group input { width: 100%; padding: 9px 11px; border: 1px solid #ccc; border-radius: 5px; font-size: 0.95rem; }
+.form-group input:focus { outline: none; border-color: #1a73e8; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width: 540px){ .form-grid { grid-template-columns: 1fr; } }
+
+.form-actions { display: flex; gap: 10px; margin-top: 14px; }
+
+/* ===== BUTTONS ===== */
+.btn-primary, .btn-secondary {
+  padding: 10px 22px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.95rem; font-weight: bold;
+}
+.btn-primary { background: #1a73e8; color: #fff; }
+.btn-primary:hover { background: #1558b0; }
+.btn-secondary { background: #e0e0e0; color: #333; }
+.btn-secondary:hover { background: #bdbdbd; }
+
+/* ===== ERROR / MSG ===== */
+.error-msg { color: red; font-size: 0.85rem; margin-top: 8px; min-height: 18px; }
+
+/* ===== RESULT HEADER ===== */
+.result-header { border-bottom: 2px solid #1a73e8; padding-bottom: 10px; margin-bottom: 14px; }
+.result-header h2 { color: #1a73e8; }
+.result-header p { font-size: 0.9rem; color: #555; }
+
+/* ===== STUDENT INFO ===== */
+.student-info { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; font-size: 0.9rem; }
+.student-info div span { color: #777; }
+
+/* ===== TABLE ===== */
+.result-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 16px; }
+.result-table th, .result-table td { padding: 9px 11px; border: 1px solid #ddd; text-align: left; }
+.result-table thead { background: #1a73e8; color: #fff; }
+.result-table tfoot td { font-weight: bold; background: #f5f5f5; }
+.result-table tbody tr:nth-child(even) { background: #f9f9f9; }
+
+.table-wrap { overflow-x: auto; }
+
+/* ===== RESULT SUMMARY ===== */
+.result-summary { display: flex; gap: 14px; flex-wrap: wrap; }
+.grade-box, .status-box {
+  flex: 1; min-width: 120px; padding: 14px; border-radius: 6px; text-align: center; font-size: 1.1rem; font-weight: bold;
+}
+.grade-A { background: #c8e6c9; color: #2e7d32; }
+.grade-B { background: #bbdefb; color: #1565c0; }
+.grade-C { background: #fff9c4; color: #f57f17; }
+.grade-F { background: #ffcdd2; color: #c62828; }
+.pass { background: #c8e6c9; color: #2e7d32; }
+.fail { background: #ffcdd2; color: #c62828; }
+
+/* ===== RESULT ACTIONS ===== */
+.result-actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+
+/* ===== ADMIN DASHBOARD ===== */
+#adminDashboard { max-width: 960px; margin: 20px auto; padding: 0 14px; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.dashboard-header h2 { color: #1a73e8; font-size: 1.3rem; }
+
+/* ===== MODAL ===== */
+.modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: center; z-index: 999;
+}
+.modal-content {
+  background: #fff; border-radius: 8px; padding: 28px 24px; width: 92%; max-width: 380px;
+}
+.modal-content h2 { margin-bottom: 16px; color: #1a73e8; }
+.modal-content .btn-primary, .modal-content .btn-secondary { margin-right: 8px; margin-top: 10px; }
+
+/* ===== FOOTER ===== */
+footer { background: #1a73e8; color: #fff; text-align: center; padding: 14px; margin-top: 40px; cursor: default; font-size: 0.85rem; }
+
+/* ===== UTILITY ===== */
+.hidden { display: none !important; }
+
+/* subject pass/fail colours */
+.sub-pass { color: green; font-weight: bold; }
+.sub-fail { color: red; font-weight: bold; }
+
+/* ===== PRINT ===== */
+@media print {
+  body * { visibility: hidden; }
+  #printArea, #printArea * { visibility: visible; }
+  #printArea { position: absolute; top: 0; left: 0; width: 100%; }
+}

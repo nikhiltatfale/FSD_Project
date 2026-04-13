@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LearnHub - Online Learning Resource Hub</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-spinner"></div>
+  <p>Loading LearnHub...</p>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- Confirm Dialog -->
+<div id="confirm-overlay" class="hidden">
+  <div id="confirm-box">
+    <p id="confirm-msg">Are you sure?</p>
+    <div>
+      <button id="confirm-yes">Yes, Delete</button>
+      <button id="confirm-no">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-brand" onclick="showSection('home')">&#127891; LearnHub</div>
+  <div class="nav-links" id="nav-links">
+    <a onclick="showSection('home')" class="nav-link active" data-section="home">&#127968; Home</a>
+    <a onclick="showSection('favorites')" class="nav-link" data-section="favorites">&#11088; Favorites</a>
+    <a onclick="showSection('progress')" class="nav-link" data-section="progress">&#9989; Progress</a>
+    <span id="nav-user-info" class="hidden"></span>
+    <button id="nav-login-btn" onclick="openModal('login-modal')">Login</button>
+    <button id="nav-logout-btn" class="hidden" onclick="logoutUser()">Logout</button>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">&#9776;</div>
+</nav>
+
+<!-- HOME SECTION -->
+<section id="home" class="section active">
+  <div class="hero">
+    <h1>Learn Anything, Anytime</h1>
+    <p>Explore thousands of free resources across Programming, Design, AI, and more.</p>
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="&#128269; Search resources..." oninput="searchResources()">
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterByCategory('all', this)">All</button>
+      <div id="category-filter-btns"></div>
+    </div>
+    <div id="resource-grid" class="resource-grid"></div>
+    <div id="home-empty" class="empty-state hidden">
+      <div>&#128218;</div>
+      <h3>No resources found</h3>
+      <p>Try a different search or category.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAVORITES SECTION -->
+<section id="favorites" class="section hidden">
+  <div class="container">
+    <h2>&#11088; My Favorites</h2>
+    <div id="favorites-grid" class="resource-grid"></div>
+    <div id="favorites-empty" class="empty-state hidden">
+      <div>&#11088;</div>
+      <h3>No favorites yet</h3>
+      <p>Star resources to save them here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS SECTION -->
+<section id="progress" class="section hidden">
+  <div class="container">
+    <h2>&#9989; My Progress</h2>
+    <div id="progress-stats" class="progress-stats"></div>
+    <div id="progress-grid" class="resource-grid"></div>
+    <div id="progress-empty" class="empty-state hidden">
+      <div>&#128170;</div>
+      <h3>No completed resources yet</h3>
+      <p>Mark resources as completed to track your progress.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LOGIN MODAL -->
+<div id="login-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('login-modal')">&times;</span>
+    <h2>&#128274; Login</h2>
+    <div class="tab-group">
+      <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn" onclick="switchTab('register')">Register</button>
+    </div>
+    <!-- Login Form -->
+    <div id="login-form-div">
+      <input type="text" id="login-username" placeholder="Username" class="form-input">
+      <input type="password" id="login-password" placeholder="Password" class="form-input">
+      <button class="btn-primary full-width" onclick="loginUser()">Login</button>
+    </div>
+    <!-- Register Form -->
+    <div id="register-form-div" class="hidden">
+      <input type="text" id="reg-name" placeholder="Full Name" class="form-input">
+      <input type="text" id="reg-username" placeholder="Username" class="form-input">
+      <input type="email" id="reg-email" placeholder="Email" class="form-input">
+      <input type="password" id="reg-password" placeholder="Password" class="form-input">
+      <button class="btn-primary full-width" onclick="registerUser()">Register</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD MODAL -->
+<div id="admin-modal" class="modal hidden">
+  <div class="modal-content admin-modal-content">
+    <span class="modal-close" onclick="closeModal('admin-modal')">&times;</span>
+    <h2>&#128736; Admin Dashboard</h2>
+
+    <div id="admin-stats" class="admin-stats"></div>
+
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="switchAdminTab('resources')">Resources</button>
+      <button class="tab-btn" onclick="switchAdminTab('add-resource')">Add Resource</button>
+      <button class="tab-btn" onclick="switchAdminTab('categories')">Categories</button>
+      <button class="tab-btn" onclick="switchAdminTab('users')">Users</button>
+    </div>
+
+    <!-- Admin: Resources List -->
+    <div id="admin-resources-tab">
+      <div id="admin-resource-list"></div>
+    </div>
+
+    <!-- Admin: Add/Edit Resource -->
+    <div id="admin-add-resource-tab" class="hidden">
+      <input type="hidden" id="edit-resource-id">
+      <input type="text" id="res-title" placeholder="Title" class="form-input">
+      <textarea id="res-desc" placeholder="Description" class="form-input" rows="3"></textarea>
+      <select id="res-category" class="form-input"></select>
+      <select id="res-type" class="form-input">
+        <option value="Video">Video</option>
+        <option value="PDF">PDF</option>
+        <option value="Link">Link</option>
+        <option value="Notes">Notes</option>
+      </select>
+      <input type="url" id="res-url" placeholder="Resource URL" class="form-input">
+      <button class="btn-primary full-width" onclick="saveResource()">Save Resource</button>
+      <button class="btn-secondary full-width" onclick="clearResourceForm()">Clear Form</button>
+    </div>
+
+    <!-- Admin: Categories -->
+    <div id="admin-categories-tab" class="hidden">
+      <div class="inline-form">
+        <input type="text" id="new-category-input" placeholder="New Category Name" class="form-input">
+        <button class="btn-primary" onclick="addCategory()">Add</button>
+      </div>
+      <div id="admin-category-list"></div>
+    </div>
+
+    <!-- Admin: Users -->
+    <div id="admin-users-tab" class="hidden">
+      <div id="admin-user-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div id="admin-login-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('admin-login-modal')">&times;</span>
+    <h2>&#128272; Admin Login</h2>
+    <input type="text" id="admin-username" placeholder="Admin Username" class="form-input">
+    <input type="password" id="admin-password" placeholder="Admin Password" class="form-input">
+    <button class="btn-primary full-width" onclick="loginAdmin()">Login as Admin</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-inner">
+    <span>&#127891; LearnHub &copy; 2025</span>
+    <span class="admin-trigger" onclick="openModal('admin-login-modal')" title="Admin Panel">&#9881;</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

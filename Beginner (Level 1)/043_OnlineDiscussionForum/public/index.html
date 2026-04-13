@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forum</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- JOIN SCREEN -->
+<div id="join-screen">
+  <div class="join-box">
+    <h1>Welcome to Forum</h1>
+    <p>Enter your name to join the discussion</p>
+    <input type="text" id="join-name" placeholder="Your name..." maxlength="30"/>
+    <button onclick="joinForum()">Join Forum</button>
+  </div>
+</div>
+
+<!-- FORUM SCREEN -->
+<div id="forum-screen" style="display:none">
+  <header>
+    <div class="header-inner">
+      <span class="logo">Forum</span>
+      <span id="welcome-msg"></span>
+      <button onclick="openCreateModal()">+ New Post</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="posts-container"></div>
+  </main>
+</div>
+
+<!-- ADMIN SCREEN -->
+<div id="admin-screen" style="display:none">
+  <header>
+    <div class="header-inner">
+      <span class="logo">Admin Panel</span>
+    </div>
+  </header>
+  <main>
+    <div id="admin-stats"></div>
+    <div id="admin-posts"></div>
+  </main>
+</div>
+
+<!-- CREATE POST MODAL -->
+<div id="create-modal" class="modal" style="display:none">
+  <div class="modal-box">
+    <h2>Create Post</h2>
+    <input type="text" id="post-title" placeholder="Title..." maxlength="100"/>
+    <textarea id="post-content" placeholder="Description..." rows="5"></textarea>
+    <div class="modal-actions">
+      <button onclick="submitPost()">Post</button>
+      <button class="btn-cancel" onclick="closeCreateModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- POST DETAIL MODAL -->
+<div id="detail-modal" class="modal" style="display:none">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeDetailModal()">✕</button>
+    <div id="detail-content"></div>
+    <hr/>
+    <h3>Comments</h3>
+    <div id="comments-list"></div>
+    <div class="comment-form">
+      <textarea id="comment-text" placeholder="Write a comment..." rows="3"></textarea>
+      <button onclick="submitComment()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

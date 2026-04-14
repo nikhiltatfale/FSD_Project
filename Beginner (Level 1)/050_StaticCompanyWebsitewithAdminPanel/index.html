@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TechNova – Innovative IT solutions for modern businesses." />
+  <meta name="keywords" content="IT, Tech, Startup, Web, Software, Services" />
+  <title>TechNova – IT Solutions</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav id="navbar">
+  <div class="nav-brand">TechNova</div>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home" class="nav-link">Home</a></li>
+    <li><a href="#about" class="nav-link">About</a></li>
+    <li><a href="#services" class="nav-link">Services</a></li>
+    <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+    <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+    <li><a href="#contact" class="nav-link">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section id="home" class="hero">
+  <div class="hero-content">
+    <h1 id="heroTitle">Building the Future with Technology</h1>
+    <p id="heroSubtitle">We craft world-class software solutions to help your business grow and scale.</p>
+    <a href="#contact" class="btn" id="heroCTA">Get Started</a>
+  </div>
+</section>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about" class="section reveal">
+  <h2>About Us</h2>
+  <div class="about-content">
+    <p id="aboutText">TechNova is a leading IT solutions company founded in 2015. We specialize in web development, cloud infrastructure, mobile applications, and AI-powered tools. Our team of 50+ experts delivers end-to-end digital transformation for startups and enterprises across the globe. We believe in quality, speed, and innovation.</p>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section id="services" class="section reveal">
+  <h2>Our Services</h2>
+  <div class="cards-grid" id="servicesGrid">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<!-- ===================== PORTFOLIO ===================== -->
+<section id="portfolio" class="section reveal">
+  <h2>Portfolio</h2>
+  <div class="cards-grid" id="portfolioGrid">
+    <!-- Populated by JS -->
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section id="testimonials" class="section reveal">
+  <h2>Testimonials</h2>
+  <div class="cards-grid">
+    <div class="card">
+      <p>"TechNova completely transformed our digital presence. Highly recommended!"</p>
+      <strong>— Sarah Johnson, CEO at BrightEdge</strong>
+    </div>
+    <div class="card">
+      <p>"Outstanding quality and on-time delivery. The best tech partner we've had."</p>
+      <strong>— Mike Chen, CTO at NovaPay</strong>
+    </div>
+    <div class="card">
+      <p>"Their team understood our needs perfectly and delivered beyond expectations."</p>
+      <strong>— Priya Nair, Founder at LaunchFast</strong>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact" class="section reveal">
+  <h2>Contact Us</h2>
+  <div class="contact-wrapper">
+    <div id="formMsg" class="form-msg hidden"></div>
+    <div class="contact-form">
+      <div class="form-group">
+        <label for="cName">Name *</label>
+        <input type="text" id="cName" placeholder="Your full name" />
+        <span class="err" id="errName"></span>
+      </div>
+      <div class="form-group">
+        <label for="cEmail">Email *</label>
+        <input type="email" id="cEmail" placeholder="your@email.com" />
+        <span class="err" id="errEmail"></span>
+      </div>
+      <div class="form-group">
+        <label for="cSubject">Subject *</label>
+        <input type="text" id="cSubject" placeholder="How can we help?" />
+        <span class="err" id="errSubject"></span>
+      </div>
+      <div class="form-group">
+        <label for="cMessage">Message *</label>
+        <textarea id="cMessage" rows="5" placeholder="Write your message..."></textarea>
+        <span class="err" id="errMessage"></span>
+      </div>
+      <button class="btn" onclick="submitContact()">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer id="footer">
+  <div class="footer-links">
+    <a href="#" aria-label="LinkedIn">LinkedIn</a>
+    <a href="#" aria-label="Twitter">Twitter</a>
+    <a href="#" aria-label="GitHub">GitHub</a>
+    <a href="#" aria-label="Instagram">Instagram</a>
+  </div>
+  <p id="footerBrand" title="Click 5 times for admin access">© 2025 TechNova. All rights reserved.</p>
+</footer>
+
+<!-- ===================== ADMIN LOGIN MODAL ===================== -->
+<div id="adminLoginModal" class="modal hidden">
+  <div class="modal-box">
+    <h2>Admin Login</h2>
+    <div id="loginErr" class="err hidden"></div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="adminUser" placeholder="Username" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="adminPass" placeholder="Password" />
+    </div>
+    <button class="btn" onclick="adminLogin()">Login</button>
+    <button class="btn btn-secondary" onclick="closeModal('adminLoginModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- ===================== ADMIN PANEL ===================== -->
+<div id="adminPanel" class="modal hidden">
+  <div class="modal-box admin-panel">
+    <div class="admin-header">
+      <h2>Admin Dashboard</h2>
+      <button class="btn btn-danger" onclick="adminLogout()">Logout</button>
+    </div>
+
+    <!-- TAB NAV -->
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="showTab('tabHero', this)">Hero</button>
+      <button class="tab-btn" onclick="showTab('tabAbout', this)">About</button>
+      <button class="tab-btn" onclick="showTab('tabServices', this)">Services</button>
+      <button class="tab-btn" onclick="showTab('tabPortfolio', this)">Portfolio</button>
+      <button class="tab-btn" onclick="showTab('tabMessages', this)">Messages</button>
+    </div>
+
+    <!-- HERO TAB -->
+    <div id="tabHero" class="tab-content active">
+      <h3>Edit Hero Section</h3>
+      <div class="form-group">
+        <label>Hero Title</label>
+        <input type="text" id="aHeroTitle" />
+      </div>
+      <div class="form-group">
+        <label>Hero Subtitle</label>
+        <textarea id="aHeroSubtitle" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label>CTA Button Text</label>
+        <input type="text" id="aHeroCTA" />
+      </div>
+      <button class="btn" onclick="saveHero()">Save Hero</button>
+    </div>
+
+    <!-- ABOUT TAB -->
+    <div id="tabAbout" class="tab-content hidden">
+      <h3>Edit About Section</h3>
+      <div class="form-group">
+        <label>About Text</label>
+        <textarea id="aAboutText" rows="6"></textarea>
+      </div>
+      <button class="btn" onclick="saveAbout()">Save About</button>
+    </div>
+
+    <!-- SERVICES TAB -->
+    <div id="tabServices" class="tab-content hidden">
+      <h3>Manage Services</h3>
+      <div id="servicesList"></div>
+      <hr />
+      <h4 id="svcFormTitle">Add New Service</h4>
+      <input type="hidden" id="editSvcIndex" value="-1" />
+      <div class="form-group">
+        <label>Icon (emoji or text)</label>
+        <input type="text" id="svcIcon" placeholder="e.g. 🌐" />
+      </div>
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" id="svcTitle" placeholder="Service title" />
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="svcDesc" rows="3" placeholder="Short description"></textarea>
+      </div>
+      <button class="btn" onclick="saveService()">Save Service</button>
+      <button class="btn btn-secondary" onclick="cancelEditService()">Cancel</button>
+    </div>
+
+    <!-- PORTFOLIO TAB -->
+    <div id="tabPortfolio" class="tab-content hidden">
+      <h3>Manage Portfolio</h3>
+      <div id="portfolioList"></div>
+      <hr />
+      <h4>Add Portfolio Item</h4>
+      <div class="form-group">
+        <label>Image URL</label>
+        <input type="text" id="portImg" placeholder="https://..." />
+      </div>
+      <div class="form-group">
+        <label>Project Title</label>
+        <input type="text" id="portTitle" placeholder="Project name" />
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" id="portDesc" placeholder="Short description" />
+      </div>
+      <button class="btn" onclick="addPortfolio()">Add Item</button>
+    </div>
+
+    <!-- MESSAGES TAB -->
+    <div id="tabMessages" class="tab-content hidden">
+      <h3>Contact Form Submissions</h3>
+      <div id="messagesList"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== CONFIRM MODAL ===================== -->
+<div id="confirmModal" class="modal hidden">
+  <div class="modal-box small-box">
+    <p id="confirmText">Are you sure?</p>
+    <button class="btn btn-danger" id="confirmYes">Yes, Delete</button>
+    <button class="btn btn-secondary" onclick="closeModal('confirmModal')">Cancel</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

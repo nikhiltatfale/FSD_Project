@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Online PDF Merger</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Online PDF Merger</h1>
+  </header>
+
+  <!-- Toast notification -->
+  <div id="toast"></div>
+
+  <main>
+
+    <!-- Upload Zone -->
+    <div id="drop-zone">
+      <p>📄 Drag & Drop PDF files here</p>
+      <p>or</p>
+      <label for="file-input" id="browse-btn">Browse Files</label>
+      <input type="file" id="file-input" accept="application/pdf" multiple hidden />
+    </div>
+
+    <!-- Stats -->
+    <div id="stats" style="display:none;">
+      <span id="file-count">0 files</span> |
+      <span id="total-size">0 KB</span>
+      <button id="clear-btn">Clear All</button>
+    </div>
+
+    <!-- File List -->
+    <ul id="file-list"></ul>
+
+    <!-- Progress -->
+    <div id="progress-area" style="display:none;">
+      <div id="spinner"></div>
+      <p>Merging PDFs, please wait...</p>
+    </div>
+
+    <!-- Merge Button -->
+    <div id="merge-wrapper">
+      <button id="merge-btn" disabled>Merge PDFs</button>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

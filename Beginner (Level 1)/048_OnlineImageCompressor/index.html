@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ImageCompress Pro</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header id="app-header">
+    <span>🗜️ ImageCompress Pro</span>
+  </header>
+
+  <!-- Toast Notification -->
+  <div id="toast"></div>
+
+  <!-- Main Card -->
+  <main id="main-card">
+
+    <!-- Upload Zone -->
+    <section id="upload-section">
+      <div id="drop-zone">
+        <div id="drop-inner">
+          <div id="drop-icon">📁</div>
+          <p id="drop-text">Drag &amp; Drop your image here</p>
+          <p id="drop-subtext">or</p>
+          <label id="file-label" for="file-input">Browse File</label>
+          <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" hidden/>
+          <p id="drop-formats">Supported: JPG, PNG, WEBP</p>
+        </div>
+      </div>
+      <p id="error-msg"></p>
+    </section>
+
+    <!-- Controls Panel -->
+    <section id="controls-section" class="hidden">
+
+      <!-- File Info -->
+      <div id="file-info">
+        <span id="file-name-display"></span>
+        <span id="file-dims"></span>
+        <span id="file-format"></span>
+      </div>
+
+      <!-- Quality Slider -->
+      <div class="control-row">
+        <label for="quality-slider">Quality: <strong id="quality-val">80</strong>%</label>
+        <input type="range" id="quality-slider" min="1" max="100" value="80"/>
+      </div>
+
+      <!-- Resize -->
+      <div class="control-row">
+        <label>Resize (optional)</label>
+        <div id="resize-inputs">
+          <input type="number" id="resize-w" placeholder="Width (px)" min="1"/>
+          <input type="number" id="resize-h" placeholder="Height (px)" min="1"/>
+          <label id="aspect-label">
+            <input type="checkbox" id="aspect-ratio" checked/> Keep Aspect Ratio
+          </label>
+        </div>
+      </div>
+
+      <!-- Output Format -->
+      <div class="control-row">
+        <label for="output-format">Output Format</label>
+        <select id="output-format">
+          <option value="jpeg">JPEG</option>
+          <option value="png">PNG</option>
+          <option value="webp">WEBP</option>
+        </select>
+      </div>
+
+      <!-- Action Buttons -->
+      <div id="action-btns">
+        <button id="compress-btn">⚡ Compress</button>
+        <button id="reset-btn">🗑️ Reset</button>
+      </div>
+    </section>
+
+    <!-- Loading Spinner -->
+    <div id="spinner" class="hidden">
+      <div class="spin-ring"></div>
+      <p>Compressing...</p>
+    </div>
+
+    <!-- Preview + Result Section -->
+    <section id="preview-section" class="hidden">
+
+      <!-- Before / After -->
+      <div id="preview-grid">
+        <div class="preview-box">
+          <h3>Original</h3>
+          <img id="original-preview" alt="Original"/>
+          <p id="original-size-label"></p>
+        </div>
+        <div class="preview-box">
+          <h3>Compressed</h3>
+          <img id="compressed-preview" alt="Compressed"/>
+          <p id="compressed-size-label"></p>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div id="stats-bar">
+        <div class="stat-item">
+          <span class="stat-label">Original</span>
+          <span id="stat-original" class="stat-val"></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Compressed</span>
+          <span id="stat-compressed" class="stat-val"></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Saved</span>
+          <span id="stat-saved" class="stat-val green"></span>
+        </div>
+      </div>
+
+      <!-- Download -->
+      <button id="download-btn">⬇️ Download Compressed Image</button>
+    </section>
+
+  </main>
+
+  <!-- Hidden canvas for compression -->
+  <canvas id="canvas" style="display:none;"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>

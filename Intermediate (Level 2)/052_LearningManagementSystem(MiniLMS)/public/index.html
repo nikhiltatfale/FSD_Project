@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini LMS</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ════════════════════ LANDING / AUTH SCREEN ════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-container">
+    <div class="auth-header">
+      <h1>📚 Mini LMS</h1>
+      <p>Your learning journey starts here</p>
+    </div>
+
+    <!-- Tab switcher -->
+    <div class="auth-tabs">
+      <button class="tab-btn active" onclick="showAuthTab('login')">Login</button>
+      <button class="tab-btn" onclick="showAuthTab('register')">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="tab-login" class="auth-form">
+      <h2>Student Login</h2>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" />
+      </div>
+      <button class="btn btn-primary btn-full" onclick="loginStudent()">Login</button>
+      <div id="login-msg" class="msg"></div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="tab-register" class="auth-form hidden">
+      <h2>Create Account</h2>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="reg-name" placeholder="John Doe" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="••••••••" />
+      </div>
+      <button class="btn btn-primary btn-full" onclick="registerStudent()">Register</button>
+      <div id="register-msg" class="msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ STUDENT APP ════════════════════ -->
+<div id="student-app" class="hidden">
+  <!-- Sidebar -->
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <h2>📚 Mini LMS</h2>
+      <span id="student-name-display" class="student-badge"></span>
+    </div>
+    <nav>
+      <ul class="nav-list">
+        <li><a href="#" class="nav-link active" onclick="showPage('dashboard')">🏠 Dashboard</a></li>
+        <li><a href="#" class="nav-link" onclick="showPage('catalog')">📖 Course Catalog</a></li>
+        <li><a href="#" class="nav-link" onclick="showPage('my-courses')">🎓 My Courses</a></li>
+        <li><a href="#" class="nav-link" onclick="showPage('quiz-history')">📊 Quiz History</a></li>
+      </ul>
+    </nav>
+    <button class="btn btn-danger sidebar-logout" onclick="logout()">Logout</button>
+  </aside>
+
+  <!-- Hamburger for mobile -->
+  <button class="hamburger" onclick="toggleSidebar()">☰</button>
+
+  <!-- Main content area -->
+  <main id="main-content">
+
+    <!-- ── DASHBOARD PAGE ── -->
+    <section id="page-dashboard" class="page active">
+      <div class="page-header">
+        <h1>Welcome back, <span id="dash-name"></span>!</h1>
+        <p>Here's your learning overview</p>
+      </div>
+      <div class="stats-row" id="dash-stats"></div>
+      <h2 class="section-title">Your Courses</h2>
+      <div id="dash-courses" class="cards-grid"></div>
+    </section>
+
+    <!-- ── COURSE CATALOG ── -->
+    <section id="page-catalog" class="page hidden">
+      <div class="page-header">
+        <h1>Course Catalog</h1>
+        <p>Browse and enroll in available courses</p>
+      </div>
+      <div id="catalog-courses" class="cards-grid"></div>
+    </section>
+
+    <!-- ── MY COURSES ── -->
+    <section id="page-my-courses" class="page hidden">
+      <div class="page-header">
+        <h1>My Courses</h1>
+        <p>Continue where you left off</p>
+      </div>
+      <div id="my-courses-list" class="cards-grid"></div>
+    </section>
+
+    <!-- ── QUIZ HISTORY ── -->
+    <section id="page-quiz-history" class="page hidden">
+      <div class="page-header">
+        <h1>Quiz History</h1>
+        <p>Review your quiz performance</p>
+      </div>
+      <div id="quiz-history-list"></div>
+    </section>
+
+    <!-- ── COURSE DETAIL PAGE ── -->
+    <section id="page-course-detail" class="page hidden">
+      <button class="btn btn-back" onclick="goBack()">← Back</button>
+      <div id="course-detail-content"></div>
+    </section>
+
+    <!-- ── LESSON PAGE ── -->
+    <section id="page-lesson" class="page hidden">
+      <button class="btn btn-back" onclick="showCoursePage(currentCourseId)">← Back to Course</button>
+      <div id="lesson-content"></div>
+    </section>
+
+    <!-- ── QUIZ PAGE ── -->
+    <section id="page-quiz" class="page hidden">
+      <button class="btn btn-back" onclick="showCoursePage(currentCourseId)">← Back to Course</button>
+      <div id="quiz-content"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ════════════════════ ADMIN APP ════════════════════ -->
+<div id="admin-app" class="hidden">
+  <!-- Admin login screen -->
+  <div id="admin-login-screen">
+    <div class="auth-container">
+      <div class="auth-header">
+        <h1>🛡️ Admin Panel</h1>
+        <p>Authorized personnel only</p>
+      </div>
+      <div class="auth-form">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="admin-user" placeholder="admin" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="admin-pass" placeholder="••••••••" />
+        </div>
+        <button class="btn btn-primary btn-full" onclick="adminLogin()">Login as Admin</button>
+        <div id="admin-login-msg" class="msg"></div>
+        <p style="margin-top:12px;text-align:center"><a href="/" onclick="showAuthScreen()">← Back to Student Portal</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin dashboard -->
+  <div id="admin-dashboard" class="hidden">
+    <aside id="admin-sidebar">
+      <div class="sidebar-header">
+        <h2>🛡️ Admin Panel</h2>
+      </div>
+      <nav>
+        <ul class="nav-list">
+          <li><a href="#" class="nav-link active" onclick="adminShowPage('admin-overview')">📊 Overview</a></li>
+          <li><a href="#" class="nav-link" onclick="adminShowPage('admin-courses')">📚 Courses</a></li>
+          <li><a href="#" class="nav-link" onclick="adminShowPage('admin-students')">👨‍🎓 Students</a></li>
+          <li><a href="#" class="nav-link" onclick="adminShowPage('admin-enrollments')">📋 Enrollments</a></li>
+          <li><a href="#" class="nav-link" onclick="adminShowPage('admin-quiz-results')">📝 Quiz Results</a></li>
+        </ul>
+      </nav>
+      <button class="btn btn-secondary sidebar-logout" onclick="downloadData()">⬇ Download Data</button>
+      <button class="btn btn-danger sidebar-logout" onclick="adminLogout()">Logout</button>
+    </aside>
+
+    <button class="hamburger" onclick="toggleAdminSidebar()">☰</button>
+
+    <main id="admin-main">
+
+      <!-- Overview -->
+      <section id="admin-overview" class="admin-page active">
+        <div class="page-header">
+          <h1>Admin Dashboard</h1>
+          <p>Overview of all LMS activity</p>
+        </div>
+        <div id="admin-stats-cards" class="stats-row"></div>
+        <div class="admin-chart-area" id="admin-chart-area"></div>
+      </section>
+
+      <!-- Courses management -->
+      <section id="admin-courses" class="admin-page hidden">
+        <div class="page-header">
+          <h1>Manage Courses</h1>
+          <button class="btn btn-primary" onclick="openModal('modal-add-course')">+ Add Course</button>
+        </div>
+        <div id="admin-courses-list"></div>
+      </section>
+
+      <!-- Students -->
+      <section id="admin-students" class="admin-page hidden">
+        <div class="page-header"><h1>All Students</h1></div>
+        <div id="admin-students-table"></div>
+      </section>
+
+      <!-- Enrollments -->
+      <section id="admin-enrollments" class="admin-page hidden">
+        <div class="page-header"><h1>Enrollments</h1></div>
+        <div id="admin-enrollments-table"></div>
+      </section>
+
+      <!-- Quiz Results -->
+      <section id="admin-quiz-results" class="admin-page hidden">
+        <div class="page-header"><h1>Quiz Results</h1></div>
+        <div id="admin-quiz-results-table"></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════ MODALS ════════════════════ -->
+
+<!-- Add Course Modal -->
+<div id="modal-add-course" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modal-course-title">Add Course</h2>
+      <button class="modal-close" onclick="closeModal('modal-add-course')">✕</button>
+    </div>
+    <input type="hidden" id="edit-course-id" />
+    <div class="form-group">
+      <label>Course Title *</label>
+      <input type="text" id="course-title-input" placeholder="e.g. Python Basics" />
+    </div>
+    <div class="form-group">
+      <label>Description *</label>
+      <textarea id="course-desc-input" rows="3" placeholder="Short description..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Instructor *</label>
+      <input type="text" id="course-instructor-input" placeholder="Instructor name" />
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <input type="text" id="course-category-input" placeholder="e.g. Programming" />
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveCourse()">Save Course</button>
+    <div id="course-modal-msg" class="msg"></div>
+  </div>
+</div>
+
+<!-- Add Lesson Modal -->
+<div id="modal-add-lesson" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add Lesson</h2>
+      <button class="modal-close" onclick="closeModal('modal-add-lesson')">✕</button>
+    </div>
+    <input type="hidden" id="lesson-course-id" />
+    <div class="form-group">
+      <label>Lesson Title *</label>
+      <input type="text" id="lesson-title-input" placeholder="e.g. Introduction" />
+    </div>
+    <div class="form-group">
+      <label>Content *</label>
+      <textarea id="lesson-content-input" rows="5" placeholder="Lesson text content..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Video URL (optional)</label>
+      <input type="url" id="lesson-video-input" placeholder="https://youtube.com/..." />
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveLesson()">Add Lesson</button>
+    <div id="lesson-modal-msg" class="msg"></div>
+  </div>
+</div>
+
+<!-- Add Quiz Modal -->
+<div id="modal-add-quiz" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add Quiz Question</h2>
+      <button class="modal-close" onclick="closeModal('modal-add-quiz')">✕</button>
+    </div>
+    <input type="hidden" id="quiz-course-id" />
+    <div class="form-group">
+      <label>Question *</label>
+      <input type="text" id="quiz-question-input" placeholder="Type your question..." />
+    </div>
+    <div class="form-group">
+      <label>Option A *</label>
+      <input type="text" id="quiz-opt0" placeholder="Option A" />
+    </div>
+    <div class="form-group">
+      <label>Option B *</label>
+      <input type="text" id="quiz-opt1" placeholder="Option B" />
+    </div>
+    <div class="form-group">
+      <label>Option C</label>
+      <input type="text" id="quiz-opt2" placeholder="Option C (optional)" />
+    </div>
+    <div class="form-group">
+      <label>Option D</label>
+      <input type="text" id="quiz-opt3" placeholder="Option D (optional)" />
+    </div>
+    <div class="form-group">
+      <label>Correct Answer (0=A, 1=B, 2=C, 3=D) *</label>
+      <input type="number" id="quiz-answer-input" min="0" max="3" placeholder="0" />
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveQuizQuestion()">Add Question</button>
+    <div id="quiz-modal-msg" class="msg"></div>
+  </div>
+</div>
+
+<!-- Overlay -->
+<div id="modal-overlay" class="modal-overlay hidden" onclick="closeAllModals()"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

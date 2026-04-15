@@ -1,0 +1,260 @@
+/* ═══════════════════════════════════════════════
+   Mini LMS – style.css
+   Functional, clean, mobile-responsive styles
+═══════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #4f46e5;
+  --primary-dark: #3730a3;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --warn: #f59e0b;
+  --bg: #f1f5f9;
+  --card-bg: #ffffff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --sidebar-w: 240px;
+  --radius: 8px;
+  --shadow: 0 1px 4px rgba(0,0,0,.12);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── Utility ─────────────────────────────────── */
+.hidden { display: none !important; }
+.msg { margin-top: 10px; font-size: 13px; padding: 6px 10px; border-radius: var(--radius); }
+.msg.error { background: #fee2e2; color: #b91c1c; }
+.msg.ok    { background: #dcfce7; color: #166534; }
+
+/* ── Buttons ─────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 9px 18px; border: none; border-radius: var(--radius);
+  font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity .15s;
+  text-decoration: none;
+}
+.btn:hover { opacity: .88; }
+.btn-primary  { background: var(--primary); color: #fff; }
+.btn-danger   { background: var(--danger);  color: #fff; }
+.btn-secondary{ background: #e2e8f0; color: var(--text); }
+.btn-success  { background: var(--success); color: #fff; }
+.btn-back     { background: transparent; color: var(--primary); padding: 6px 0; margin-bottom: 16px; font-size: 14px; }
+.btn-full     { width: 100%; }
+.btn-sm       { padding: 5px 12px; font-size: 12px; }
+
+/* ── Auth Screen ─────────────────────────────── */
+#auth-screen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  padding: 20px;
+}
+.auth-container {
+  background: var(--card-bg); border-radius: 12px; padding: 36px 32px;
+  width: 100%; max-width: 420px; box-shadow: 0 8px 30px rgba(0,0,0,.2);
+}
+.auth-header { text-align: center; margin-bottom: 24px; }
+.auth-header h1 { font-size: 26px; color: var(--primary); }
+.auth-header p  { color: var(--text-muted); margin-top: 4px; }
+.auth-tabs { display: flex; gap: 4px; background: var(--bg); border-radius: var(--radius); padding: 4px; margin-bottom: 20px; }
+.tab-btn { flex: 1; padding: 8px; border: none; background: transparent; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--text-muted); }
+.tab-btn.active { background: var(--card-bg); color: var(--primary); box-shadow: var(--shadow); }
+.auth-form h2 { font-size: 18px; margin-bottom: 16px; }
+
+/* ── Form ─────────────────────────────────────── */
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 13px; color: var(--text-muted); }
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%; padding: 9px 12px; border: 1px solid var(--border);
+  border-radius: var(--radius); font-size: 14px; font-family: inherit;
+  background: #fff; color: var(--text); transition: border .15s;
+}
+.form-group input:focus,
+.form-group textarea:focus { outline: none; border-color: var(--primary); }
+.form-group textarea { resize: vertical; min-height: 80px; }
+
+/* ── App Layout ──────────────────────────────── */
+#student-app,
+#admin-dashboard {
+  display: flex; min-height: 100vh;
+}
+
+/* ── Sidebar ─────────────────────────────────── */
+#sidebar, #admin-sidebar {
+  width: var(--sidebar-w); background: #1e293b; color: #e2e8f0;
+  display: flex; flex-direction: column; min-height: 100vh; position: fixed; top: 0; left: 0;
+  z-index: 100; transition: transform .25s;
+}
+.sidebar-header { padding: 20px 16px; border-bottom: 1px solid #334155; }
+.sidebar-header h2 { font-size: 17px; color: #fff; }
+.student-badge { display: inline-block; margin-top: 6px; font-size: 12px; background: var(--primary); color: #fff; padding: 2px 8px; border-radius: 20px; }
+
+.nav-list { list-style: none; padding: 12px 0; flex: 1; }
+.nav-link {
+  display: block; padding: 10px 16px; color: #94a3b8; text-decoration: none;
+  border-radius: 6px; margin: 2px 8px; transition: background .15s, color .15s;
+}
+.nav-link:hover, .nav-link.active { background: var(--primary); color: #fff; }
+
+.sidebar-logout { margin: 8px 12px; }
+
+/* ── Main Content ────────────────────────────── */
+#main-content, #admin-main {
+  margin-left: var(--sidebar-w); flex: 1; padding: 28px;
+  min-height: 100vh; background: var(--bg);
+}
+
+/* ── Hamburger (mobile) ──────────────────────── */
+.hamburger {
+  display: none; position: fixed; top: 12px; left: 12px; z-index: 200;
+  background: var(--primary); color: #fff; border: none; border-radius: 6px;
+  padding: 8px 12px; font-size: 18px; cursor: pointer;
+}
+
+/* ── Page sections ────────────────────────────── */
+.page, .admin-page { display: none; }
+.page.active, .admin-page.active { display: block; }
+.page-header { margin-bottom: 24px; }
+.page-header h1 { font-size: 22px; font-weight: 700; }
+.page-header p  { color: var(--text-muted); margin-top: 4px; }
+.section-title  { font-size: 17px; font-weight: 600; margin: 20px 0 14px; }
+
+/* ── Stats Row ───────────────────────────────── */
+.stats-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
+.stat-card {
+  background: var(--card-bg); border-radius: var(--radius); padding: 18px 22px;
+  min-width: 150px; flex: 1; box-shadow: var(--shadow);
+}
+.stat-card .stat-num { font-size: 30px; font-weight: 700; color: var(--primary); }
+.stat-card .stat-label { color: var(--text-muted); font-size: 13px; margin-top: 2px; }
+
+/* ── Cards Grid ──────────────────────────────── */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; }
+.course-card {
+  background: var(--card-bg); border-radius: var(--radius); padding: 20px;
+  box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 10px;
+}
+.course-card h3 { font-size: 16px; font-weight: 600; }
+.course-card .meta { font-size: 12px; color: var(--text-muted); }
+.course-card .desc { font-size: 13px; color: var(--text-muted); }
+.course-card .card-footer { display: flex; gap: 8px; margin-top: auto; flex-wrap: wrap; }
+.tag { background: #e0e7ff; color: var(--primary); padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+
+/* ── Progress Bar ────────────────────────────── */
+.progress-wrap { margin: 6px 0; }
+.progress-bar-bg { background: var(--border); border-radius: 10px; height: 8px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: var(--primary); border-radius: 10px; transition: width .4s; }
+.progress-label { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+/* ── Course Detail ───────────────────────────── */
+.course-detail-header { margin-bottom: 20px; }
+.course-detail-header h1 { font-size: 22px; }
+.lessons-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.lesson-item {
+  background: var(--card-bg); border-radius: var(--radius); padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow);
+  cursor: pointer; gap: 12px;
+}
+.lesson-item:hover { background: #f8fafc; }
+.lesson-item .lesson-title { font-weight: 500; }
+.lesson-item .done-badge { background: var(--success); color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+
+/* ── Lesson Content ──────────────────────────── */
+.lesson-body { background: var(--card-bg); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); line-height: 1.7; }
+.lesson-body h2 { font-size: 20px; margin-bottom: 14px; }
+.lesson-body p { margin-bottom: 12px; color: var(--text-muted); }
+.lesson-body iframe { width: 100%; height: 350px; border: none; border-radius: 6px; margin-bottom: 16px; }
+.lesson-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+/* ── Quiz ────────────────────────────────────── */
+.quiz-wrap { max-width: 680px; }
+.quiz-header { margin-bottom: 20px; }
+.quiz-header h2 { font-size: 20px; }
+.quiz-progress-info { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+.question-card { background: var(--card-bg); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+.question-card h3 { font-size: 17px; margin-bottom: 16px; }
+.timer-bar-bg { background: var(--border); border-radius: 10px; height: 6px; margin-bottom: 16px; overflow: hidden; }
+.timer-bar-fill { height: 100%; background: var(--warn); border-radius: 10px; transition: width 1s linear; }
+.timer-text { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.options-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.option-btn {
+  width: 100%; text-align: left; padding: 11px 16px; border: 2px solid var(--border);
+  border-radius: var(--radius); background: #fff; cursor: pointer; font-size: 14px; transition: all .15s;
+}
+.option-btn:hover { border-color: var(--primary); background: #eef2ff; }
+.option-btn.selected { border-color: var(--primary); background: #eef2ff; font-weight: 600; }
+.option-btn.correct { border-color: var(--success); background: #dcfce7; }
+.option-btn.wrong   { border-color: var(--danger);  background: #fee2e2; }
+.quiz-nav { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
+
+/* Quiz Results */
+.quiz-result-card { background: var(--card-bg); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); text-align: center; max-width: 500px; }
+.result-score { font-size: 52px; font-weight: 700; color: var(--primary); }
+.result-label { font-size: 16px; color: var(--text-muted); }
+.result-details { margin-top: 20px; text-align: left; }
+.result-details .q-row { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.q-row.correct-q { color: #166534; }
+.q-row.wrong-q   { color: #b91c1c; }
+
+/* Quiz history list */
+.quiz-history-card { background: var(--card-bg); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); margin-bottom: 12px; }
+.quiz-history-card h3 { font-size: 15px; margin-bottom: 6px; }
+
+/* ── Admin Tables ─────────────────────────────── */
+.admin-table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.admin-table th { background: #f8fafc; padding: 12px 16px; text-align: left; font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+.admin-table td { padding: 12px 16px; border-top: 1px solid var(--border); font-size: 13px; vertical-align: top; }
+.admin-table tr:hover td { background: #f8fafc; }
+.table-wrap { overflow-x: auto; }
+
+/* Admin course cards */
+.admin-course-card { background: var(--card-bg); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 14px; }
+.admin-course-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.admin-course-card .meta { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.admin-course-card .action-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Admin chart area */
+.admin-chart-area { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 16px; margin-top: 20px; }
+.chart-card { background: var(--card-bg); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.chart-card h3 { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; }
+.bar-chart { display: flex; flex-direction: column; gap: 8px; }
+.bar-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.bar-row .bar-label { width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
+.bar-row .bar-track { flex: 1; background: var(--border); border-radius: 4px; height: 14px; overflow: hidden; }
+.bar-row .bar-fill { height: 100%; background: var(--primary); border-radius: 4px; }
+.bar-row .bar-val { width: 36px; text-align: right; color: var(--text-muted); }
+
+/* ── Modals ──────────────────────────────────── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 300; }
+.modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 400; width: 90%; max-width: 520px; max-height: 90vh; overflow-y: auto; }
+.modal-content { background: var(--card-bg); border-radius: 12px; padding: 28px; box-shadow: 0 8px 40px rgba(0,0,0,.25); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-header h2 { font-size: 18px; }
+.modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); }
+.modal-close:hover { color: var(--danger); }
+
+/* ── Admin login ─────────────────────────────── */
+#admin-login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #1e293b; padding: 20px; }
+#admin-login-screen .auth-header h1 { color: #e2e8f0; }
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+  #sidebar, #admin-sidebar { transform: translateX(-100%); }
+  #sidebar.open, #admin-sidebar.open { transform: translateX(0); }
+  #main-content, #admin-main { margin-left: 0; padding: 16px; padding-top: 56px; }
+  .hamburger { display: block; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .auth-container { padding: 24px 18px; }
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ExamPortal – Online Examination System</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ===== LOADING SCREEN ===== -->
+<div id="loading-screen" class="screen active">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <h2>ExamPortal</h2>
+    <p>Initializing System...</p>
+  </div>
+</div>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div id="toast-container"></div>
+
+<!-- ===== REGISTRATION SCREEN ===== -->
+<div id="registration-screen" class="screen">
+  <div class="top-bar">
+    <span class="portal-title">📋 ExamPortal</span>
+    <span id="admin-trigger" title="Admin Login">⚙</span>
+  </div>
+  <div class="card center-card">
+    <h2>Student Registration</h2>
+    <p class="sub">Fill in details to begin your examination</p>
+    <div class="form-group">
+      <label>Full Name *</label>
+      <input type="text" id="reg-name" placeholder="Enter your full name"/>
+    </div>
+    <div class="form-group">
+      <label>Roll Number *</label>
+      <input type="text" id="reg-roll" placeholder="Unique roll number"/>
+    </div>
+    <div class="form-group">
+      <label>Department *</label>
+      <select id="reg-dept">
+        <option value="">-- Select Department --</option>
+        <option>Computer Science</option>
+        <option>Electronics</option>
+        <option>Mechanical</option>
+        <option>Civil</option>
+        <option>Information Technology</option>
+        <option>Electrical</option>
+        <option>Chemical</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>College Name *</label>
+      <input type="text" id="reg-college" placeholder="Enter your college name"/>
+    </div>
+    <button class="btn btn-primary" onclick="registerStudent()">Register &amp; Start Exam →</button>
+  </div>
+</div>
+
+<!-- ===== EXAM SCREEN ===== -->
+<div id="exam-screen" class="screen">
+  <div class="exam-header">
+    <div class="exam-info">
+      <span id="exam-student-name">Student</span>
+      <span id="exam-roll-badge">Roll: --</span>
+    </div>
+    <div class="exam-meta">
+      <span id="exam-q-count">Q 1/10</span>
+      <div id="timer-box" class="timer-box">
+        <span id="timer-label">⏱</span>
+        <span id="timer-value">60</span>s
+      </div>
+    </div>
+  </div>
+
+  <!-- Question Palette -->
+  <div class="palette-bar">
+    <div id="question-palette"></div>
+    <button class="btn btn-warning" onclick="confirmSubmit()">Submit Exam</button>
+  </div>
+
+  <!-- Question Card -->
+  <div class="exam-body">
+    <div class="card question-card">
+      <p id="question-text" class="q-text">Loading question...</p>
+      <div id="options-container"></div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" onclick="prevQuestion()">← Prev</button>
+      <button class="btn btn-primary" onclick="nextQuestion()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESULT SCREEN ===== -->
+<div id="result-screen" class="screen">
+  <div class="top-bar no-print">
+    <span class="portal-title">📋 ExamPortal – Result</span>
+    <button class="btn btn-secondary" onclick="window.print()">🖨 Print / PDF</button>
+  </div>
+  <div class="card result-card" id="result-content">
+    <div class="result-header">
+      <h2>Examination Result</h2>
+      <p id="result-date"></p>
+    </div>
+    <div class="result-student-info">
+      <div class="info-row"><span>Name</span><strong id="r-name"></strong></div>
+      <div class="info-row"><span>Roll No.</span><strong id="r-roll"></strong></div>
+      <div class="info-row"><span>Department</span><strong id="r-dept"></strong></div>
+      <div class="info-row"><span>College</span><strong id="r-college"></strong></div>
+    </div>
+    <div class="score-grid">
+      <div class="score-box"><span>Total</span><strong id="r-total"></strong></div>
+      <div class="score-box"><span>Attempted</span><strong id="r-attempted"></strong></div>
+      <div class="score-box green"><span>Correct</span><strong id="r-correct"></strong></div>
+      <div class="score-box red"><span>Wrong</span><strong id="r-wrong"></strong></div>
+      <div class="score-box blue"><span>Score %</span><strong id="r-percent"></strong></div>
+    </div>
+    <div id="result-status-badge" class="status-badge"></div>
+    <div class="no-print" style="margin-top:16px">
+      <button class="btn btn-secondary" onclick="goHome()">← New Student</button>
+      <button class="btn btn-primary" onclick="window.print()">Download PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN LOGIN MODAL ===== -->
+<div id="admin-login-modal" class="modal-overlay hidden">
+  <div class="modal-box card">
+    <h3>Admin Login</h3>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="admin-user" placeholder="Username"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="admin-pass" placeholder="Password"/>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="adminLogin()">Login</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div id="admin-screen" class="screen">
+  <div class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-brand">ExamPortal<br/><small id="admin-role-label"></small></div>
+    <nav>
+      <a href="#" class="nav-link active" onclick="adminTab('dashboard')">📊 Dashboard</a>
+      <a href="#" class="nav-link" onclick="adminTab('results')">📋 Results</a>
+      <a href="#" class="nav-link" onclick="adminTab('questions')">❓ Questions</a>
+    </nav>
+    <button class="btn btn-warning sidebar-logout" onclick="adminLogout()">Logout</button>
+  </div>
+  <div class="admin-main">
+    <button class="btn btn-secondary sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+    <!-- Dashboard Tab -->
+    <div id="tab-dashboard" class="admin-tab active">
+      <h2>Dashboard Overview</h2>
+      <div class="stats-grid">
+        <div class="stat-card"><span>Total Students</span><strong id="stat-total">0</strong></div>
+        <div class="stat-card green"><span>Passed</span><strong id="stat-pass">0</strong></div>
+        <div class="stat-card red"><span>Failed</span><strong id="stat-fail">0</strong></div>
+        <div class="stat-card blue"><span>Avg Score</span><strong id="stat-avg">0%</strong></div>
+        <div class="stat-card gold"><span>Top Scorer</span><strong id="stat-top">--</strong></div>
+      </div>
+      <h3 style="margin-top:24px">Question Statistics</h3>
+      <div id="q-stats-container" class="q-stats-grid"></div>
+    </div>
+
+    <!-- Results Tab -->
+    <div id="tab-results" class="admin-tab hidden">
+      <h2>Student Results</h2>
+      <div class="results-toolbar">
+        <input type="text" id="search-input" placeholder="Search by name or roll..." oninput="renderResultsTable()"/>
+        <select id="filter-dept" onchange="renderResultsTable()">
+          <option value="">All Departments</option>
+          <option>Computer Science</option>
+          <option>Electronics</option>
+          <option>Mechanical</option>
+          <option>Civil</option>
+          <option>Information Technology</option>
+          <option>Electrical</option>
+          <option>Chemical</option>
+          <option>Other</option>
+        </select>
+        <select id="sort-by" onchange="renderResultsTable()">
+          <option value="date">Sort: Date</option>
+          <option value="score_desc">Score ↓</option>
+          <option value="score_asc">Score ↑</option>
+          <option value="name">Name A-Z</option>
+        </select>
+        <button class="btn btn-primary" onclick="exportCSV()">⬇ CSV</button>
+        <button class="btn btn-danger" onclick="clearAllData()">🗑 Clear All</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table id="results-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th><th>Roll</th><th>Dept</th>
+              <th>College</th><th>Score</th><th>%</th><th>Status</th><th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="results-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Questions Tab -->
+    <div id="tab-questions" class="admin-tab hidden">
+      <h2>Question Management</h2>
+      <div id="viewer-notice" class="notice hidden">⚠ Viewer role: read-only access.</div>
+      <div id="q-form-section">
+        <div class="card q-form-card">
+          <h3 id="q-form-title">Add New Question</h3>
+          <input type="hidden" id="editing-q-id"/>
+          <div class="form-group">
+            <label>Question Text *</label>
+            <textarea id="q-text" rows="3" placeholder="Enter the question"></textarea>
+          </div>
+          <div class="form-group"><label>Option A *</label><input type="text" id="q-a" placeholder="Option A"/></div>
+          <div class="form-group"><label>Option B *</label><input type="text" id="q-b" placeholder="Option B"/></div>
+          <div class="form-group"><label>Option C *</label><input type="text" id="q-c" placeholder="Option C"/></div>
+          <div class="form-group"><label>Option D *</label><input type="text" id="q-d" placeholder="Option D"/></div>
+          <div class="form-group">
+            <label>Correct Answer *</label>
+            <select id="q-correct">
+              <option value="A">A</option><option value="B">B</option>
+              <option value="C">C</option><option value="D">D</option>
+            </select>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="cancelEditQ()">Cancel</button>
+            <button class="btn btn-primary" id="q-save-btn" onclick="saveQuestion()">Save Question</button>
+          </div>
+        </div>
+      </div>
+      <h3>Questions List</h3>
+      <div id="questions-list"></div>
+    </div>
+  </div><!-- end admin-main -->
+</div><!-- end admin-screen -->
+
+<!-- ===== CONFIRM MODAL ===== -->
+<div id="confirm-modal" class="modal-overlay hidden">
+  <div class="modal-box card">
+    <h3 id="confirm-title">Confirm</h3>
+    <p id="confirm-msg"></p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeConfirm()">Cancel</button>
+      <button class="btn btn-danger" id="confirm-ok-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

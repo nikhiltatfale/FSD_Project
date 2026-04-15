@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel – SpiceCraft</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="admin-body">
+
+  <!-- ===== ADMIN LOGIN ===== -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-box">
+      <div class="login-logo">🔐</div>
+      <h2>Admin Login</h2>
+      <p>SpiceCraft Management Panel</p>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="loginUser" placeholder="admin" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+      </div>
+      <div class="form-error" id="loginError"></div>
+      <button class="btn-primary w-full" onclick="doLogin()">Login</button>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN DASHBOARD ===== -->
+  <div id="adminDashboard" style="display:none">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-logo">🍛 SpiceCraft</div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" onclick="showSection('dashboard', this)">📊 Dashboard</a>
+        <a href="#" class="sidebar-link" onclick="showSection('orders', this)">📋 Orders</a>
+        <a href="#" class="sidebar-link" onclick="showSection('menu', this)">🍽️ Menu Items</a>
+      </nav>
+      <button class="sidebar-logout" onclick="doLogout()">Logout 🚪</button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+
+      <!-- ---- DASHBOARD SECTION ---- -->
+      <section class="admin-section" id="sec-dashboard">
+        <h2 class="section-title">Dashboard</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-value" id="statTotal">0</div>
+            <div class="stat-label">Total Orders</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">💰</div>
+            <div class="stat-value" id="statRevenue">₹0</div>
+            <div class="stat-label">Total Revenue</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-value" id="statPending">0</div>
+            <div class="stat-label">Pending Orders</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="statDelivered">0</div>
+            <div class="stat-label">Delivered</div>
+          </div>
+        </div>
+
+        <div class="most-ordered-card" id="mostOrderedCard">
+          <span class="mo-label">🏆 Most Ordered Item:</span>
+          <span class="mo-value" id="mostOrderedItem">—</span>
+        </div>
+      </section>
+
+      <!-- ---- ORDERS SECTION ---- -->
+      <section class="admin-section" id="sec-orders" style="display:none">
+        <div class="section-top-row">
+          <h2 class="section-title">All Orders</h2>
+          <button class="btn-secondary" onclick="downloadOrders()">⬇️ Download JSON</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="admin-table" id="ordersTable">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Payment</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="ordersBody">
+              <tr><td colspan="9" class="no-data">No orders yet</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ---- MENU SECTION ---- -->
+      <section class="admin-section" id="sec-menu" style="display:none">
+        <div class="section-top-row">
+          <h2 class="section-title">Menu Management</h2>
+          <button class="btn-primary" onclick="showMenuForm()">+ Add Item</button>
+        </div>
+
+        <!-- Add/Edit Form -->
+        <div class="menu-form-card" id="menuFormCard" style="display:none">
+          <h3 id="menuFormTitle">Add New Item</h3>
+          <input type="hidden" id="editItemId" />
+          <div class="form-row">
+            <div class="form-group">
+              <label>Item Name *</label>
+              <input type="text" id="mName" placeholder="Paneer Tikka" />
+            </div>
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="mCategory">
+                <option value="">Select Category</option>
+                <option>Veg</option>
+                <option>Non-Veg</option>
+                <option>Drinks</option>
+                <option>Desserts</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Price (₹) *</label>
+              <input type="number" id="mPrice" placeholder="200" min="1" />
+            </div>
+            <div class="form-group">
+              <label>Image URL</label>
+              <input type="url" id="mImage" placeholder="https://..." />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea id="mDesc" rows="2" placeholder="Brief description of the dish"></textarea>
+          </div>
+          <div class="form-error" id="menuFormError"></div>
+          <div class="form-actions">
+            <button class="btn-primary" onclick="saveMenuItem()">Save Item</button>
+            <button class="btn-ghost" onclick="hideMenuForm()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Menu Table -->
+        <div class="table-wrap">
+          <table class="admin-table" id="menuTable">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="menuBody">
+              <tr><td colspan="6" class="no-data">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

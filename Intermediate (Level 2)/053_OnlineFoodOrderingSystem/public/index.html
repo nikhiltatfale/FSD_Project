@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpiceCraft – Order Food Online</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER / NAV ===== -->
+  <header id="navbar">
+    <div class="nav-inner">
+      <div class="logo">🍛 SpiceCraft</div>
+      <nav class="nav-links">
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+      </nav>
+      <button class="cart-btn" onclick="toggleCart()">
+        🛒 Cart <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-tag">🔥 Fresh &amp; Hot Delivery</p>
+      <h1>Authentic Indian<br>Flavours, Delivered</h1>
+      <p class="hero-sub">Order from our curated menu of traditional recipes cooked by master chefs. Delivered hot to your door.</p>
+      <a href="#menu" class="btn-primary">Browse Menu</a>
+    </div>
+  </section>
+
+  <!-- ===== MENU ===== -->
+  <section class="section" id="menu">
+    <div class="section-header">
+      <h2>Our Menu</h2>
+      <p>Freshly prepared, authentically spiced</p>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="category-tabs" id="categoryTabs">
+      <button class="tab active" data-cat="All">All</button>
+      <button class="tab" data-cat="Veg">🥦 Veg</button>
+      <button class="tab" data-cat="Non-Veg">🍗 Non-Veg</button>
+      <button class="tab" data-cat="Drinks">🥤 Drinks</button>
+      <button class="tab" data-cat="Desserts">🍮 Desserts</button>
+    </div>
+
+    <!-- Menu Grid -->
+    <div class="menu-grid" id="menuGrid">
+      <div class="loader">Loading menu…</div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="section about-section" id="about">
+    <div class="about-inner">
+      <div class="about-text">
+        <h2>Why SpiceCraft?</h2>
+        <p>We source the finest spices from across India and pair them with time-tested recipes. Every dish is prepared fresh on order — no pre-cooking, no compromise.</p>
+        <ul class="about-list">
+          <li>✅ 100% Fresh ingredients daily</li>
+          <li>✅ Delivered within 30-45 minutes</li>
+          <li>✅ COD & Online payment accepted</li>
+          <li>✅ No hidden charges</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CART SIDEBAR ===== -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Your Order</h3>
+      <button onclick="toggleCart()" class="close-btn">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="cart-empty">Your cart is empty</p>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button class="btn-primary w-full" onclick="showCheckout()">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <!-- ===== CHECKOUT MODAL ===== -->
+  <div class="modal-overlay" id="checkoutOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Complete Your Order</h3>
+        <button onclick="closeCheckout()" class="close-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="custName" placeholder="Rahul Sharma" />
+        </div>
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" id="custPhone" placeholder="10-digit mobile number" maxlength="10" />
+        </div>
+        <div class="form-group">
+          <label>Delivery Address *</label>
+          <textarea id="custAddress" rows="3" placeholder="House no, Street, City, PIN"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Payment Method *</label>
+          <div class="payment-options">
+            <label class="radio-label">
+              <input type="radio" name="payment" value="COD" checked /> Cash on Delivery
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="payment" value="Online" /> Online Payment (Demo)
+            </label>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+          <h4>Order Summary</h4>
+          <div id="summaryItems"></div>
+          <div class="summary-total">
+            <span>Grand Total</span>
+            <span id="summaryTotal">₹0</span>
+          </div>
+        </div>
+
+        <div class="form-error" id="formError"></div>
+        <button class="btn-primary w-full" onclick="placeOrder()" id="placeOrderBtn">
+          Place Order 🚀
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ORDER SUCCESS MODAL ===== -->
+  <div class="modal-overlay" id="successOverlay">
+    <div class="modal success-modal">
+      <div class="success-icon">🎉</div>
+      <h3>Order Placed Successfully!</h3>
+      <p>Your order ID:</p>
+      <div class="order-id-display" id="successOrderId"></div>
+      <p class="success-sub">We'll prepare your food right away. Delivery in 30-45 minutes.</p>
+      <button class="btn-primary w-full" onclick="closeSuccess()">Continue Ordering</button>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>🍛 SpiceCraft &copy; 2024 — All rights reserved.</p>
+    <p style="margin-top:6px;opacity:0.6;font-size:0.8rem">Authentic Indian cuisine delivered to your doorstep</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

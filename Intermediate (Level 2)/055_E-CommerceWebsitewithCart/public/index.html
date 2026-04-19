@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ShopApp</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <span class="brand">ShopApp</span>
+  <a href="index.html">Home</a>
+  <a href="cart.html">Cart <span class="badge" id="cart-count">0</span></a>
+  <a href="admin.html">Admin</a>
+</nav>
+<div class="container">
+  <h2>Products</h2>
+  <div class="grid" id="products-grid">Loading...</div>
+</div>
+<script src="js/script.js"></script>
+<script>
+  updateCartBadge();
+  fetch('/api/products')
+    .then(r => r.json())
+    .then(products => {
+      const grid = document.getElementById('products-grid');
+      if (!products.length) { grid.innerHTML = 'No products found.'; return; }
+      grid.innerHTML = products.map(p => `
+        <div class="card">
+          <img src="${p.image || 'https://via.placeholder.com/300x180'}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x180'">
+          <div class="card-body">
+            <h3>${p.name}</h3>
+            <div class="price">₹${p.price.toLocaleString()}</div>
+            <p style="font-size:0.85rem;color:#555;margin-bottom:8px">${p.description}</p>
+            <a href="product.html?id=${p.id}" style="color:#33a;font-size:0.85rem;">View Details</a><br><br>
+            <button onclick="addToCart(${p.id}, '${escHtml(p.name)}', ${p.price}, '${escHtml(p.image)}')">Add to Cart</button>
+          </div>
+        </div>
+      `).join('');
+    });
+</script>
+</body>
+</html>

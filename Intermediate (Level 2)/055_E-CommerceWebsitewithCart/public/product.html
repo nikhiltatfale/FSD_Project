@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Product Detail</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <span class="brand">ShopApp</span>
+  <a href="index.html">Home</a>
+  <a href="cart.html">Cart <span class="badge" id="cart-count">0</span></a>
+  <a href="admin.html">Admin</a>
+</nav>
+<div class="container">
+  <div id="product-detail">Loading...</div>
+</div>
+<script src="js/script.js"></script>
+<script>
+  updateCartBadge();
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  if (!id) { document.getElementById('product-detail').innerHTML = 'No product selected.'; }
+  else {
+    fetch('/api/products/' + id)
+      .then(r => r.json())
+      .then(p => {
+        if (p.error) { document.getElementById('product-detail').innerHTML = 'Product not found.'; return; }
+        document.getElementById('product-detail').innerHTML = `
+          <div class="product-detail">
+            <img src="${p.image || 'https://via.placeholder.com/280'}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/280'">
+            <div class="product-detail-info">
+              <h2>${p.name}</h2>
+              <div class="price">₹${p.price.toLocaleString()}</div>
+              <p>${p.description}</p>
+              <button onclick="addToCart(${p.id}, '${escHtml(p.name)}', ${p.price}, '${escHtml(p.image)}')">Add to Cart</button>
+              &nbsp;<a href="index.html">← Back</a>
+            </div>
+          </div>
+        `;
+      });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <span class="brand">ShopApp - Admin</span>
+  <a href="index.html">← Store</a>
+</nav>
+<div class="container" id="admin-container" style="display:none">
+
+  <h2>Add / Edit Product</h2>
+  <div class="admin-form">
+    <input type="hidden" id="edit-id">
+    <input type="text" id="a-name" placeholder="Product Name">
+    <input type="number" id="a-price" placeholder="Price (₹)">
+    <input type="text" id="a-image" placeholder="Image URL">
+    <textarea id="a-desc" rows="3" placeholder="Description"></textarea>
+    <div id="admin-msg"></div>
+    <button onclick="saveProduct()">Save Product</button>
+    <button onclick="clearForm()" style="margin-left:8px;background:#888">Clear</button>
+  </div>
+
+  <h2>All Products</h2>
+  <table id="products-table">
+    <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Actions</th></tr></thead>
+    <tbody id="products-tbody"></tbody>
+  </table>
+
+  <h2 style="margin-top:32px">All Orders</h2>
+  <table id="orders-table">
+    <thead><tr><th>ID</th><th>Customer</th><th>Phone</th><th>Address</th><th>Items</th><th>Total</th><th>Date</th></tr></thead>
+    <tbody id="orders-tbody"></tbody>
+  </table>
+</div>
+
+<script src="js/script.js"></script>
+<script>
+  // Password gate
+  const pwd = prompt('Enter admin password:');
+  if (pwd !== 'admin123') {
+    document.body.innerHTML = '<div style="text-align:center;margin-top:80px"><h2>Access Denied</h2><a href="index.html">Go to Store</a></div>';
+  } else {
+    document.getElementById('admin-container').style.display = '';
+    loadProducts();
+    loadOrders();
+  }
+
+  function loadProducts() {
+    fetch('/api/products').then(r => r.json()).then(products => {
+      const tbody = document.getElementById('products-tbody');
+      tbody.innerHTML = products.map(p => `
+        <tr>
+          <td>${p.id}</td>
+          <td>${p.name}</td>
+          <td>₹${p.price.toLocaleString()}</td>
+          <td>
+            <button onclick="editProduct(${p.id}, '${escHtml(p.name)}', ${p.price}, '${escHtml(p.image)}', '${escHtml(p.description)}')">Edit</button>
+            <button class="danger" onclick="deleteProduct(${p.id})">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    });
+  }
+
+  function loadOrders() {
+    fetch('/api/orders').then(r => r.json()).then(orders => {
+      const tbody = document.getElementById('orders-tbody');
+      if (!orders.length) { tbody.innerHTML = '<tr><td colspan="7">No orders yet.</td></tr>'; return; }
+      tbody.innerHTML = orders.map(o => `
+        <tr>
+          <td>${o.id}</td>
+          <td>${o.name}</td>
+          <td>${o.phone}</td>
+          <td>${o.address}</td>
+          <td>${o.items.map(i => `${i.name} x${i.qty}`).join(', ')}</td>
+          <td>₹${o.total.toLocaleString()}</td>
+          <td>${new Date(o.date).toLocaleString()}</td>
+        </tr>
+      `).join('');
+    });
+  }
+
+  function saveProduct() {
+    const id = document.getElementById('edit-id').value;
+    const name = document.getElementById('a-name').value.trim();
+    const price = document.getElementById('a-price').value;
+    const image = document.getElementById('a-image').value.trim();
+    const description = document.getElementById('a-desc').value.trim();
+    const msgEl = document.getElementById('admin-msg');
+    if (!name || !price) { msgEl.innerHTML = '<p style="color:red">Name and price required.</p>'; return; }
+    const method = id ? 'PUT' : 'POST';
+    const url = id ? `/api/products/${id}` : '/api/products';
+    fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, price, image, description })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.error) { msgEl.innerHTML = `<p style="color:red">${data.error}</p>`; return; }
+      msgEl.innerHTML = `<div class="msg">${id ? 'Product updated!' : 'Product added!'}</div>`;
+      clearForm();
+      loadProducts();
+    });
+  }
+
+  function editProduct(id, name, price, image, desc) {
+    document.getElementById('edit-id').value = id;
+    document.getElementById('a-name').value = name;
+    document.getElementById('a-price').value = price;
+    document.getElementById('a-image').value = image;
+    document.getElementById('a-desc').value = desc;
+    document.getElementById('admin-msg').innerHTML = '';
+    window.scrollTo(0, 0);
+  }
+
+  function deleteProduct(id) {
+    if (!confirm('Delete this product?')) return;
+    fetch('/api/products/' + id, { method: 'DELETE' })
+      .then(r => r.json())
+      .then(() => loadProducts());
+  }
+
+  function clearForm() {
+    document.getElementById('edit-id').value = '';
+    document.getElementById('a-name').value = '';
+    document.getElementById('a-price').value = '';
+    document.getElementById('a-image').value = '';
+    document.getElementById('a-desc').value = '';
+    document.getElementById('admin-msg').innerHTML = '';
+  }
+</script>
+</body>
+</html>

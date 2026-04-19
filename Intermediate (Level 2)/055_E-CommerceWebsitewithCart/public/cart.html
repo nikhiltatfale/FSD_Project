@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cart</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <span class="brand">ShopApp</span>
+  <a href="index.html">Home</a>
+  <a href="cart.html">Cart <span class="badge" id="cart-count">0</span></a>
+  <a href="admin.html">Admin</a>
+</nav>
+<div class="container">
+  <h2>Your Cart</h2>
+  <div id="cart-items"></div>
+  <div class="total-bar" id="total-bar" style="display:none">
+    <strong>Total: ₹<span id="cart-total">0</span></strong>
+  </div>
+  <div id="checkout-section" style="display:none">
+    <h2 style="margin-top:24px">Checkout</h2>
+    <form class="checkout" id="checkout-form">
+      <input type="text" id="c-name" placeholder="Your Name" required>
+      <input type="text" id="c-address" placeholder="Delivery Address" required>
+      <input type="text" id="c-phone" placeholder="Phone Number" required>
+      <div id="order-msg"></div>
+      <button type="button" onclick="placeOrder()">Place Order</button>
+    </form>
+  </div>
+</div>
+<script src="js/script.js"></script>
+<script>
+  updateCartBadge();
+  renderCart();
+
+  function renderCart() {
+    const cart = getCart();
+    const el = document.getElementById('cart-items');
+    const totalBar = document.getElementById('total-bar');
+    const checkoutSection = document.getElementById('checkout-section');
+    if (!cart.length) { el.innerHTML = '<p>Your cart is empty. <a href="index.html">Shop now</a></p>'; return; }
+    let total = 0;
+    el.innerHTML = cart.map((item, idx) => {
+      total += item.price * item.qty;
+      return `
+        <div class="cart-item">
+          <img src="${item.image || 'https://via.placeholder.com/80'}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80'">
+          <div class="cart-item-info">
+            <strong>${item.name}</strong><br>
+            <span>₹${item.price.toLocaleString()} each</span>
+          </div>
+          <div class="qty-controls">
+            <button onclick="changeQty(${idx}, -1)">-</button>
+            <span>${item.qty}</span>
+            <button onclick="changeQty(${idx}, 1)">+</button>
+          </div>
+          <span><strong>₹${(item.price * item.qty).toLocaleString()}</strong></span>
+          <button class="danger" onclick="removeItem(${idx})">Remove</button>
+        </div>
+      `;
+    }).join('');
+    document.getElementById('cart-total').textContent = total.toLocaleString();
+    totalBar.style.display = '';
+    checkoutSection.style.display = '';
+  }
+
+  function changeQty(idx, delta) {
+    const cart = getCart();
+    cart[idx].qty += delta;
+    if (cart[idx].qty <= 0) cart.splice(idx, 1);
+    saveCart(cart);
+    updateCartBadge();
+    renderCart();
+  }
+
+  function removeItem(idx) {
+    const cart = getCart();
+    cart.splice(idx, 1);
+    saveCart(cart);
+    updateCartBadge();
+    renderCart();
+  }
+
+  function placeOrder() {
+    const name = document.getElementById('c-name').value.trim();
+    const address = document.getElementById('c-address').value.trim();
+    const phone = document.getElementById('c-phone').value.trim();
+    const msgEl = document.getElementById('order-msg');
+    if (!name || !address || !phone) { msgEl.innerHTML = '<p style="color:red">Please fill all fields.</p>'; return; }
+    const cart = getCart();
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    fetch('/api/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, address, phone, items: cart, total })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        saveCart([]);
+        updateCartBadge();
+        msgEl.innerHTML = `<div class="msg">✅ Order placed! Order ID: <strong>${data.orderId}</strong></div>`;
+        document.getElementById('cart-items').innerHTML = '';
+        document.getElementById('total-bar').style.display = 'none';
+        document.getElementById('checkout-section').style.display = 'none';
+        document.getElementById('cart-items').innerHTML = `<div class="msg">Order placed successfully! Order ID: ${data.orderId}</div>`;
+      } else {
+        msgEl.innerHTML = `<p style="color:red">${data.error}</p>`;
+      }
+    });
+  }
+</script>
+</body>
+</html>

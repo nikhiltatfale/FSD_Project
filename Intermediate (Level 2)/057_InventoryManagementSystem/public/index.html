@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IMS - Inventory</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>▣ IMS — INVENTORY</h1>
+  <a href="admin.html">ADMIN PANEL →</a>
+</header>
+<div class="container">
+  <div id="user-msg" class="msg"></div>
+  <div class="grid">
+    <div class="card">
+      <h2>STOCK IN</h2>
+      <form id="stock-in-form">
+        <select id="si-product"></select>
+        <input id="si-qty" type="number" placeholder="Quantity" min="1" required>
+        <button class="btn btn-green" type="submit">+ STOCK IN</button>
+      </form>
+    </div>
+    <div class="card">
+      <h2>STOCK OUT</h2>
+      <form id="stock-out-form">
+        <select id="so-product"></select>
+        <input id="so-qty" type="number" placeholder="Quantity" min="1" required>
+        <button class="btn btn-red" type="submit">− STOCK OUT</button>
+      </form>
+    </div>
+  </div>
+  <div class="section">
+    <h2>CURRENT INVENTORY</h2>
+    <table>
+      <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Qty</th><th>Last Updated</th></tr></thead>
+      <tbody id="inv-table"></tbody>
+    </table>
+  </div>
+</div>
+<script src="script.js"></script>
+<script>initIndex();</script>
+</body>
+</html>

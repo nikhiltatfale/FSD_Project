@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRM</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="loginSection">
+  <div class="login-box">
+    <h2>CRM Login</h2>
+    <input id="loginUser" type="text" placeholder="Username">
+    <input id="loginPass" type="password" placeholder="Password">
+    <button onclick="doLogin()">Login</button>
+    <p id="loginErr" class="err"></p>
+  </div>
+</div>
+
+<div id="appSection" style="display:none">
+  <nav>
+    <span id="navUser"></span>
+    <button onclick="showSection('dashboard')">Dashboard</button>
+    <button onclick="showSection('customers')">Customers</button>
+    <button onclick="showSection('leads')">Leads</button>
+    <button onclick="showSection('followups')">Follow-ups</button>
+    <button id="adminNavBtn" onclick="showSection('admin')" style="display:none">Admin</button>
+    <button onclick="logout()" class="logout">Logout</button>
+  </nav>
+
+  <div id="dashboardSection" class="section">
+    <h2>Dashboard</h2>
+    <div id="dashStats" class="stats-row"></div>
+    <h3>Today's Follow-ups</h3>
+    <table><thead><tr><th>Ref</th><th>Date</th><th>Remarks</th><th>Status</th></tr></thead>
+    <tbody id="todayFollowupsBody"></tbody></table>
+  </div>
+
+  <div id="customersSection" class="section" style="display:none">
+    <h2>Customers</h2>
+    <div class="toolbar">
+      <input id="custSearch" type="text" placeholder="Search..." oninput="loadCustomers()">
+      <button onclick="openCustModal()">+ Add</button>
+    </div>
+    <table><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Company</th><th>Status</th><th>Notes</th><th>Date</th><th>Actions</th></tr></thead>
+    <tbody id="custBody"></tbody></table>
+  </div>
+
+  <div id="leadsSection" class="section" style="display:none">
+    <h2>Leads</h2>
+    <button onclick="openLeadModal()">+ Add</button>
+    <table><thead><tr><th>Name</th><th>Phone</th><th>Source</th><th>Product</th><th>Status</th><th>Assigned</th><th>Date</th><th>Actions</th></tr></thead>
+    <tbody id="leadBody"></tbody></table>
+  </div>
+
+  <div id="followupsSection" class="section" style="display:none">
+    <h2>Follow-ups</h2>
+    <button onclick="openFollowupModal()">+ Add</button>
+    <table><thead><tr><th>Ref</th><th>Date</th><th>Remarks</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody id="followupBody"></tbody></table>
+  </div>
+
+  <div id="adminSection" class="section" style="display:none">
+    <h2>Admin</h2>
+    <div id="adminStats" class="stats-row"></div>
+    <h3>Add Staff User</h3>
+    <div class="form-row">
+      <input id="newUsername" type="text" placeholder="Username">
+      <input id="newPassword" type="password" placeholder="Password">
+      <select id="newRole"><option value="staff">Staff</option><option value="admin">Admin</option></select>
+      <button onclick="addUser()">Add User</button>
+    </div>
+    <h3>Users</h3>
+    <table><thead><tr><th>Username</th><th>Role</th><th>Actions</th></tr></thead>
+    <tbody id="usersBody"></tbody></table>
+  </div>
+</div>
+
+<!-- Customer Modal -->
+<div id="custModal" class="modal" style="display:none">
+  <div class="modal-box">
+    <h3 id="custModalTitle">Customer</h3>
+    <input id="cName" placeholder="Name">
+    <input id="cPhone" placeholder="Phone">
+    <input id="cEmail" placeholder="Email">
+    <input id="cCompany" placeholder="Company">
+    <select id="cStatus"><option>active</option><option>inactive</option><option>prospect</option></select>
+    <textarea id="cNotes" placeholder="Notes"></textarea>
+    <div class="modal-btns">
+      <button onclick="saveCustomer()">Save</button>
+      <button onclick="closeModal('custModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lead Modal -->
+<div id="leadModal" class="modal" style="display:none">
+  <div class="modal-box">
+    <h3 id="leadModalTitle">Lead</h3>
+    <input id="lName" placeholder="Name">
+    <input id="lPhone" placeholder="Phone">
+    <input id="lSource" placeholder="Source">
+    <input id="lProduct" placeholder="Product">
+    <select id="lStatus"><option>new</option><option>contacted</option><option>qualified</option><option>lost</option><option>converted</option></select>
+    <input id="lAssigned" placeholder="Assigned To">
+    <div class="modal-btns">
+      <button onclick="saveLead()">Save</button>
+      <button onclick="closeModal('leadModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Followup Modal -->
+<div id="followupModal" class="modal" style="display:none">
+  <div class="modal-box">
+    <h3>Follow-up</h3>
+    <input id="fRef" placeholder="Ref Name">
+    <input id="fDate" type="date">
+    <textarea id="fRemarks" placeholder="Remarks"></textarea>
+    <div class="modal-btns">
+      <button onclick="saveFollowup()">Save</button>
+      <button onclick="closeModal('followupModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

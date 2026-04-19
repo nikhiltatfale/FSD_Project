@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiniSocial</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>MiniSocial</h1>
+  <button id="toggleAdmin">Admin Panel</button>
+</header>
+
+<main>
+  <section id="createPost">
+    <h2>New Post</h2>
+    <input id="username" type="text" placeholder="Your name" maxlength="30">
+    <textarea id="content" placeholder="What's on your mind?" maxlength="280"></textarea>
+    <button id="submitPost">Post</button>
+    <p id="formError"></p>
+  </section>
+
+  <section id="feed">
+    <h2>Feed</h2>
+    <div id="posts"></div>
+  </section>
+
+  <section id="adminPanel" style="display:none">
+    <h2>Admin Panel</h2>
+    <div id="stats"></div>
+    <button id="refreshStats">Refresh Stats</button>
+    <div id="adminPosts"></div>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

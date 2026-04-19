@@ -1,0 +1,23 @@
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:monospace;background:#f4f4f4;color:#111;padding:16px}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:2px solid #111;margin-bottom:20px}
+h1{font-size:1.6rem}
+h2{font-size:1rem;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+main{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+input,textarea{width:100%;border:1px solid #aaa;padding:8px;font-family:monospace;font-size:0.9rem;margin-bottom:8px;background:#fff;display:block}
+textarea{resize:vertical;min-height:80px}
+button{cursor:pointer;padding:8px 16px;border:1px solid #111;background:#111;color:#fff;font-family:monospace;font-size:0.85rem}
+button:hover{background:#333}
+#formError{color:red;font-size:0.8rem;min-height:16px}
+.post{background:#fff;border:1px solid #ccc;padding:12px;margin-bottom:10px}
+.post-meta{font-size:0.75rem;color:#555;margin-bottom:6px}
+.post-content{margin-bottom:10px;font-size:0.9rem;word-break:break-word}
+.post-actions{display:flex;gap:8px}
+.post-actions button{padding:4px 10px;font-size:0.8rem}
+.btn-like{background:#fff;color:#111}
+.btn-like:hover{background:#eee}
+.btn-delete{background:#fff;color:red;border-color:red}
+.btn-delete:hover{background:#fee}
+#stats{background:#fff;border:1px solid #ccc;padding:10px;margin-bottom:10px;font-size:0.9rem}
+#adminPanel{background:#fff8f0;border:1px solid #f90;padding:14px}
+#toggleAdmin{background:#fff;color:#111}

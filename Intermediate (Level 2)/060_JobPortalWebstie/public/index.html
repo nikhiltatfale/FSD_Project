@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JobPortal</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>💼 JobPortal</h1>
+  <div id="userInfo" style="display:none">
+    <span id="headerName"></span>
+    <button id="logoutBtn" class="btn" onclick="logout()">Logout</button>
+  </div>
+</header>
+<nav id="mainNav" style="display:none"></nav>
+
+<section id="loginSection" class="active">
+  <h2>Login</h2>
+  <div id="loginMsg"></div>
+  <div class="form-group"><label>Email</label><input id="loginEmail" type="email" placeholder="you@email.com"></div>
+  <div class="form-group"><label>Password</label><input id="loginPass" type="password" placeholder="Password"></div>
+  <button class="btn btn-primary" style="width:100%" onclick="login()">Login</button>
+  <div class="switch-link">No account? <a onclick="showSection('registerSection')">Register</a></div>
+</section>
+
+<section id="registerSection">
+  <h2>Register</h2>
+  <div id="registerMsg"></div>
+  <div class="form-group"><label>Name</label><input id="regName" placeholder="Full name"></div>
+  <div class="form-group"><label>Email</label><input id="regEmail" type="email" placeholder="you@email.com"></div>
+  <div class="form-group"><label>Password</label><input id="regPass" type="password" placeholder="Password"></div>
+  <div class="form-group"><label>Role</label>
+    <select id="regRole">
+      <option value="seeker">Job Seeker</option>
+      <option value="recruiter">Recruiter</option>
+    </select>
+  </div>
+  <button class="btn btn-primary" style="width:100%" onclick="register()">Register</button>
+  <div class="switch-link">Have account? <a onclick="showSection('loginSection')">Login</a></div>
+</section>
+
+<section id="jobListSection">
+  <h2>Available Jobs</h2>
+  <div id="jobListContainer"></div>
+</section>
+
+<section id="postJobSection">
+  <h2>Post a Job</h2>
+  <div id="postJobMsg"></div>
+  <div class="form-group"><label>Job Title</label><input id="jobTitle" placeholder="e.g. Frontend Developer"></div>
+  <div class="form-group"><label>Company</label><input id="jobCompany" placeholder="Company name"></div>
+  <div class="form-group"><label>Description</label><textarea id="jobDesc" placeholder="Job description..."></textarea></div>
+  <button class="btn btn-primary" onclick="postJob()">Post Job</button>
+</section>
+
+<section id="myJobsSection">
+  <h2>My Posted Jobs</h2>
+  <div id="myJobsContainer"></div>
+</section>
+
+<section id="myAppsSection">
+  <h2>My Applications</h2>
+  <div id="myAppsContainer"></div>
+</section>
+
+<section id="adminSection">
+  <h2>Admin Dashboard</h2>
+  <div class="stats">
+    <div class="stat-card"><span id="statUsers">0</span><p>Users</p></div>
+    <div class="stat-card"><span id="statJobs">0</span><p>Jobs</p></div>
+    <div class="stat-card"><span id="statApps">0</span><p>Applications</p></div>
+  </div>
+  <h3 style="margin-bottom:12px">All Users</h3>
+  <table id="usersTable"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Action</th></tr></thead><tbody></tbody></table>
+  <h3 style="margin:20px 0 12px">All Jobs</h3>
+  <table id="jobsTable"><thead><tr><th>Title</th><th>Company</th><th>Recruiter</th><th>Action</th></tr></thead><tbody></tbody></table>
+  <h3 style="margin:20px 0 12px">All Applications</h3>
+  <table id="appsTable"><thead><tr><th>Applicant</th><th>Email</th><th>Job</th><th>Company</th></tr></thead><tbody></tbody></table>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

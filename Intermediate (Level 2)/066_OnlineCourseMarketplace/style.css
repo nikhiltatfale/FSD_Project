@@ -1,0 +1,37 @@
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:sans-serif;background:#f4f4f4;color:#222}
+header{background:#1a1a2e;color:#fff;padding:16px 24px}
+.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+h1{font-size:22px}
+.header-controls{display:flex;gap:10px;flex-wrap:wrap}
+input[type=text],input[type=number],select,textarea{padding:8px 10px;border:1px solid #ccc;border-radius:4px;font-size:14px}
+#searchInput{flex:1;min-width:180px}
+button{padding:8px 14px;border:none;background:#e94560;color:#fff;border-radius:4px;cursor:pointer;font-size:14px}
+button:hover{background:#c73652}
+#adminToggleBtn{background:#0f3460}
+#adminToggleBtn:hover{background:#1a5276}
+#adminToggleBtn.active{background:#27ae60}
+main{padding:20px 24px}
+h2{margin-bottom:16px;font-size:18px}
+#courseGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.course-card{background:#fff;border-radius:6px;padding:16px;border:1px solid #ddd}
+.course-card h3{font-size:15px;margin-bottom:6px}
+.course-card p{font-size:13px;color:#555;margin-bottom:4px}
+.course-card .price{font-weight:bold;color:#e94560;margin:8px 0}
+.course-card button{width:100%;margin-top:4px}
+#detailsSection,#enrollmentsSection,#adminSection{background:#fff;padding:20px;border-radius:6px;border:1px solid #ddd}
+#detailsSection button:first-child,#enrollmentsSection button:first-child{background:#555;margin-bottom:16px}
+#courseDetails h2{font-size:20px;margin-bottom:10px}
+#courseDetails p{margin-bottom:8px;font-size:14px}
+#courseDetails .price{font-size:18px;font-weight:bold;color:#e94560}
+.enrolled-item{padding:10px;border-bottom:1px solid #eee;font-size:14px}
+.admin-form{background:#f9f9f9;padding:16px;border-radius:6px;border:1px solid #ddd;margin-bottom:20px;display:flex;flex-direction:column;gap:10px}
+.admin-form h3{font-size:15px}
+.form-btns{display:flex;gap:10px}
+.form-btns button:last-child{background:#777}
+.admin-course-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #eee;font-size:14px}
+.admin-course-item .actions{display:flex;gap:8px}
+.admin-course-item .actions button{padding:6px 10px;font-size:12px}
+.btn-edit{background:#0f3460}
+.btn-delete{background:#c0392b}
+.no-results{color:#888;font-size:14px;padding:12px 0}

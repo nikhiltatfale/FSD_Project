@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GiveNow — Donation Platform</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo">Give<span>Now</span></div>
+  <button id="adminToggleBtn" onclick="toggleAdminLogin()">Admin</button>
+</header>
+
+<section id="causesSection">
+  <h2>Our Causes</h2>
+  <div id="causesGrid"></div>
+</section>
+
+<section id="donateSection">
+  <h2>Make a Donation</h2>
+  <form id="donationForm">
+    <input type="text" id="dName" placeholder="Full Name" required>
+    <input type="email" id="dEmail" placeholder="Email" required>
+    <input type="number" id="dAmount" placeholder="Amount (₹)" min="1" required>
+    <select id="dCause" required>
+      <option value="">Select Cause</option>
+    </select>
+    <textarea id="dMessage" placeholder="Message (optional)" rows="3"></textarea>
+    <button type="submit">Donate Now</button>
+  </form>
+  <div id="successMsg" class="hidden">✅ Thank you! Your donation was recorded.</div>
+</section>
+
+<div id="adminLoginBox" class="hidden">
+  <h3>Admin Login</h3>
+  <input type="text" id="aUser" placeholder="Username">
+  <input type="password" id="aPass" placeholder="Password">
+  <button onclick="adminLogin()">Login</button>
+  <p id="loginErr" class="err hidden">Invalid credentials</p>
+</div>
+
+<section id="adminPanel" class="hidden">
+  <div class="panel-header">
+    <h2>Admin Dashboard</h2>
+    <button onclick="adminLogout()">Logout</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card"><span id="totalDonations">0</span><small>Total Donations</small></div>
+    <div class="stat-card"><span id="totalAmount">₹0</span><small>Total Raised</small></div>
+    <div class="stat-card"><span id="totalCauses">0</span><small>Active Causes</small></div>
+  </div>
+
+  <div class="admin-block">
+    <h3>Causes</h3>
+    <div id="causesList"></div>
+    <div class="add-cause">
+      <input type="text" id="newCause" placeholder="New cause name">
+      <button onclick="addCause()">Add Cause</button>
+    </div>
+  </div>
+
+  <div class="admin-block">
+    <h3>All Donations</h3>
+    <div id="donationsTableWrap">
+      <table id="donationsTable">
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Amount</th><th>Cause</th><th>Date</th><th>Message</th><th>Action</th></tr>
+        </thead>
+        <tbody id="donationsTbody"></tbody>
+      </table>
+    </div>
+    <p id="noDonations" class="hidden muted">No donations yet.</p>
+  </div>
+</section>
+
+<footer><p>© 2026 GiveNow. All rights reserved.</p></footer>
+<script src="script.js"></script>
+</body>
+</html>

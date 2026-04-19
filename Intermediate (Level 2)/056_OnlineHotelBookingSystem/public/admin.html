@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin - Grand Stay</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <span class="brand">Grand Stay</span>
+  <a href="index.html">Home</a>
+  <a href="rooms.html">Rooms</a>
+  <a href="admin.html">Admin</a>
+</nav>
+<div class="container">
+
+<div id="login-section" class="login-wrap">
+  <h2>Admin Login</h2>
+  <div id="login-msg" class="msg" style="display:none"></div>
+  <form id="login-form">
+    <label>Username</label>
+    <input type="text" id="uname" placeholder="admin" required>
+    <label>Password</label>
+    <input type="password" id="pwd" placeholder="••••••••" required>
+    <button type="submit" class="btn btn-gold" style="width:100%">Login</button>
+  </form>
+</div>
+
+<div id="admin-panel" style="display:none">
+  <h2>Admin Panel</h2>
+
+  <div class="admin-grid">
+    <div>
+      <h3 id="room-form-title" style="margin-bottom:16px;font-style:italic">Add New Room</h3>
+      <div id="form-msg" class="msg" style="display:none"></div>
+      <form id="room-form">
+        <label>Room Number</label>
+        <input type="text" id="r-number" placeholder="e.g. 101" required>
+        <label>Room Type</label>
+        <select id="r-type">
+          <option>Standard</option>
+          <option>Deluxe</option>
+          <option>Suite</option>
+        </select>
+        <label>Price per Night (₹)</label>
+        <input type="number" id="r-price" placeholder="e.g. 2500" required min="0">
+        <label>Image URL (optional)</label>
+        <input type="url" id="r-image" placeholder="https://...">
+        <div style="display:flex;gap:10px">
+          <button type="submit" id="submit-btn" class="btn btn-gold">Add Room</button>
+          <button type="button" id="cancel-edit" class="btn" style="background:#888">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div>
+      <h3 style="margin-bottom:16px;font-style:italic">All Rooms</h3>
+      <table>
+        <thead><tr><th>Number</th><th>Type</th><th>Price</th><th>Actions</th></tr></thead>
+        <tbody id="rooms-table"><tr><td colspan="4">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <h2 style="margin-top:36px">All Bookings</h2>
+  <table>
+    <thead><tr><th>Booking ID</th><th>Guest Name</th><th>Email</th><th>Room ID</th><th>Check-In</th><th>Check-Out</th></tr></thead>
+    <tbody id="bookings-table"><tr><td colspan="6">Loading...</td></tr></tbody>
+  </table>
+</div>
+
+</div>
+<script src="js/script.js"></script>
+</body>
+</html>

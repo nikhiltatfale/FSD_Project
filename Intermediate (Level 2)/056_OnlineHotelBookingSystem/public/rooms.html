@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rooms - Grand Stay</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <span class="brand">Grand Stay</span>
+  <a href="index.html">Home</a>
+  <a href="rooms.html">Rooms</a>
+  <a href="admin.html">Admin</a>
+</nav>
+<div class="container">
+  <h2>Available Rooms</h2>
+  <form id="avail-form" style="display:flex;gap:12px;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap">
+    <div>
+      <label style="font-size:13px;display:block;margin-bottom:4px">Check-In</label>
+      <input type="date" id="ci" name="checkIn" style="padding:8px;border:1px solid #ccc;border-radius:2px;font-family:inherit">
+    </div>
+    <div>
+      <label style="font-size:13px;display:block;margin-bottom:4px">Check-Out</label>
+      <input type="date" id="co" name="checkOut" style="padding:8px;border:1px solid #ccc;border-radius:2px;font-family:inherit">
+    </div>
+    <button type="submit" class="btn">Filter by Date</button>
+    <a href="rooms.html" class="btn" style="background:#888">Show All</a>
+  </form>
+  <div id="rooms-container" class="rooms-grid">Loading rooms...</div>
+</div>
+<script src="js/script.js"></script>
+</body>
+</html>

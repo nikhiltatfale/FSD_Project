@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Book Room - Grand Stay</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <span class="brand">Grand Stay</span>
+  <a href="index.html">Home</a>
+  <a href="rooms.html">Rooms</a>
+  <a href="admin.html">Admin</a>
+</nav>
+<div class="container">
+  <h2>Book a Room</h2>
+  <div id="booking-msg" class="msg" style="display:none;max-width:520px"></div>
+  <form id="booking-form">
+    <label>Full Name</label>
+    <input type="text" id="name" placeholder="Your name" required>
+    <label>Email</label>
+    <input type="email" id="email" placeholder="your@email.com" required>
+    <label>Select Room</label>
+    <select id="room-select" required>
+      <option value="">-- Select Room --</option>
+    </select>
+    <div id="room-info" style="color:#888;font-size:13px;margin-top:-10px;margin-bottom:14px"></div>
+    <label>Check-In Date</label>
+    <input type="date" id="checkIn" required>
+    <label>Check-Out Date</label>
+    <input type="date" id="checkOut" required>
+    <button type="button" id="check-avail-btn" class="btn" style="margin-bottom:12px;background:#555">Check Availability</button>
+    <div id="availability-result"></div>
+    <button type="submit" class="btn btn-gold">Confirm Booking</button>
+  </form>
+</div>
+<script src="js/script.js"></script>
+</body>
+</html>

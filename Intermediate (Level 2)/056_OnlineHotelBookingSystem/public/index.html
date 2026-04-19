@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hotel Booking</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <span class="brand">Grand Stay</span>
+  <a href="index.html">Home</a>
+  <a href="rooms.html">Rooms</a>
+  <a href="admin.html">Admin</a>
+</nav>
+<div class="hero">
+  <h1>Welcome to Grand Stay</h1>
+  <p>Luxury rooms at unbeatable prices. Check availability and book instantly.</p>
+</div>
+<div class="container">
+  <h2>Check Availability</h2>
+  <form action="rooms.html" method="get" style="background:#fff;padding:24px;border:1px solid #ddd;max-width:480px;border-radius:4px">
+    <label>Check-In Date</label>
+    <input type="date" name="checkIn" required>
+    <label>Check-Out Date</label>
+    <input type="date" name="checkOut" required>
+    <button type="submit" class="btn btn-gold">Search Rooms</button>
+  </form>
+</div>
+</body>
+</html>

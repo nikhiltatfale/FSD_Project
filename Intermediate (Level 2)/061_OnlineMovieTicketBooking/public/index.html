@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CineBook Maharashtra</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>🎬 CineBook</h1>
+  <a href="/admin.html">Admin Panel</a>
+</header>
+<div id="page-home">
+  <h2>Now Showing in Maharashtra</h2>
+  <div class="grid" id="movie-grid"></div>
+</div>
+<div id="page-seats">
+  <button class="back" onclick="showHome()">← Back to Movies</button>
+  <div class="movie-header">
+    <img id="detail-poster" src="" alt="">
+    <div class="movie-header-info">
+      <h3 id="detail-title"></h3>
+      <p id="detail-meta"></p>
+    </div>
+  </div>
+  <h2>Select Show</h2>
+  <div class="show-bar">
+    <button class="show-btn" onclick="selectShow('10AM',this)">🌅 10:00 AM</button>
+    <button class="show-btn" onclick="selectShow('2PM',this)">☀️ 2:00 PM</button>
+    <button class="show-btn" onclick="selectShow('7PM',this)">🌙 7:00 PM</button>
+  </div>
+  <h2>Select Seats</h2>
+  <div class="seat-info">
+    <div class="legend"><div class="dot g"></div>Available</div>
+    <div class="legend"><div class="dot r"></div>Booked</div>
+    <div class="legend"><div class="dot y"></div>Selected</div>
+  </div>
+  <div class="seat-grid" id="seat-grid"></div>
+  <form onsubmit="bookSeats(event)">
+    <div class="selected-info">Selected: <span id="sel-count">0</span> seat(s) — <span id="sel-seats">None</span></div>
+    <label>Full Name</label>
+    <input type="text" id="inp-name" placeholder="Enter your name" required>
+    <label>Phone Number</label>
+    <input type="tel" id="inp-phone" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+    <button type="submit" class="btn">Confirm Booking</button>
+  </form>
+</div>
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>

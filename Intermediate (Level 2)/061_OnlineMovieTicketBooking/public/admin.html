@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — CineBook</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>🎬 CineBook Admin</h1>
+  <a href="/">← User View</a>
+</header>
+<div id="page-admin" style="display:block">
+  <div class="admin-grid">
+    <div>
+      <div class="admin-form">
+        <h3>Add Movie</h3>
+        <label>Title</label>
+        <input type="text" id="a-title" placeholder="Movie title">
+        <label>Poster URL</label>
+        <input type="url" id="a-poster" placeholder="https://...">
+        <label>Duration</label>
+        <input type="text" id="a-duration" placeholder="2h 30m">
+        <label>Language</label>
+        <input type="text" id="a-lang" placeholder="Hindi">
+        <button class="btn" onclick="addMovie()">Add Movie</button>
+      </div>
+      <div class="admin-form" style="margin-top:16px">
+        <h3>Danger Zone</h3>
+        <button class="btn btn-red" onclick="resetAll()">Reset All Seats & Bookings</button>
+      </div>
+    </div>
+    <div>
+      <h2>Movies <span id="movie-count" style="font-size:1rem;color:var(--muted)"></span></h2>
+      <div id="admin-movie-list" style="margin-bottom:24px"></div>
+      <h2>All Bookings</h2>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>#</th><th>Movie</th><th>Show</th><th>Seats</th><th>Name</th><th>Phone</th><th>Time</th></tr></thead>
+          <tbody id="bookings-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="admin.js"></script>
+</body>
+</html>

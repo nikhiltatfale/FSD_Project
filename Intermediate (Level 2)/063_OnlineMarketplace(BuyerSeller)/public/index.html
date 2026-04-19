@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Marketplace</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div id="login-section">
+    <h2>Login</h2>
+    <input id="username" placeholder="Username">
+    <select id="role">
+      <option value="buyer">Buyer</option>
+      <option value="seller">Seller</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="main" style="display:none">
+    <div id="topbar">
+      <span id="user-info"></span>
+      <button onclick="logout()">Logout</button>
+    </div>
+    <div id="nav">
+      <button class="nav-btn" id="btn-products" onclick="showTab('products')">Products</button>
+      <button class="nav-btn" id="btn-cart" onclick="showTab('cart')">Cart</button>
+      <button class="nav-btn" id="btn-orders" onclick="showTab('orders')">My Orders</button>
+      <button class="nav-btn" id="btn-seller" onclick="showTab('seller')">Manage Products</button>
+      <button class="nav-btn" id="btn-admin" onclick="showTab('admin')">Admin Panel</button>
+    </div>
+
+    <div id="tab-products" class="tab">
+      <h3>All Products</h3>
+      <div id="product-list"></div>
+    </div>
+
+    <div id="tab-cart" class="tab">
+      <h3>My Cart</h3>
+      <div id="cart-list"></div>
+      <button onclick="checkout()">Checkout</button>
+    </div>
+
+    <div id="tab-orders" class="tab">
+      <h3>My Orders</h3>
+      <div id="orders-list"></div>
+    </div>
+
+    <div id="tab-seller" class="tab">
+      <h3>Manage Products</h3>
+      <input id="p-name" placeholder="Product Name">
+      <input id="p-price" placeholder="Price" type="number">
+      <input id="p-desc" placeholder="Description">
+      <button onclick="addProduct()">Add Product</button>
+      <div id="seller-products"></div>
+    </div>
+
+    <div id="tab-admin" class="tab">
+      <h3>Admin Panel</h3>
+      <button onclick="adminLoad('users')">All Users</button>
+      <button onclick="adminLoad('products')">All Products</button>
+      <button onclick="adminLoad('orders')">All Orders</button>
+      <div id="admin-content"></div>
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

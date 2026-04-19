@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RealTime Chat</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- JOIN SCREEN -->
+  <div id="joinScreen">
+    <div id="joinBox">
+      <h2>Join Chat</h2>
+      <input id="usernameInput" type="text" placeholder="Enter username" maxlength="20" />
+      <button id="joinBtn">Join</button>
+      <p id="joinError" style="color:red;"></p>
+    </div>
+  </div>
+
+  <!-- CHAT SCREEN -->
+  <div id="chatScreen" style="display:none;">
+    <div id="sidebar">
+      <h3>Online Users</h3>
+      <ul id="userList"></ul>
+      <hr/>
+      <button id="adminToggleBtn">Admin Login</button>
+      <div id="adminLoginBox" style="display:none;">
+        <input id="adminPassInput" type="password" placeholder="Admin password" />
+        <button id="adminLoginBtn">Login</button>
+        <p id="adminLoginMsg"></p>
+      </div>
+    </div>
+
+    <div id="chatArea">
+      <div id="chatHeader">
+        <span id="chatTitle">💬 Chat Room</span>
+        <button id="leaveBtn">Leave</button>
+      </div>
+      <div id="messages"></div>
+      <div id="inputArea">
+        <input id="msgInput" type="text" placeholder="Type a message..." maxlength="500" />
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="adminPanel" style="display:none;">
+      <h3>🛡️ Admin Panel</h3>
+
+      <div id="adminSection">
+        <h4>Online Users</h4>
+        <ul id="adminUserList"></ul>
+      </div>
+
+      <div id="adminSection">
+        <h4>Messages</h4>
+        <ul id="adminMsgList"></ul>
+      </div>
+
+      <div id="adminSection">
+        <button id="clearChatBtn">🗑️ Clear All Chat</button>
+      </div>
+
+      <div id="adminSection">
+        <h4>Activity Log</h4>
+        <ul id="activityLogList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

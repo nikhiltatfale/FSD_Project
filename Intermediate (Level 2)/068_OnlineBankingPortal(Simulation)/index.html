@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NexaBank — Online Banking</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0a0c10;--surface:#12151c;--card:#181c27;--border:#232840;
+--accent:#4f8ef7;--accent2:#7c3aed;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;
+--text:#e8eaf0;--muted:#6b7280;--soft:#9ca3af;
+--font-head:'Syne',sans-serif;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+
+/* LOGIN */
+#loginPage{display:none;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse 80% 60% at 50% -10%,#1a2a4a,transparent),var(--bg)}
+#loginPage.active{display:flex}
+.login-box{width:420px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:48px 40px;position:relative;overflow:hidden}
+.login-box::before{content:'';position:absolute;top:-60px;right:-60px;width:180px;height:180px;background:radial-gradient(circle,#4f8ef720,transparent 70%);pointer-events:none}
+.bank-logo{font-family:var(--font-head);font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:4px}
+.bank-logo span{color:var(--accent)}
+.login-sub{color:var(--muted);font-size:13px;margin-bottom:36px}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase}
+.field input,select.finput{width:100%;background:#0e111a;border:1px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border .2s}
+.field input:focus,select.finput:focus{border-color:var(--accent)}
+select.finput{appearance:none;cursor:pointer}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-family:var(--font-head);font-weight:700;font-size:14px;letter-spacing:.5px;cursor:pointer;transition:all .2s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#3b7de8;transform:translateY(-1px)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{background:#dc2626}
+.btn-success{background:var(--green);color:#fff}
+.btn-success:hover{background:#16a34a}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.err-msg{color:var(--red);font-size:12px;margin-top:10px;text-align:center;min-height:18px}
+
+/* LAYOUT */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:28px 0;flex-shrink:0;position:fixed;height:100vh;z-index:10}
+.main-content{margin-left:240px;flex:1;padding:36px 40px;min-height:100vh;background:var(--bg)}
+.s-logo{font-family:var(--font-head);font-size:20px;font-weight:800;padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.s-logo span{color:var(--accent)}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 24px;cursor:pointer;color:var(--muted);font-size:13.5px;font-weight:500;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--text);background:#ffffff07}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:#4f8ef710}
+.nav-icon{font-size:16px;width:20px;text-align:center}
+.s-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border)}
+.s-user{font-size:12px;color:var(--muted);margin-bottom:4px}
+.s-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px}
+.logout-btn{width:100%;padding:9px;background:#ef444415;color:var(--red);border:1px solid #ef444430;border-radius:8px;cursor:pointer;font-size:12px;font-family:var(--font-body);font-weight:600;transition:all .2s}
+.logout-btn:hover{background:#ef444430}
+
+/* PANELS */
+.panel{display:none}
+.panel.active{display:block}
+.page-title{font-family:var(--font-head);font-size:26px;font-weight:800;margin-bottom:4px}
+.page-sub{color:var(--muted);font-size:13px;margin-bottom:32px}
+
+/* CARDS */
+.cards-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;margin-bottom:32px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+.stat-card .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.stat-card .value{font-family:var(--font-head);font-size:26px;font-weight:800}
+.stat-card .value.green{color:var(--green)}
+.stat-card .value.blue{color:var(--accent)}
+.stat-card .sub{font-size:11px;color:var(--muted);margin-top:6px}
+.balance-card{background:linear-gradient(135deg,#1a2a4a,#0e1930);border:1px solid #2a3a60;border-radius:20px;padding:32px;position:relative;overflow:hidden}
+.balance-card::after{content:'';position:absolute;right:-40px;bottom:-40px;width:200px;height:200px;background:radial-gradient(circle,#4f8ef715,transparent 70%)}
+.balance-card .bal-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.balance-card .bal-amount{font-family:var(--font-head);font-size:42px;font-weight:800;color:#fff;margin-bottom:4px}
+.balance-card .bal-meta{display:flex;gap:24px;margin-top:20px;flex-wrap:wrap}
+.bal-meta-item .k{font-size:11px;color:var(--muted);margin-bottom:2px}
+.bal-meta-item .v{font-size:13px;font-family:var(--font-mono);color:var(--soft)}
+.acno{font-family:var(--font-mono);letter-spacing:2px}
+
+/* FORM CARD */
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:520px}
+.form-card h3{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:24px}
+.form-row{margin-bottom:18px}
+.form-row label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px;letter-spacing:.4px}
+.form-row input,.form-row select{width:100%;background:#0e111a;border:1px solid var(--border);border-radius:9px;padding:12px 14px;color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border .2s}
+.form-row input:focus,.form-row select:focus{border-color:var(--accent)}
+.form-row select{appearance:none;cursor:pointer}
+.inline-msg{font-size:12px;margin-top:10px;padding:10px 14px;border-radius:8px}
+.msg-success{background:#22c55e15;color:var(--green);border:1px solid #22c55e30}
+.msg-error{background:#ef444415;color:var(--red);border:1px solid #ef444430}
+.msg-info{background:#4f8ef715;color:var(--accent);border:1px solid #4f8ef730}
+
+/* TABLE */
+.tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.tbl-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:gap}
+.tbl-head h3{font-family:var(--font-head);font-size:16px;font-weight:700}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:12px 20px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);font-weight:500}
+td{padding:13px 20px;font-size:13px;border-bottom:1px solid #ffffff08}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#ffffff04}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-green{background:#22c55e20;color:var(--green)}
+.badge-red{background:#ef444420;color:var(--red)}
+.badge-yellow{background:#f59e0b20;color:var(--yellow)}
+.badge-blue{background:#4f8ef720;color:var(--accent)}
+.cr{color:var(--green)}
+.dr{color:var(--red)}
+
+/* FILTER TABS */
+.filter-tabs{display:flex;gap:8px;margin-bottom:20px}
+.ftab{padding:7px 18px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .15s}
+.ftab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* BENEFICIARY */
+.bene-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:28px}
+.bene-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;align-items:center;justify-content:space-between}
+.bene-info .bname{font-weight:600;font-size:14px;margin-bottom:3px}
+.bene-info .bac{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.del-btn{background:#ef444415;color:var(--red);border:1px solid #ef444430;border-radius:7px;padding:6px 12px;cursor:pointer;font-size:11px;font-weight:600;font-family:var(--font-body);transition:all .2s}
+.del-btn:hover{background:#ef444430}
+
+/* MINI STATEMENT */
+.mini-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #ffffff08}
+.mini-item:last-child{border-bottom:none}
+.mini-type{font-size:12px;color:var(--muted);margin-top:2px}
+.mini-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+
+/* ADMIN */
+.admin-action-btns{display:flex;gap:8px}
+.ab{padding:6px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:var(--font-body);transition:all .2s}
+.ab-block{background:#f59e0b20;color:var(--yellow)}
+.ab-block:hover{background:#f59e0b40}
+.ab-del{background:#ef444415;color:var(--red)}
+.ab-del:hover{background:#ef444430}
+.ab-view{background:#4f8ef720;color:var(--accent)}
+.ab-view:hover{background:#4f8ef740}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:#000000aa;z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto}
+.modal h3{font-family:var(--font-head);font-size:20px;font-weight:800;margin-bottom:24px}
+.modal-close{float:right;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;margin-top:-4px}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage" class="page active">
+  <div class="login-box">
+    <div class="bank-logo">Nexa<span>Bank</span></div>
+    <div class="login-sub">Secure Online Banking Portal</div>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="Enter username">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter password">
+    </div>
+    <button class="btn btn-primary" onclick="doLogin()">Sign In</button>
+    <div class="err-msg" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="appPage" class="page">
+  <div class="layout">
+    <div class="sidebar">
+      <div class="s-logo">Nexa<span>Bank</span></div>
+      <div id="navUser" class="nav-section"></div>
+      <div id="navAdmin" class="nav-section" style="display:none"></div>
+      <div class="s-bottom">
+        <div class="s-user">Logged in as</div>
+        <div class="s-name" id="sidebarName"></div>
+        <button class="logout-btn" onclick="doLogout()">↩ Logout</button>
+      </div>
+    </div>
+    <div class="main-content" id="mainContent"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const DB = {
+  get users(){return JSON.parse(localStorage.getItem('nx_users')||'[]')},
+  set users(v){localStorage.setItem('nx_users',JSON.stringify(v))},
+  get session(){return JSON.parse(sessionStorage.getItem('nx_session')||'null')},
+  set session(v){sessionStorage.setItem('nx_session',JSON.stringify(v))},
+  save(users){this.users=users}
+};
+
+function initDefaults(){
+  if(DB.users.length) return;
+  const users=[
+    {username:'admin',password:'admin123',name:'Bank Admin',accountNo:'ADMIN',accountType:'Admin',balance:0,status:'active',role:'admin',beneficiaries:[],transactions:[],lastLogin:null},
+    {username:'john',password:'john123',name:'John Mathew',accountNo:'NX'+rndAc(),accountType:'Savings',balance:50000,status:'active',role:'customer',beneficiaries:[],transactions:[
+      {date:fmtDate(new Date(Date.now()-86400000*5)),type:'Deposit',amount:50000,to:'Self',from:'Cash',balance:50000,id:uid()}
+    ],lastLogin:null},
+    {username:'priya',password:'priya123',name:'Priya Sharma',accountNo:'NX'+rndAc(),accountType:'Current',balance:120000,status:'active',role:'customer',beneficiaries:[],transactions:[
+      {date:fmtDate(new Date(Date.now()-86400000*3)),type:'Deposit',amount:120000,to:'Self',from:'Cash',balance:120000,id:uid()}
+    ],lastLogin:null}
+  ];
+  DB.users=users;
+}
+function rndAc(){return String(Math.floor(1000000000+Math.random()*9000000000))}
+function uid(){return Math.random().toString(36).substr(2,9)}
+function fmtDate(d){return new Date(d).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+function now(){return fmtDate(new Date())}
+
+initDefaults();
+
+let currentUser=null,currentPanel='';
+
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value.trim();
+  const users=DB.users;
+  const user=users.find(x=>x.username===u&&x.password===p);
+  if(!user){document.getElementById('loginErr').textContent='Invalid username or password.';return}
+  if(user.status==='blocked'){document.getElementById('loginErr').textContent='Your account is blocked. Contact the bank.';return}
+  user.lastLogin=now();
+  DB.save(users);
+  currentUser=user;
+  DB.session={username:u};
+  document.getElementById('loginPage').classList.remove('active');
+  document.getElementById('appPage').classList.add('active');
+  buildSidebar();
+  loadPanel(user.role==='admin'?'adminDash':'dashboard');
+}
+
+function doLogout(){
+  currentUser=null;
+  DB.session=null;
+  document.getElementById('appPage').classList.remove('active');
+  document.getElementById('loginPage').classList.add('active');
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+  document.getElementById('loginErr').textContent='';
+}
+
+function refreshUser(){
+  const users=DB.users;
+  currentUser=users.find(x=>x.username===currentUser.username);
+}
+
+function buildSidebar(){
+  const nu=document.getElementById('navUser');
+  const na=document.getElementById('navAdmin');
+  document.getElementById('sidebarName').textContent=currentUser.name;
+  if(currentUser.role==='customer'){
+    na.style.display='none';
+    nu.innerHTML=`
+      ${navItem('dashboard','⬛','Dashboard')}
+      ${navItem('deposit','💰','Deposit Money')}
+      ${navItem('withdraw','💸','Withdraw')}
+      ${navItem('transfer','🔁','Fund Transfer')}
+      ${navItem('beneficiary','👥','Beneficiaries')}
+      ${navItem('txns','📜','Transactions')}
+      ${navItem('mini','🧮','Mini Statement')}
+      ${navItem('chgpwd','🔐','Change Password')}`;
+  } else {
+    nu.style.display='none';
+    na.style.display='block';
+    na.innerHTML=`
+      ${navItem('adminDash','📊','Dashboard')}
+      ${navItem('adminCusts','👤','Customers')}
+      ${navItem('adminNewCust','🆕','New Customer')}
+      ${navItem('adminChgPwd','🔐','Change Password')}`;
+  }
+  document.querySelectorAll('.nav-item').forEach(el=>{
+    el.addEventListener('click',()=>loadPanel(el.dataset.panel));
+  });
+}
+
+function navItem(id,icon,label){
+  return `<div class="nav-item" data-panel="${id}"><span class="nav-icon">${icon}</span>${label}</div>`;
+}
+
+function setActiveNav(panel){
+  document.querySelectorAll('.nav-item').forEach(el=>{
+    el.classList.toggle('active',el.dataset.panel===panel);
+  });
+}
+
+function loadPanel(panel){
+  currentPanel=panel;
+  setActiveNav(panel);
+  const mc=document.getElementById('mainContent');
+  mc.innerHTML=panels[panel]?panels[panel]():'<div>Not found</div>';
+  if(panelInits[panel]) panelInits[panel]();
+}
+
+/* ======================== PANELS ======================== */
+const panels={
+
+dashboard:()=>`
+<div class="page-title">Dashboard</div>
+<div class="page-sub">Welcome back, ${currentUser.name}</div>
+<div class="balance-card" style="margin-bottom:28px">
+  <div class="bal-label">Available Balance</div>
+  <div class="bal-amount">₹${fmt(currentUser.balance)}</div>
+  <div class="bal-meta">
+    <div class="bal-meta-item"><div class="k">Account No.</div><div class="v acno">${currentUser.accountNo}</div></div>
+    <div class="bal-meta-item"><div class="k">Account Type</div><div class="v">${currentUser.accountType}</div></div>
+    <div class="bal-meta-item"><div class="k">Status</div><div class="v"><span class="badge badge-green">Active</span></div></div>
+    <div class="bal-meta-item"><div class="k">Last Login</div><div class="v">${currentUser.lastLogin||'First login'}</div></div>
+  </div>
+</div>
+<div class="cards-row">
+  <div class="stat-card"><div class="label">Total Credits</div><div class="value green">₹${fmt(currentUser.transactions.filter(t=>t.type==='Deposit'||t.type==='Transfer In').reduce((a,t)=>a+t.amount,0))}</div></div>
+  <div class="stat-card"><div class="label">Total Debits</div><div class="value" style="color:var(--red)">₹${fmt(currentUser.transactions.filter(t=>t.type==='Withdraw'||t.type==='Transfer Out').reduce((a,t)=>a+t.amount,0))}</div></div>
+  <div class="stat-card"><div class="label">Transactions</div><div class="value blue">${currentUser.transactions.length}</div></div>
+  <div class="stat-card"><div class="label">Beneficiaries</div><div class="value">${currentUser.beneficiaries.length}</div></div>
+</div>
+<div class="mini-wrap">
+  <h3 style="font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:16px">Recent Activity</h3>
+  ${currentUser.transactions.slice(-5).reverse().map(txCard).join('')||'<div style="color:var(--muted);font-size:13px">No transactions yet.</div>'}
+</div>`,
+
+deposit:()=>`
+<div class="page-title">Deposit Money</div>
+<div class="page-sub">Add funds to your account</div>
+<div class="form-card">
+  <h3>Cash Deposit</h3>
+  <div class="form-row"><label>Account Number</label><input value="${currentUser.accountNo}" readonly></div>
+  <div class="form-row"><label>Deposit Type</label><select id="depType"><option>Cash Deposit</option><option>Self Transfer</option><option>Cheque</option></select></div>
+  <div class="form-row"><label>Amount (₹)</label><input type="number" id="depAmt" placeholder="Enter amount" min="1"></div>
+  <div class="form-row"><label>Remarks</label><input id="depRem" placeholder="Optional remarks"></div>
+  <button class="btn btn-success" onclick="doDeposit()">Deposit</button>
+  <div id="depMsg"></div>
+</div>`,
+
+withdraw:()=>`
+<div class="page-title">Withdraw Money</div>
+<div class="page-sub">Minimum balance ₹1,000 must be maintained</div>
+<div class="form-card">
+  <h3>ATM / Counter Withdrawal</h3>
+  <div class="form-row"><label>Available Balance</label><input value="₹${fmt(currentUser.balance)}" readonly></div>
+  <div class="form-row"><label>Withdraw Type</label><select id="wdType"><option>ATM Withdrawal</option><option>Counter Withdrawal</option></select></div>
+  <div class="form-row"><label>Amount (₹)</label><input type="number" id="wdAmt" placeholder="Enter amount" min="1"></div>
+  <div class="form-row"><label>Remarks</label><input id="wdRem" placeholder="Optional remarks"></div>
+  <button class="btn btn-primary" onclick="doWithdraw()">Withdraw</button>
+  <div id="wdMsg"></div>
+</div>`,
+
+transfer:()=>`
+<div class="page-title">Fund Transfer</div>
+<div class="page-sub">Transfer to same bank or other bank</div>
+<div class="form-card">
+  <h3>Transfer Funds</h3>
+  <div class="form-row"><label>Transfer To</label>
+    <select id="trMode" onchange="trModeChange()">
+      <option value="bene">Saved Beneficiary</option>
+      <option value="same">Same Bank (Account No.)</option>
+      <option value="other">Other Bank</option>
+    </select>
+  </div>
+  <div id="beneSelect" class="form-row"><label>Select Beneficiary</label>
+    <select id="trBene">${currentUser.beneficiaries.map(b=>`<option value="${b.accountNo}">${b.name} — ${b.accountNo}</option>`).join('')||'<option disabled>No saved beneficiaries</option>'}</select>
+  </div>
+  <div id="manualAc" class="form-row" style="display:none"><label>Account Number</label><input id="trAcNo" placeholder="Enter account number"></div>
+  <div id="otherBank" class="form-row" style="display:none"><label>Bank Name</label><input id="trBankName" placeholder="Enter bank name"></div>
+  <div class="form-row"><label>Amount (₹)</label><input type="number" id="trAmt" placeholder="Enter amount" min="1"></div>
+  <div class="form-row"><label>Remarks</label><input id="trRem" placeholder="Optional"></div>
+  <div class="form-row"><label>Your Password (confirm)</label><input type="password" id="trPwd" placeholder="Enter your password"></div>
+  <button class="btn btn-primary" onclick="doTransfer()">Transfer</button>
+  <div id="trMsg"></div>
+</div>`,
+
+beneficiary:()=>`
+<div class="page-title">Beneficiary Management</div>
+<div class="page-sub">Manage your saved beneficiaries</div>
+<div class="bene-list" id="beneList">${renderBenes()}</div>
+<div class="form-card">
+  <h3>Add Beneficiary</h3>
+  <div class="form-row"><label>Beneficiary Name</label><input id="bnName" placeholder="Full name"></div>
+  <div class="form-row"><label>Account Number</label><input id="bnAc" placeholder="Account number"></div>
+  <div class="form-row"><label>Bank</label><input id="bnBank" placeholder="Bank name (optional)"></div>
+  <button class="btn btn-primary" onclick="addBene()">Add Beneficiary</button>
+  <div id="beneMsg"></div>
+</div>`,
+
+txns:()=>`
+<div class="page-title">Transaction History</div>
+<div class="page-sub">Complete passbook</div>
+<div class="filter-tabs">
+  <button class="ftab active" onclick="filterTx('all',this)">All</button>
+  <button class="ftab" onclick="filterTx('credit',this)">Credits</button>
+  <button class="ftab" onclick="filterTx('debit',this)">Debits</button>
+</div>
+<div class="tbl-wrap">
+  <div class="tbl-head"><h3>All Transactions</h3><span style="font-size:12px;color:var(--muted)">${currentUser.transactions.length} records</span></div>
+  <div style="overflow-x:auto"><table>
+    <tr><th>Date</th><th>Type</th><th>Details</th><th>Amount</th><th>Balance</th></tr>
+    <tbody id="txBody">${renderTxRows(currentUser.transactions.slice().reverse())}</tbody>
+  </table></div>
+</div>`,
+
+mini:()=>`
+<div class="page-title">Mini Statement</div>
+<div class="page-sub">Last 5 transactions</div>
+<div class="mini-wrap">
+  ${currentUser.transactions.slice(-5).reverse().map(txCard).join('')||'<div style="color:var(--muted);font-size:13px">No transactions found.</div>'}
+</div>`,
+
+chgpwd:()=>`
+<div class="page-title">Change Password</div>
+<div class="page-sub">Update your login credentials</div>
+<div class="form-card">
+  <h3>Change Password</h3>
+  <div class="form-row"><label>Current Password</label><input type="password" id="cpOld" placeholder="Current password"></div>
+  <div class="form-row"><label>New Password</label><input type="password" id="cpNew" placeholder="New password (min 6 chars)"></div>
+  <div class="form-row"><label>Confirm New Password</label><input type="password" id="cpConf" placeholder="Confirm new password"></div>
+  <button class="btn btn-primary" onclick="doChangePwd()">Update Password</button>
+  <div id="cpMsg"></div>
+</div>`,
+
+adminDash:()=>{
+  const users=DB.users.filter(u=>u.role==='customer');
+  const total=users.reduce((a,u)=>a+u.balance,0);
+  const txCount=users.reduce((a,u)=>a+u.transactions.length,0);
+  return`<div class="page-title">Admin Dashboard</div>
+<div class="page-sub">Bank Manager Overview</div>
+<div class="cards-row">
+  <div class="stat-card"><div class="label">Total Customers</div><div class="value blue">${users.length}</div></div>
+  <div class="stat-card"><div class="label">Total Bank Balance</div><div class="value green">₹${fmt(total)}</div></div>
+  <div class="stat-card"><div class="label">Total Transactions</div><div class="value">${txCount}</div></div>
+  <div class="stat-card"><div class="label">Active Accounts</div><div class="value green">${users.filter(u=>u.status==='active').length}</div></div>
+  <div class="stat-card"><div class="label">Blocked Accounts</div><div class="value" style="color:var(--red)">${users.filter(u=>u.status==='blocked').length}</div></div>
+</div>`;
+},
+
+adminCusts:()=>{
+  const users=DB.users.filter(u=>u.role==='customer');
+  return`<div class="page-title">All Customers</div>
+<div class="page-sub">Manage customer accounts</div>
+<div class="tbl-wrap">
+  <div class="tbl-head"><h3>Customers (${users.length})</h3></div>
+  <div style="overflow-x:auto"><table>
+    <tr><th>Name</th><th>Username</th><th>Account No</th><th>Type</th><th>Balance</th><th>Status</th><th>Actions</th></tr>
+    <tbody id="custBody">${users.map(u=>`<tr>
+      <td>${u.name}</td><td style="font-family:var(--font-mono);font-size:12px">${u.username}</td>
+      <td style="font-family:var(--font-mono);font-size:12px">${u.accountNo}</td>
+      <td>${u.accountType}</td><td>₹${fmt(u.balance)}</td>
+      <td><span class="badge ${u.status==='active'?'badge-green':'badge-red'}">${u.status}</span></td>
+      <td><div class="admin-action-btns">
+        <button class="ab ab-view" onclick="adminViewCust('${u.username}')">View</button>
+        <button class="ab ab-block" onclick="adminToggleBlock('${u.username}')">${u.status==='active'?'Block':'Unblock'}</button>
+        <button class="ab ab-del" onclick="adminDelCust('${u.username}')">Delete</button>
+      </div></td>
+    </tr>`).join('')}</tbody>
+  </table></div>
+</div>`;
+},
+
+adminNewCust:()=>`
+<div class="page-title">Open New Account</div>
+<div class="page-sub">Create a new customer account</div>
+<div class="form-card">
+  <h3>Customer Details</h3>
+  <div class="form-row"><label>Full Name</label><input id="ncName" placeholder="Customer full name"></div>
+  <div class="form-row"><label>Username</label><input id="ncUser" placeholder="Login username"></div>
+  <div class="form-row"><label>Password</label><input type="password" id="ncPwd" placeholder="Initial password"></div>
+  <div class="form-row"><label>Account Type</label><select id="ncType"><option>Savings</option><option>Current</option></select></div>
+  <div class="form-row"><label>Initial Deposit (₹)</label><input type="number" id="ncBal" placeholder="Min ₹1,000" min="1000"></div>
+  <button class="btn btn-success" onclick="adminCreateCust()">Create Account</button>
+  <div id="ncMsg"></div>
+</div>`,
+
+adminChgPwd:()=>`
+<div class="page-title">Change Password</div>
+<div class="page-sub">Update admin password</div>
+<div class="form-card">
+  <h3>Change Admin Password</h3>
+  <div class="form-row"><label>Current Password</label><input type="password" id="cpOld" placeholder="Current password"></div>
+  <div class="form-row"><label>New Password</label><input type="password" id="cpNew" placeholder="New password"></div>
+  <div class="form-row"><label>Confirm</label><input type="password" id="cpConf" placeholder="Confirm"></div>
+  <button class="btn btn-primary" onclick="doChangePwd()">Update</button>
+  <div id="cpMsg"></div>
+</div>`
+};
+
+const panelInits={};
+
+/* ======================== HELPERS ======================== */
+function fmt(n){return Number(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
+
+function txCard(t){
+  const isCredit=t.type==='Deposit'||t.type==='Transfer In';
+  return`<div class="mini-item">
+    <div><div style="font-size:14px;font-weight:600">${t.type}</div><div class="mini-type">${t.date} · ${t.type==='Transfer Out'?'To: '+t.to:t.type==='Transfer In'?'From: '+t.from:'—'}</div></div>
+    <div style="text-align:right">
+      <div style="font-family:var(--font-mono);font-size:14px;font-weight:600" class="${isCredit?'cr':'dr'}">${isCredit?'+':'−'}₹${fmt(t.amount)}</div>
+      <div style="font-size:11px;color:var(--muted)">Bal: ₹${fmt(t.balance)}</div>
+    </div>
+  </div>`;
+}
+
+function renderTxRows(txs){
+  if(!txs.length) return`<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">No transactions found.</td></tr>`;
+  const isCredit=t=>t.type==='Deposit'||t.type==='Transfer In';
+  return txs.map(t=>`<tr>
+    <td style="font-size:12px;color:var(--muted)">${t.date}</td>
+    <td><span class="badge ${isCredit(t)?'badge-green':'badge-red'}">${t.type}</span></td>
+    <td style="font-size:12px;color:var(--muted)">${t.type==='Transfer Out'?'To: '+t.to:t.type==='Transfer In'?'From: '+t.from:t.from||'—'}</td>
+    <td style="font-family:var(--font-mono)" class="${isCredit(t)?'cr':'dr'}">${isCredit(t)?'+':'−'}₹${fmt(t.amount)}</td>
+    <td style="font-family:var(--font-mono);font-size:12px">₹${fmt(t.balance)}</td>
+  </tr>`).join('');
+}
+
+function renderBenes(){
+  if(!currentUser.beneficiaries.length) return`<div style="color:var(--muted);font-size:13px;padding:16px 0">No beneficiaries added yet.</div>`;
+  return currentUser.beneficiaries.map(b=>`
+    <div class="bene-card">
+      <div class="bene-info">
+        <div class="bname">${b.name}</div>
+        <div class="bac">${b.accountNo}${b.bank?' · '+b.bank:''}</div>
+      </div>
+      <button class="del-btn" onclick="delBene('${b.accountNo}')">Remove</button>
+    </div>`).join('');
+}
+
+function filterTx(type,btn){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  refreshUser();
+  let txs=currentUser.transactions.slice().reverse();
+  if(type==='credit') txs=txs.filter(t=>t.type==='Deposit'||t.type==='Transfer In');
+  if(type==='debit') txs=txs.filter(t=>t.type==='Withdraw'||t.type==='Transfer Out');
+  document.getElementById('txBody').innerHTML=renderTxRows(txs);
+}
+
+function trModeChange(){
+  const v=document.getElementById('trMode').value;
+  document.getElementById('beneSelect').style.display=v==='bene'?'':'none';
+  document.getElementById('manualAc').style.display=v==='bene'?'none':'';
+  document.getElementById('otherBank').style.display=v==='other'?'':'none';
+}
+
+/* ======================== ACTIONS ======================== */
+function doDeposit(){
+  const amt=parseFloat(document.getElementById('depAmt').value);
+  const type=document.getElementById('depType').value;
+  const rem=document.getElementById('depRem').value||type;
+  const msg=document.getElementById('depMsg');
+  if(!amt||amt<=0){msg.innerHTML=`<div class="inline-msg msg-error">Enter a valid amount.</div>`;return}
+  const users=DB.users;
+  const u=users.find(x=>x.username===currentUser.username);
+  u.balance+=amt;
+  u.transactions.push({date:now(),type:'Deposit',amount:amt,from:rem,to:'Self',balance:u.balance,id:uid()});
+  DB.save(users);
+  currentUser=u;
+  msg.innerHTML=`<div class="inline-msg msg-success">₹${fmt(amt)} deposited successfully! New balance: ₹${fmt(u.balance)}</div>`;
+  document.getElementById('depAmt').value='';
+}
+
+function doWithdraw(){
+  const amt=parseFloat(document.getElementById('wdAmt').value);
+  const type=document.getElementById('wdType').value;
+  const rem=document.getElementById('wdRem').value||type;
+  const msg=document.getElementById('wdMsg');
+  if(!amt||amt<=0){msg.innerHTML=`<div class="inline-msg msg-error">Enter a valid amount.</div>`;return}
+  const users=DB.users;
+  const u=users.find(x=>x.username===currentUser.username);
+  if(u.balance-amt<1000){msg.innerHTML=`<div class="inline-msg msg-error">Insufficient balance. Min ₹1,000 must remain. Available to withdraw: ₹${fmt(u.balance-1000)}</div>`;return}
+  u.balance-=amt;
+  u.transactions.push({date:now(),type:'Withdraw',amount:amt,from:type,to:'Self',balance:u.balance,id:uid()});
+  DB.save(users);
+  currentUser=u;
+  msg.innerHTML=`<div class="inline-msg msg-success">₹${fmt(amt)} withdrawn. Remaining: ₹${fmt(u.balance)}</div>`;
+  document.getElementById('wdAmt').value='';
+}
+
+function doTransfer(){
+  const mode=document.getElementById('trMode').value;
+  const amt=parseFloat(document.getElementById('trAmt').value);
+  const pwd=document.getElementById('trPwd').value;
+  const rem=document.getElementById('trRem').value;
+  const msg=document.getElementById('trMsg');
+  if(!amt||amt<=0){msg.innerHTML=`<div class="inline-msg msg-error">Enter a valid amount.</div>`;return}
+  if(pwd!==currentUser.password){msg.innerHTML=`<div class="inline-msg msg-error">Incorrect password.</div>`;return}
+  const users=DB.users;
+  const sender=users.find(x=>x.username===currentUser.username);
+  if(sender.balance-amt<1000){msg.innerHTML=`<div class="inline-msg msg-error">Insufficient balance. Min ₹1,000 must remain.</div>`;return}
+  let toAc='',toName='Other Bank';
+  if(mode==='bene'){
+    toAc=document.getElementById('trBene').value;
+    if(!toAc){msg.innerHTML=`<div class="inline-msg msg-error">No beneficiary selected.</div>`;return}
+    const b=currentUser.beneficiaries.find(x=>x.accountNo===toAc);
+    toName=b?b.name:'Beneficiary';
+  } else {
+    toAc=document.getElementById('trAcNo').value.trim();
+    if(!toAc){msg.innerHTML=`<div class="inline-msg msg-error">Enter account number.</div>`;return}
+    if(mode==='other'){toName=document.getElementById('trBankName').value||'Other Bank';}
+    else{const rec=users.find(x=>x.accountNo===toAc);if(rec)toName=rec.name;}
+  }
+  sender.balance-=amt;
+  sender.transactions.push({date:now(),type:'Transfer Out',amount:amt,to:toName+' ('+toAc+')',from:'Self',balance:sender.balance,id:uid()});
+  if(mode!=='other'){
+    const rec=users.find(x=>x.accountNo===toAc);
+    if(rec){rec.balance+=amt;rec.transactions.push({date:now(),type:'Transfer In',amount:amt,from:sender.name+' ('+sender.accountNo+')',to:'Self',balance:rec.balance,id:uid()});}
+  }
+  DB.save(users);
+  currentUser=sender;
+  msg.innerHTML=`<div class="inline-msg msg-success">₹${fmt(amt)} transferred to ${toName}. Balance: ₹${fmt(sender.balance)}</div>`;
+  document.getElementById('trAmt').value='';
+  document.getElementById('trPwd').value='';
+}
+
+function addBene(){
+  const name=document.getElementById('bnName').value.trim();
+  const ac=document.getElementById('bnAc').value.trim();
+  const bank=document.getElementById('bnBank').value.trim();
+  const msg=document.getElementById('beneMsg');
+  if(!name||!ac){msg.innerHTML=`<div class="inline-msg msg-error">Name and account number required.</div>`;return}
+  const users=DB.users;
+  const u=users.find(x=>x.username===currentUser.username);
+  if(u.beneficiaries.find(b=>b.accountNo===ac)){msg.innerHTML=`<div class="inline-msg msg-error">Beneficiary already exists.</div>`;return}
+  if(ac===u.accountNo){msg.innerHTML=`<div class="inline-msg msg-error">Cannot add yourself as beneficiary.</div>`;return}
+  u.beneficiaries.push({name,accountNo:ac,bank});
+  DB.save(users);
+  currentUser=u;
+  document.getElementById('beneList').innerHTML=renderBenes();
+  msg.innerHTML=`<div class="inline-msg msg-success">Beneficiary added.</div>`;
+  document.getElementById('bnName').value='';document.getElementById('bnAc').value='';document.getElementById('bnBank').value='';
+}
+
+function delBene(ac){
+  const users=DB.users;
+  const u=users.find(x=>x.username===currentUser.username);
+  u.beneficiaries=u.beneficiaries.filter(b=>b.accountNo!==ac);
+  DB.save(users);
+  currentUser=u;
+  document.getElementById('beneList').innerHTML=renderBenes();
+}
+
+function doChangePwd(){
+  const old=document.getElementById('cpOld').value;
+  const np=document.getElementById('cpNew').value;
+  const cf=document.getElementById('cpConf').value;
+  const msg=document.getElementById('cpMsg');
+  if(old!==currentUser.password){msg.innerHTML=`<div class="inline-msg msg-error">Current password incorrect.</div>`;return}
+  if(np.length<6){msg.innerHTML=`<div class="inline-msg msg-error">Password must be at least 6 characters.</div>`;return}
+  if(np!==cf){msg.innerHTML=`<div class="inline-msg msg-error">Passwords do not match.</div>`;return}
+  const users=DB.users;
+  const u=users.find(x=>x.username===currentUser.username);
+  u.password=np;DB.save(users);currentUser=u;
+  msg.innerHTML=`<div class="inline-msg msg-success">Password changed successfully.</div>`;
+  document.getElementById('cpOld').value='';document.getElementById('cpNew').value='';document.getElementById('cpConf').value='';
+}
+
+/* ======================== ADMIN ======================== */
+function adminToggleBlock(username){
+  const users=DB.users;
+  const u=users.find(x=>x.username===username);
+  u.status=u.status==='active'?'blocked':'active';
+  DB.save(users);
+  loadPanel('adminCusts');
+}
+
+function adminDelCust(username){
+  if(!confirm(`Delete customer "${username}"? This cannot be undone.`)) return;
+  let users=DB.users;
+  users=users.filter(x=>x.username!==username);
+  DB.users=users;
+  loadPanel('adminCusts');
+}
+
+function adminCreateCust(){
+  const name=document.getElementById('ncName').value.trim();
+  const username=document.getElementById('ncUser').value.trim();
+  const pwd=document.getElementById('ncPwd').value;
+  const type=document.getElementById('ncType').value;
+  const bal=parseFloat(document.getElementById('ncBal').value);
+  const msg=document.getElementById('ncMsg');
+  if(!name||!username||!pwd){msg.innerHTML=`<div class="inline-msg msg-error">All fields required.</div>`;return}
+  if(isNaN(bal)||bal<1000){msg.innerHTML=`<div class="inline-msg msg-error">Minimum initial deposit ₹1,000.</div>`;return}
+  const users=DB.users;
+  if(users.find(u=>u.username===username)){msg.innerHTML=`<div class="inline-msg msg-error">Username already exists.</div>`;return}
+  const acNo='NX'+rndAc();
+  users.push({username,password:pwd,name,accountNo:acNo,accountType:type,balance:bal,status:'active',role:'customer',beneficiaries:[],transactions:[{date:now(),type:'Deposit',amount:bal,from:'Account Opening',to:'Self',balance:bal,id:uid()}],lastLogin:null});
+  DB.save(users);
+  msg.innerHTML=`<div class="inline-msg msg-success">Account created! A/C No: ${acNo}</div>`;
+  ['ncName','ncUser','ncPwd','ncBal'].forEach(id=>{document.getElementById(id).value='';});
+}
+
+function adminViewCust(username){
+  const u=DB.users.find(x=>x.username===username);
+  document.getElementById('modalContent').innerHTML=`
+    <h3>${u.name}</h3>
+    <div style="margin-bottom:20px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+        <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Username</div><div style="font-family:var(--font-mono);font-size:13px">${u.username}</div></div>
+        <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Account No</div><div style="font-family:var(--font-mono);font-size:13px">${u.accountNo}</div></div>
+        <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Type</div><div style="font-size:13px">${u.accountType}</div></div>
+        <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Balance</div><div style="font-family:var(--font-mono);font-size:15px;color:var(--green);font-weight:700">₹${fmt(u.balance)}</div></div>
+        <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Status</div><span class="badge ${u.status==='active'?'badge-green':'badge-red'}">${u.status}</span></div>
+        <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px">Last Login</div><div style="font-size:12px">${u.lastLogin||'Never'}</div></div>
+      </div>
+      <h4 style="font-family:var(--font-head);font-size:14px;margin-bottom:12px">Last 5 Transactions</h4>
+      ${u.transactions.slice(-5).reverse().map(txCard).join('')||'<div style="color:var(--muted);font-size:13px">No transactions.</div>'}
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+</script>
+</body>
+</html>

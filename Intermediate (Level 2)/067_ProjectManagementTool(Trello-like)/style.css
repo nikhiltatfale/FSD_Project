@@ -1,0 +1,53 @@
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f0f0f;--surface:#1a1a1a;--card:#242424;--border:#2e2e2e;--accent:#f0c040;--text:#e8e8e8;--muted:#888;--danger:#e05555;--low:#4caf50;--med:#ff9800;--high:#f44336}
+body{background:var(--bg);color:var(--text);font-family:'Courier New',monospace;min-height:100vh;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:10}
+.logo{font-size:1.3rem;font-weight:700;letter-spacing:3px;color:var(--accent);text-transform:uppercase}
+.header-actions{display:flex;gap:10px}
+button{cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:7px 14px;font-family:inherit;font-size:.85rem;transition:all .15s}
+button:hover{border-color:var(--accent);color:var(--accent)}
+#adminToggle.active{border-color:var(--accent);color:var(--accent);background:#1f1a00}
+#adminPanel{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;background:#111;border-bottom:1px solid var(--border);gap:20px;flex-wrap:wrap}
+#adminPanel.hidden{display:none}
+.admin-stats{font-size:.82rem;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap}
+.admin-stats span{color:var(--text)}
+.admin-btns{display:flex;gap:8px;flex-wrap:wrap}
+#clearBoard{border-color:var(--danger);color:var(--danger)}
+#clearBoard:hover{background:#2a0a0a}
+#importLabel{cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:7px 14px;font-size:.85rem;transition:all .15s}
+#importLabel:hover{border-color:var(--accent);color:var(--accent)}
+#importFile{display:none}
+main{display:flex;flex-direction:row;gap:16px;padding:24px;overflow-x:auto;flex:1;align-items:flex-start}
+.list{background:var(--surface);border:1px solid var(--border);width:280px;min-width:280px;border-radius:4px;display:flex;flex-direction:column}
+.list-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border)}
+.list-title{font-weight:700;font-size:.95rem;letter-spacing:1px;cursor:pointer;flex:1}
+.list-title:focus{outline:none;border-bottom:1px solid var(--accent)}
+.list-del{background:none;border:none;color:var(--danger);font-size:1rem;padding:2px 6px;display:none}
+.list-del.visible{display:block}
+.cards{min-height:40px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.cards.dragover{background:#1f1f1f;border:1px dashed var(--accent)}
+.card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border);padding:10px 12px;cursor:grab;position:relative}
+.card.priority-Low{border-left-color:var(--low)}
+.card.priority-Medium{border-left-color:var(--med)}
+.card.priority-High{border-left-color:var(--high)}
+.card-title{font-size:.88rem;font-weight:600;margin-bottom:4px}
+.card-meta{font-size:.75rem;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.card-actions{display:flex;gap:4px;margin-top:8px}
+.card-actions button{padding:3px 8px;font-size:.75rem}
+.card-del{color:var(--danger);border-color:var(--danger);display:none}
+.card-del.visible{display:inline-block}
+.list-footer{padding:10px}
+.list-footer button{width:100%;background:none;border:1px dashed var(--border);color:var(--muted)}
+.list-footer button:hover{border-color:var(--accent);color:var(--accent)}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:100}
+#modal.hidden{display:none}
+.modal-box{background:var(--surface);border:1px solid var(--border);padding:24px;width:360px;display:flex;flex-direction:column;gap:12px}
+.modal-box h3{color:var(--accent);letter-spacing:2px;font-size:1rem}
+.modal-box input,.modal-box textarea,.modal-box select{background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 10px;font-family:inherit;font-size:.85rem;width:100%}
+.modal-box textarea{resize:vertical;min-height:70px}
+.modal-box input:focus,.modal-box textarea:focus,.modal-box select:focus{outline:none;border-color:var(--accent)}
+.modal-actions{display:flex;gap:10px}
+#saveCard{border-color:var(--accent);color:var(--accent)}
+::-webkit-scrollbar{height:6px;width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border)}

@@ -1,0 +1,394 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);font-size:15px;color:var(--color-text-primary);background:transparent}
+.screen{display:none;padding:1.5rem;max-width:600px;margin:0 auto}
+.screen.active{display:block}
+h2{font-size:18px;font-weight:500;margin-bottom:1.25rem}
+h3{font-size:16px;font-weight:500;margin-bottom:1rem}
+input,select{width:100%;padding:8px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px;margin-bottom:10px}
+button{padding:8px 16px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px;cursor:pointer;margin-right:8px;margin-bottom:8px}
+button:hover{background:var(--color-background-secondary)}
+.btn-primary{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.btn-primary:hover{opacity:0.85}
+.btn-danger{border-color:#A32D2D;color:#A32D2D}
+.btn-success{border-color:#3B6D11;color:#3B6D11}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:10px}
+.badge{display:inline-block;padding:3px 10px;border-radius:var(--border-radius-md);font-size:12px;font-weight:500}
+.badge-on{background:#EAF3DE;color:#3B6D11}
+.badge-off{background:#FCEBEB;color:#A32D2D}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center}
+.stat-label{font-size:12px;color:var(--color-text-secondary)}
+.stat-val{font-size:22px;font-weight:500}
+.cand-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.cand-row:last-child{border-bottom:none}
+.progress-bar{height:6px;background:var(--color-background-secondary);border-radius:3px;margin-top:4px}
+.progress-fill{height:6px;background:var(--color-text-primary);border-radius:3px;transition:width 0.3s}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:1rem}
+.role-card{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.5rem;text-align:center;cursor:pointer}
+.role-card:hover{background:var(--color-background-secondary)}
+.role-card h3{margin-bottom:6px}
+.role-card p{font-size:13px;color:var(--color-text-secondary)}
+.voter-row{font-size:13px;padding:4px 0;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+.error{color:#A32D2D;font-size:13px;margin-bottom:8px}
+.success-icon{font-size:48px;margin-bottom:1rem}
+.section-sep{border-top:0.5px solid var(--color-border-tertiary);margin:1.25rem 0}
+.nav-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+</style>
+
+<div id="s-home" class="screen active">
+  <h2>Online Voting Portal</h2>
+  <p style="color:var(--color-text-secondary);margin-bottom:1.5rem">Select your role to continue</p>
+  <div class="role-grid">
+    <div class="role-card" onclick="show('s-voter-login')">
+      <h3>Voter</h3>
+      <p>Cast your vote using your Voter ID</p>
+    </div>
+    <div class="role-card" onclick="show('s-admin-login')">
+      <h3>Admin</h3>
+      <p>Manage election and view results</p>
+    </div>
+  </div>
+</div>
+
+<div id="s-voter-login" class="screen">
+  <div class="nav-bar">
+    <h2 style="margin:0">Voter Login</h2>
+    <button onclick="show('s-home')">Back</button>
+  </div>
+  <p style="color:var(--color-text-secondary);font-size:13px;margin-bottom:1rem">Status: <span id="vl-status-badge"></span></p>
+  <input id="voter-id-input" placeholder="Enter your Voter ID (e.g. VOTER123)" />
+  <div id="vl-error" class="error" style="display:none"></div>
+  <button class="btn-primary" onclick="voterLogin()">Proceed to Vote</button>
+</div>
+
+<div id="s-voting" class="screen">
+  <div class="nav-bar">
+    <div>
+      <h2 style="margin:0">Cast Your Vote</h2>
+      <p style="font-size:13px;color:var(--color-text-secondary)">Voter: <span id="v-voter-id"></span></p>
+    </div>
+    <div id="v-timer" style="font-size:20px;font-weight:500"></div>
+  </div>
+  <div id="v-candidates-list"></div>
+  <div id="v-error" class="error" style="display:none"></div>
+</div>
+
+<div id="s-vote-success" class="screen" style="text-align:center;padding-top:3rem">
+  <div class="success-icon">&#10003;</div>
+  <h2>Vote Cast Successfully</h2>
+  <p style="color:var(--color-text-secondary);margin-bottom:0.5rem">Voted for: <strong id="vs-candidate"></strong></p>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1.5rem">Time: <span id="vs-time"></span></p>
+  <button class="btn-primary" onclick="show('s-home')">Return to Home</button>
+</div>
+
+<div id="s-admin-login" class="screen">
+  <div class="nav-bar">
+    <h2 style="margin:0">Admin Login</h2>
+    <button onclick="show('s-home')">Back</button>
+  </div>
+  <input id="a-user" placeholder="Username" />
+  <input id="a-pass" type="password" placeholder="Password" />
+  <div id="al-error" class="error" style="display:none"></div>
+  <button class="btn-primary" onclick="adminLogin()">Login</button>
+</div>
+
+<div id="s-admin" class="screen">
+  <div class="nav-bar">
+    <h2 style="margin:0">Admin Dashboard</h2>
+    <div>
+      <span id="ad-status-badge"></span>
+      <button onclick="adminLogout()" style="margin-left:8px">Logout</button>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat"><div class="stat-label">Total Votes</div><div class="stat-val" id="ad-total">0</div></div>
+    <div class="stat"><div class="stat-label">Candidates</div><div class="stat-val" id="ad-cand-count">0</div></div>
+    <div class="stat"><div class="stat-label">Winner</div><div class="stat-val" id="ad-winner" style="font-size:14px;padding-top:4px">—</div></div>
+  </div>
+
+  <div style="margin-bottom:1rem">
+    <button id="ad-toggle-btn" class="btn-primary" onclick="toggleVoting()">Start Voting</button>
+    <button class="btn-danger" onclick="resetElection()">Reset Election</button>
+    <button onclick="downloadResults()">Download Results</button>
+  </div>
+
+  <div class="section-sep"></div>
+  <h3>Add Candidate</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <input id="ac-name" placeholder="Candidate name" style="margin:0" />
+    <input id="ac-party" placeholder="Party name" style="margin:0" />
+  </div>
+  <button class="btn-success" style="margin-top:8px" onclick="addCandidate()">Add Candidate</button>
+  <div id="ac-error" class="error" style="display:none;margin-top:6px"></div>
+
+  <div class="section-sep"></div>
+  <h3>Candidates &amp; Results</h3>
+  <input id="ad-search" placeholder="Search candidates..." oninput="renderAdminCandidates()" style="margin-bottom:10px" />
+  <div id="ad-candidates-list"></div>
+
+  <div class="section-sep"></div>
+  <h3>Voter Log (<span id="ad-voter-count">0</span>)</h3>
+  <div id="ad-voter-log"></div>
+</div>
+
+<script>
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'admin123';
+
+function getData(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+function setData(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+function initData(){
+  if(!getData('candidates')){
+    setData('candidates',[
+      {id:1,name:'Ananya Sharma',party:'Progressive Alliance',votes:0},
+      {id:2,name:'Rohan Mehta',party:'National Front',votes:0},
+      {id:3,name:'Priya Iyer',party:'Democratic Unity',votes:0}
+    ]);
+  }
+  if(!getData('votedVoters')) setData('votedVoters',[]);
+  if(!getData('votingStatus')) setData('votingStatus','stopped');
+  if(!getData('voterLog')) setData('voterLog',[]);
+}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='s-voter-login') updateVoterLoginStatus();
+  if(id==='s-admin') renderAdmin();
+}
+
+function updateVoterLoginStatus(){
+  const status = getData('votingStatus');
+  const el = document.getElementById('vl-status-badge');
+  el.innerHTML = status==='started'
+    ? '<span class="badge badge-on">Voting Open</span>'
+    : '<span class="badge badge-off">Voting Closed</span>';
+}
+
+let currentVoterId = null;
+let timerInterval = null;
+
+function voterLogin(){
+  const id = document.getElementById('voter-id-input').value.trim().toUpperCase();
+  const errEl = document.getElementById('vl-error');
+  errEl.style.display='none';
+  if(!id){errEl.textContent='Please enter your Voter ID.';errEl.style.display='block';return;}
+  if(getData('votingStatus')!=='started'){errEl.textContent='Voting is currently closed.';errEl.style.display='block';return;}
+  const voted = getData('votedVoters')||[];
+  if(voted.includes(id)){errEl.textContent='You have already cast your vote.';errEl.style.display='block';return;}
+  currentVoterId = id;
+  document.getElementById('voter-id-input').value='';
+  showVotingPage();
+}
+
+function showVotingPage(){
+  document.getElementById('v-voter-id').textContent = currentVoterId;
+  renderVotingCandidates();
+  show('s-voting');
+  startTimer();
+}
+
+function renderVotingCandidates(){
+  const candidates = getData('candidates')||[];
+  const el = document.getElementById('v-candidates-list');
+  el.innerHTML = candidates.map(c=>`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:500">${c.name}</div>
+          <div style="font-size:13px;color:var(--color-text-secondary)">${c.party}</div>
+        </div>
+        <button class="btn-primary" onclick="castVote(${c.id})">Vote</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+  let t = 30;
+  const el = document.getElementById('v-timer');
+  el.textContent = `${t}s`;
+  timerInterval = setInterval(()=>{
+    t--;
+    el.textContent = `${t}s`;
+    if(t<=0){clearInterval(timerInterval);el.textContent='';castVote(null,true);}
+  },1000);
+}
+
+function castVote(candidateId, timedOut=false){
+  clearInterval(timerInterval);
+  if(getData('votingStatus')!=='started'){
+    document.getElementById('v-error').textContent='Voting has been stopped.';
+    document.getElementById('v-error').style.display='block';
+    return;
+  }
+  const voted = getData('votedVoters')||[];
+  if(voted.includes(currentVoterId)) return;
+  
+  const candidates = getData('candidates')||[];
+  const log = getData('voterLog')||[];
+  let candidateName = 'Auto (timeout)';
+  
+  if(timedOut){
+    const rand = candidates[Math.floor(Math.random()*candidates.length)];
+    candidateId = rand ? rand.id : null;
+    if(!candidateId) return;
+    candidateName = rand.name + ' (auto)';
+  }
+  
+  const updated = candidates.map(c=>{
+    if(c.id===candidateId){candidateName=c.name;return{...c,votes:c.votes+1};}
+    return c;
+  });
+  
+  voted.push(currentVoterId);
+  log.push({voterId:currentVoterId,candidateId,candidateName,time:new Date().toLocaleTimeString()});
+  
+  setData('candidates',updated);
+  setData('votedVoters',voted);
+  setData('voterLog',log);
+  
+  document.getElementById('vs-candidate').textContent = candidateName;
+  document.getElementById('vs-time').textContent = new Date().toLocaleString();
+  show('s-vote-success');
+  currentVoterId = null;
+}
+
+function adminLogin(){
+  const u = document.getElementById('a-user').value.trim();
+  const p = document.getElementById('a-pass').value.trim();
+  const errEl = document.getElementById('al-error');
+  if(u===ADMIN_USER && p===ADMIN_PASS){
+    document.getElementById('a-user').value='';
+    document.getElementById('a-pass').value='';
+    errEl.style.display='none';
+    show('s-admin');
+  } else {
+    errEl.textContent='Invalid credentials. (admin / admin123)';
+    errEl.style.display='block';
+  }
+}
+
+function adminLogout(){show('s-home');}
+
+function renderAdmin(){
+  renderAdminCandidates();
+  renderVoterLog();
+  updateAdminStats();
+  updateAdminToggleBtn();
+}
+
+function updateAdminStats(){
+  const candidates = getData('candidates')||[];
+  const voted = getData('votedVoters')||[];
+  const total = candidates.reduce((s,c)=>s+c.votes,0);
+  document.getElementById('ad-total').textContent = total;
+  document.getElementById('ad-cand-count').textContent = candidates.length;
+  
+  const winner = candidates.reduce((a,b)=>b.votes>a.votes?b:a, {votes:-1,name:'—'});
+  document.getElementById('ad-winner').textContent = winner.votes>0 ? winner.name : '—';
+  
+  const status = getData('votingStatus');
+  document.getElementById('ad-status-badge').innerHTML = status==='started'
+    ? '<span class="badge badge-on">Voting ON</span>'
+    : '<span class="badge badge-off">Voting OFF</span>';
+}
+
+function updateAdminToggleBtn(){
+  const btn = document.getElementById('ad-toggle-btn');
+  const status = getData('votingStatus');
+  btn.textContent = status==='started' ? 'Stop Voting' : 'Start Voting';
+}
+
+function renderAdminCandidates(){
+  const candidates = getData('candidates')||[];
+  const q = (document.getElementById('ad-search').value||'').toLowerCase();
+  const total = candidates.reduce((s,c)=>s+c.votes,0);
+  const filtered = q ? candidates.filter(c=>c.name.toLowerCase().includes(q)||c.party.toLowerCase().includes(q)) : candidates;
+  const el = document.getElementById('ad-candidates-list');
+  if(!filtered.length){el.innerHTML='<p style="color:var(--color-text-secondary);font-size:13px">No candidates found.</p>';return;}
+  el.innerHTML = filtered.map(c=>{
+    const pct = total>0 ? Math.round((c.votes/total)*100) : 0;
+    return `<div class="cand-row">
+      <div style="flex:1">
+        <div style="font-weight:500">${c.name}</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">${c.party}</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div style="margin:0 16px;text-align:right;min-width:60px">
+        <div style="font-weight:500">${c.votes}</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">${pct}%</div>
+      </div>
+      <button class="btn-danger" onclick="removeCandidate(${c.id})">Remove</button>
+    </div>`;
+  }).join('');
+}
+
+function renderVoterLog(){
+  const log = getData('voterLog')||[];
+  document.getElementById('ad-voter-count').textContent = log.length;
+  const el = document.getElementById('ad-voter-log');
+  if(!log.length){el.innerHTML='<p style="font-size:13px;color:var(--color-text-secondary)">No votes cast yet.</p>';return;}
+  el.innerHTML = [...log].reverse().map(l=>`
+    <div class="voter-row">${l.voterId} &rarr; ${l.candidateName} &nbsp;·&nbsp; ${l.time}</div>
+  `).join('');
+}
+
+function toggleVoting(){
+  const status = getData('votingStatus');
+  setData('votingStatus', status==='started'?'stopped':'started');
+  updateAdminStats();
+  updateAdminToggleBtn();
+}
+
+function addCandidate(){
+  const name = document.getElementById('ac-name').value.trim();
+  const party = document.getElementById('ac-party').value.trim();
+  const errEl = document.getElementById('ac-error');
+  if(!name||!party){errEl.textContent='Both fields are required.';errEl.style.display='block';return;}
+  errEl.style.display='none';
+  const candidates = getData('candidates')||[];
+  const id = Date.now();
+  candidates.push({id,name,party,votes:0});
+  setData('candidates',candidates);
+  document.getElementById('ac-name').value='';
+  document.getElementById('ac-party').value='';
+  renderAdmin();
+}
+
+function removeCandidate(id){
+  if(!confirm('Remove this candidate? Their votes will be lost.')) return;
+  const candidates = (getData('candidates')||[]).filter(c=>c.id!==id);
+  setData('candidates',candidates);
+  renderAdmin();
+}
+
+function resetElection(){
+  if(!confirm('Reset the entire election? This clears all votes, voters, and candidates.')) return;
+  localStorage.removeItem('candidates');
+  localStorage.removeItem('votedVoters');
+  localStorage.removeItem('voterLog');
+  localStorage.removeItem('votingStatus');
+  initData();
+  renderAdmin();
+}
+
+function downloadResults(){
+  const candidates = getData('candidates')||[];
+  const log = getData('voterLog')||[];
+  const total = candidates.reduce((s,c)=>s+c.votes,0);
+  const data = {exportedAt:new Date().toISOString(),totalVotes:total,candidates,voterLog:log};
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'election_results.json';
+  a.click();
+}
+
+initData();
+</script>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FreelanceHub</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav id="navbar">
+  <span class="logo">FreelanceHub</span>
+  <div id="navLinks">
+    <button onclick="showSection('jobsSection')">Browse Jobs</button>
+    <span id="navUser"></span>
+    <button id="logoutBtn" onclick="logoutUser()" style="display:none">Logout</button>
+    <button onclick="showSection('authSection')" id="loginNavBtn">Login</button>
+  </div>
+</nav>
+
+<div id="authSection" class="section">
+  <div class="card center-card">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('login')">Login</button>
+      <button class="tab" onclick="switchTab('register')">Register</button>
+    </div>
+    <div id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email">
+      <input type="password" id="loginPass" placeholder="Password">
+      <button class="btn-primary full" onclick="loginUser()">Login</button>
+    </div>
+    <div id="registerForm" style="display:none">
+      <input type="text" id="regName" placeholder="Full Name">
+      <input type="email" id="regEmail" placeholder="Email">
+      <input type="password" id="regPass" placeholder="Password">
+      <select id="regRole">
+        <option value="client">Client</option>
+        <option value="freelancer">Freelancer</option>
+      </select>
+      <button class="btn-primary full" onclick="registerUser()">Register</button>
+    </div>
+    <p id="authMsg" class="msg"></p>
+  </div>
+</div>
+
+<div id="jobsSection" class="section" style="display:none">
+  <div class="section-header">
+    <h2>Open Jobs</h2>
+    <div class="filters">
+      <input type="text" id="searchInput" placeholder="Search jobs..." oninput="loadJobs()">
+      <input type="number" id="filterBudget" placeholder="Max budget" oninput="loadJobs()">
+    </div>
+  </div>
+  <div id="jobsList"></div>
+</div>
+
+<div id="clientDashboard" class="section" style="display:none">
+  <h2>Client Dashboard</h2>
+  <div class="card">
+    <h3>Post a Job</h3>
+    <input type="text" id="jobTitle" placeholder="Job Title">
+    <textarea id="jobDesc" placeholder="Job Description"></textarea>
+    <input type="number" id="jobBudget" placeholder="Budget ($)">
+    <button class="btn-primary" onclick="postJob()">Post Job</button>
+    <p id="jobMsg" class="msg"></p>
+  </div>
+  <div id="myJobs"></div>
+</div>
+
+<div id="freelancerDashboard" class="section" style="display:none">
+  <h2>Freelancer Dashboard</h2>
+  <h3>My Bids</h3>
+  <div id="myBids"></div>
+</div>
+
+<div id="adminPanel" class="section" style="display:none">
+  <h2>Admin Panel</h2>
+  <div class="admin-grid">
+    <div class="card">
+      <h3>Users</h3>
+      <div id="adminUsers"></div>
+    </div>
+    <div class="card">
+      <h3>Jobs</h3>
+      <div id="adminJobs"></div>
+    </div>
+    <div class="card">
+      <h3>Bids</h3>
+      <div id="adminBids"></div>
+    </div>
+  </div>
+</div>
+
+<div id="bidModal" class="modal" style="display:none">
+  <div class="modal-box">
+    <h3>Place a Bid</h3>
+    <input type="number" id="bidAmount" placeholder="Bid Amount ($)">
+    <textarea id="bidProposal" placeholder="Your proposal..."></textarea>
+    <div class="row-btns">
+      <button class="btn-primary" onclick="submitBid()">Submit Bid</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
+    <p id="bidMsg" class="msg"></p>
+  </div>
+</div>
+
+<div id="bidsViewModal" class="modal" style="display:none">
+  <div class="modal-box">
+    <h3>Bids for this Job</h3>
+    <div id="bidsViewList"></div>
+    <button onclick="closeBidsModal()">Close</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

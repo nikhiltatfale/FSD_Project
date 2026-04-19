@@ -1,0 +1,448 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:var(--color-background-tertiary);min-height:100vh}
+#app{max-width:860px;margin:0 auto;padding:1.5rem 1rem}
+.screen{display:none}
+.screen.active{display:block}
+h1{font-size:22px;font-weight:500;color:var(--color-text-primary);margin-bottom:1.5rem}
+h2{font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:1rem}
+h3{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:.75rem}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.metric{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem;text-align:center}
+.metric-label{font-size:13px;color:var(--color-text-secondary);margin-bottom:6px}
+.metric-value{font-size:24px;font-weight:500;color:var(--color-text-primary)}
+input,select{width:100%;padding:8px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px;margin-bottom:10px;font-family:var(--font-sans)}
+input:focus,select:focus{outline:none;border-color:var(--color-border-primary)}
+label{font-size:13px;color:var(--color-text-secondary);display:block;margin-bottom:4px}
+button{padding:8px 16px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-primary);font-size:14px;cursor:pointer;font-family:var(--font-sans)}
+button:hover{background:var(--color-background-secondary)}
+button:active{transform:scale(.98)}
+.btn-primary{background:var(--color-text-primary);color:var(--color-background-primary);border-color:var(--color-text-primary)}
+.btn-primary:hover{opacity:.85;background:var(--color-text-primary)}
+.btn-danger{color:var(--color-text-danger);border-color:var(--color-border-danger)}
+.btn-danger:hover{background:var(--color-background-danger)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.msg{padding:10px 12px;border-radius:var(--border-radius-md);font-size:13px;margin-bottom:10px;display:none}
+.msg.show{display:block}
+.msg.success{background:var(--color-background-success);color:var(--color-text-success);border:0.5px solid var(--color-border-success)}
+.msg.error{background:var(--color-background-danger);color:var(--color-text-danger);border:0.5px solid var(--color-border-danger)}
+.msg.info{background:var(--color-background-info);color:var(--color-text-info);border:0.5px solid var(--color-border-info)}
+nav{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center}
+.nav-link{font-size:13px;color:var(--color-text-secondary);cursor:pointer;padding:6px 12px;border-radius:var(--border-radius-md)}
+.nav-link:hover,.nav-link.active{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.nav-brand{font-size:16px;font-weight:500;margin-right:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--color-text-secondary);font-weight:500;padding:8px 10px;border-bottom:0.5px solid var(--color-border-tertiary)}
+td{padding:8px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md);font-weight:500}
+.badge-success{background:var(--color-background-success);color:var(--color-text-success)}
+.badge-danger{background:var(--color-background-danger);color:var(--color-text-danger)}
+.badge-info{background:var(--color-background-info);color:var(--color-text-info)}
+.badge-warn{background:var(--color-background-warning);color:var(--color-text-warning)}
+.wallet-id{font-family:var(--font-mono);font-size:12px;color:var(--color-text-secondary);background:var(--color-background-secondary);padding:2px 6px;border-radius:4px}
+.tabs{display:flex;gap:4px;margin-bottom:1rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:0}
+.tab{padding:8px 14px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:var(--color-text-secondary)}
+.tab.active{color:var(--color-text-primary);border-bottom-color:var(--color-text-primary)}
+.section-gap{margin-top:1.5rem}
+.flex-row{display:flex;gap:8px;align-items:flex-start}
+.flex-row input{flex:1;margin-bottom:0}
+.auth-wrap{max-width:400px;margin:3rem auto}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style>
+
+<h2 class="sr-only">Digital Wallet System — manage wallets, send and receive money, view transactions</h2>
+
+<div id="app">
+
+<div id="screen-auth" class="screen active">
+  <div class="auth-wrap">
+    <div style="text-align:center;margin-bottom:2rem">
+      <div style="font-size:32px;margin-bottom:.5rem">◈</div>
+      <div style="font-size:22px;font-weight:500;color:var(--color-text-primary)">Digital Wallet</div>
+      <div style="font-size:13px;color:var(--color-text-secondary);margin-top:4px">Secure · Fast · Simple</div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="switchAuthTab('login')">Sign in</div>
+      <div class="tab" onclick="switchAuthTab('register')">Create wallet</div>
+    </div>
+    <div class="card" style="margin-top:.75rem">
+      <div id="auth-msg" class="msg"></div>
+      <div id="tab-login">
+        <label>Email</label>
+        <input id="login-email" type="email" placeholder="you@email.com">
+        <label>Password</label>
+        <input id="login-pass" type="password" placeholder="Password">
+        <button class="btn-primary" style="width:100%;margin-top:6px" onclick="doLogin()">Sign in</button>
+        <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--color-text-secondary)">
+          Admin: admin@wallet.com / admin123
+        </div>
+      </div>
+      <div id="tab-register" style="display:none">
+        <label>Full name</label>
+        <input id="reg-name" placeholder="Your name">
+        <label>Email</label>
+        <input id="reg-email" type="email" placeholder="you@email.com">
+        <label>Password</label>
+        <input id="reg-pass" type="password" placeholder="Min 4 characters">
+        <label>Starting balance (₹)</label>
+        <input id="reg-balance" type="number" placeholder="0" min="0">
+        <button class="btn-primary" style="width:100%;margin-top:6px" onclick="doRegister()">Create wallet</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-user" class="screen">
+  <nav>
+    <span class="nav-brand">◈ Digital Wallet</span>
+    <span class="nav-link active" onclick="userTab('dashboard')">Dashboard</span>
+    <span class="nav-link" onclick="userTab('send')">Send money</span>
+    <span class="nav-link" onclick="userTab('add')">Add money</span>
+    <span class="nav-link" onclick="userTab('history')">History</span>
+    <span class="nav-link" onclick="doLogout()" style="margin-left:auto">Sign out</span>
+  </nav>
+  <div id="user-msg" class="msg"></div>
+
+  <div id="utab-dashboard">
+    <h1 id="user-greeting">Hello</h1>
+    <div class="grid3" style="margin-bottom:1.5rem">
+      <div class="metric"><div class="metric-label">Wallet ID</div><div class="metric-value" id="dash-id" style="font-size:14px;font-family:var(--font-mono)"></div></div>
+      <div class="metric"><div class="metric-label">Balance</div><div class="metric-value" id="dash-balance"></div></div>
+      <div class="metric"><div class="metric-label">Transactions</div><div class="metric-value" id="dash-txcount"></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Quick send</h3>
+        <label>Recipient wallet ID</label>
+        <input id="qs-to" placeholder="WALLET…">
+        <label>Amount (₹)</label>
+        <input id="qs-amount" type="number" min="1" placeholder="0">
+        <button class="btn-primary" style="margin-top:4px" onclick="doSend('qs')">Send</button>
+      </div>
+      <div class="card">
+        <h3>Quick add</h3>
+        <label>Amount (₹)</label>
+        <input id="qa-amount" type="number" min="1" placeholder="0">
+        <button class="btn-primary" style="margin-top:14px" onclick="doAdd('qa')">Add to wallet</button>
+      </div>
+    </div>
+    <div class="card section-gap">
+      <h3>Recent transactions</h3>
+      <table><thead><tr><th>Date</th><th>Type</th><th>With</th><th>Amount</th></tr></thead>
+      <tbody id="dash-txlist"></tbody></table>
+    </div>
+  </div>
+
+  <div id="utab-send" style="display:none">
+    <h1>Send money</h1>
+    <div class="card" style="max-width:440px">
+      <label>Recipient wallet ID</label>
+      <input id="send-to" placeholder="WALLET…">
+      <label>Amount (₹)</label>
+      <input id="send-amount" type="number" min="1" placeholder="0">
+      <label>Note (optional)</label>
+      <input id="send-note" placeholder="Coffee, rent, etc.">
+      <button class="btn-primary" style="margin-top:4px;width:100%" onclick="doSend('send')">Send money</button>
+    </div>
+  </div>
+
+  <div id="utab-add" style="display:none">
+    <h1>Add money</h1>
+    <div class="card" style="max-width:440px">
+      <label>Amount (₹)</label>
+      <input id="add-amount" type="number" min="1" placeholder="0">
+      <label>Payment mode</label>
+      <select id="add-mode">
+        <option>UPI</option><option>Net banking</option><option>Card</option><option>Cash deposit</option>
+      </select>
+      <button class="btn-primary" style="width:100%" onclick="doAdd('add')">Add to wallet</button>
+    </div>
+  </div>
+
+  <div id="utab-history" style="display:none">
+    <h1>Transaction history</h1>
+    <div class="card">
+      <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
+        <input id="hist-search" placeholder="Search by wallet ID or note…" style="flex:1;margin-bottom:0;min-width:180px" oninput="renderHistory()">
+        <select id="hist-filter" onchange="renderHistory()" style="width:140px;margin-bottom:0">
+          <option value="">All types</option>
+          <option value="send">Sent</option>
+          <option value="receive">Received</option>
+          <option value="add">Added</option>
+        </select>
+      </div>
+      <table><thead><tr><th>Date</th><th>Type</th><th>Wallet</th><th>Note</th><th>Amount</th></tr></thead>
+      <tbody id="hist-list"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<div id="screen-admin" class="screen">
+  <nav>
+    <span class="nav-brand">◈ Admin Panel</span>
+    <span class="nav-link active" onclick="adminTab('users')">Users</span>
+    <span class="nav-link" onclick="adminTab('transactions')">Transactions</span>
+    <span class="nav-link" onclick="doLogout()" style="margin-left:auto">Sign out</span>
+  </nav>
+  <div id="admin-msg" class="msg"></div>
+
+  <div id="atab-users">
+    <h1>All wallets</h1>
+    <div class="card">
+      <table>
+        <thead><tr><th>Name</th><th>Wallet ID</th><th>Email</th><th>Balance</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="admin-users-list"></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="atab-transactions" style="display:none">
+    <h1>All transactions</h1>
+    <div class="card">
+      <table>
+        <thead><tr><th>Date</th><th>From</th><th>To</th><th>Type</th><th>Amount</th><th>Note</th></tr></thead>
+        <tbody id="admin-tx-list"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const ADMIN = {email:'admin@wallet.com',password:'admin123'};
+const getUsers=()=>JSON.parse(localStorage.getItem('dw_users')||'[]');
+const getTx=()=>JSON.parse(localStorage.getItem('dw_tx')||'[]');
+const saveUsers=u=>localStorage.setItem('dw_users',JSON.stringify(u));
+const saveTx=t=>localStorage.setItem('dw_tx',JSON.stringify(t));
+const getSession=()=>localStorage.getItem('dw_session');
+const setSession=id=>localStorage.setItem('dw_session',id);
+const clearSession=()=>localStorage.removeItem('dw_session');
+const genId=()=>'WALLET'+Math.random().toString(36).substr(2,6).toUpperCase();
+const fmt=n=>'₹'+Number(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const today=()=>new Date().toISOString().slice(0,10);
+
+function showScreen(s){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById('screen-'+s).classList.add('active');
+}
+function showMsg(id,text,type){
+  const el=document.getElementById(id);
+  el.textContent=text;el.className='msg '+type+' show';
+  setTimeout(()=>el.classList.remove('show'),3500);
+}
+function switchAuthTab(t){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-login').style.display=t==='login'?'block':'none';
+  document.getElementById('tab-register').style.display=t==='register'?'block':'none';
+}
+function userTab(t){
+  document.querySelectorAll('#screen-user .nav-link').forEach(x=>x.classList.remove('active'));
+  event.target.classList.add('active');
+  ['dashboard','send','add','history'].forEach(x=>{
+    document.getElementById('utab-'+x).style.display=x===t?'block':'none';
+  });
+  if(t==='history')renderHistory();
+  if(t==='dashboard')loadDashboard();
+}
+function adminTab(t){
+  document.querySelectorAll('#screen-admin .nav-link').forEach(x=>x.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('atab-users').style.display=t==='users'?'block':'none';
+  document.getElementById('atab-transactions').style.display=t==='transactions'?'block':'none';
+  if(t==='transactions')renderAdminTx();
+  if(t==='users')renderAdminUsers();
+}
+
+function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  if(!email||!pass){showMsg('auth-msg','Please fill all fields','error');return;}
+  if(email===ADMIN.email&&pass===ADMIN.password){
+    setSession('__admin__');showScreen('admin');renderAdminUsers();return;
+  }
+  const users=getUsers();
+  const u=users.find(x=>x.email===email&&x.password===pass);
+  if(!u){showMsg('auth-msg','Invalid email or password','error');return;}
+  if(u.blocked){showMsg('auth-msg','This wallet is blocked. Contact admin.','error');return;}
+  setSession(u.id);showScreen('user');loadDashboard();
+}
+function doRegister(){
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const pass=document.getElementById('reg-pass').value;
+  const bal=parseFloat(document.getElementById('reg-balance').value)||0;
+  if(!name||!email||!pass){showMsg('auth-msg','Please fill all required fields','error');return;}
+  if(pass.length<4){showMsg('auth-msg','Password must be at least 4 characters','error');return;}
+  if(bal<0){showMsg('auth-msg','Balance cannot be negative','error');return;}
+  const users=getUsers();
+  if(users.find(x=>x.email===email)){showMsg('auth-msg','Email already registered','error');return;}
+  let id=genId();
+  while(users.find(x=>x.id===id))id=genId();
+  const u={id,name,email,password:pass,balance:bal,blocked:false};
+  users.push(u);saveUsers(users);
+  if(bal>0){
+    const tx=getTx();
+    tx.push({from:'SYSTEM',to:id,amount:bal,date:today(),type:'add',note:'Initial deposit'});
+    saveTx(tx);
+  }
+  showMsg('auth-msg','Wallet created! ID: '+id+'. Please sign in.','success');
+  document.getElementById('reg-name').value='';
+  document.getElementById('reg-email').value='';
+  document.getElementById('reg-pass').value='';
+  document.getElementById('reg-balance').value='';
+  switchAuthTab('login');
+  document.querySelector('.tab').click();
+}
+function doLogout(){clearSession();showScreen('auth');}
+
+function currentUser(){
+  const id=getSession();
+  return getUsers().find(x=>x.id===id);
+}
+function loadDashboard(){
+  const u=currentUser();if(!u)return;
+  document.getElementById('user-greeting').textContent='Hello, '+u.name;
+  document.getElementById('dash-id').textContent=u.id;
+  document.getElementById('dash-balance').textContent=fmt(u.balance);
+  const myTx=getTx().filter(x=>x.from===u.id||x.to===u.id);
+  document.getElementById('dash-txcount').textContent=myTx.length;
+  const recent=myTx.slice(-5).reverse();
+  const tbody=document.getElementById('dash-txlist');
+  if(!recent.length){tbody.innerHTML='<tr><td colspan="4" style="color:var(--color-text-secondary);text-align:center">No transactions yet</td></tr>';return;}
+  tbody.innerHTML=recent.map(t=>{
+    const isSend=t.type==='send'&&t.from===u.id;
+    const badge=t.type==='add'?'<span class="badge badge-success">+Added</span>':isSend?'<span class="badge badge-danger">↑ Sent</span>':'<span class="badge badge-info">↓ Recv</span>';
+    const other=isSend?t.to:t.from;
+    const amtColor=isSend?'color:var(--color-text-danger)':'color:var(--color-text-success)';
+    return `<tr><td>${t.date}</td><td>${badge}</td><td><span class="wallet-id">${other==='SYSTEM'?'—':other}</span></td><td style="${amtColor}">${isSend?'-':'+'}${fmt(t.amount)}</td></tr>`;
+  }).join('');
+}
+
+function doSend(src){
+  const u=currentUser();if(!u)return;
+  const toId=(src==='qs'?document.getElementById('qs-to'):document.getElementById('send-to')).value.trim().toUpperCase();
+  const amt=parseFloat((src==='qs'?document.getElementById('qs-amount'):document.getElementById('send-amount')).value);
+  const note=src==='send'?document.getElementById('send-note').value.trim():'';
+  const msgId=src==='qs'?'user-msg':'user-msg';
+  if(!toId){showMsg(msgId,'Enter recipient wallet ID','error');return;}
+  if(toId===u.id){showMsg(msgId,'Cannot send money to yourself','error');return;}
+  if(!amt||amt<=0){showMsg(msgId,'Enter a valid amount','error');return;}
+  const users=getUsers();
+  const receiver=users.find(x=>x.id===toId);
+  if(!receiver){showMsg(msgId,'Wallet '+toId+' not found','error');return;}
+  if(receiver.blocked){showMsg(msgId,'Recipient wallet is blocked','error');return;}
+  const freshUser=users.find(x=>x.id===u.id);
+  if(freshUser.balance<amt){showMsg(msgId,'Insufficient balance','error');return;}
+  freshUser.balance=parseFloat((freshUser.balance-amt).toFixed(2));
+  receiver.balance=parseFloat((receiver.balance+amt).toFixed(2));
+  saveUsers(users);
+  const tx=getTx();
+  tx.push({from:u.id,to:toId,amount:amt,date:today(),type:'send',note});
+  saveTx(tx);
+  if(src==='qs'){document.getElementById('qs-to').value='';document.getElementById('qs-amount').value='';}
+  else{document.getElementById('send-to').value='';document.getElementById('send-amount').value='';document.getElementById('send-note').value='';}
+  showMsg(msgId,'Sent '+fmt(amt)+' to '+receiver.name+' ('+toId+')','success');
+  loadDashboard();
+}
+function doAdd(src){
+  const u=currentUser();if(!u)return;
+  const amt=parseFloat((src==='qa'?document.getElementById('qa-amount'):document.getElementById('add-amount')).value);
+  if(!amt||amt<=0){showMsg('user-msg','Enter a valid amount','error');return;}
+  const users=getUsers();
+  const freshUser=users.find(x=>x.id===u.id);
+  freshUser.balance=parseFloat((freshUser.balance+amt).toFixed(2));
+  saveUsers(users);
+  const tx=getTx();
+  const mode=src==='add'?document.getElementById('add-mode').value:'UPI';
+  tx.push({from:'SYSTEM',to:u.id,amount:amt,date:today(),type:'add',note:'via '+mode});
+  saveTx(tx);
+  if(src==='qa')document.getElementById('qa-amount').value='';
+  else document.getElementById('add-amount').value='';
+  showMsg('user-msg','Added '+fmt(amt)+' to your wallet','success');
+  loadDashboard();
+}
+function renderHistory(){
+  const u=currentUser();if(!u)return;
+  const search=(document.getElementById('hist-search').value||'').toLowerCase();
+  const filter=document.getElementById('hist-filter').value;
+  let txs=getTx().filter(x=>x.from===u.id||x.to===u.id).reverse();
+  if(filter)txs=txs.filter(x=>x.type===filter||(filter==='receive'&&x.type==='send'&&x.to===u.id));
+  if(filter==='send')txs=txs.filter(x=>x.from===u.id&&x.type==='send');
+  if(filter==='receive')txs=txs.filter(x=>x.to===u.id&&x.type==='send');
+  if(filter==='add')txs=txs.filter(x=>x.type==='add');
+  if(search)txs=txs.filter(x=>(x.from+x.to+(x.note||'')).toLowerCase().includes(search));
+  const tbody=document.getElementById('hist-list');
+  if(!txs.length){tbody.innerHTML='<tr><td colspan="5" style="color:var(--color-text-secondary);text-align:center">No transactions found</td></tr>';return;}
+  tbody.innerHTML=txs.map(t=>{
+    const isSend=t.type==='send'&&t.from===u.id;
+    const isAdd=t.type==='add';
+    const badge=isAdd?'<span class="badge badge-success">Added</span>':isSend?'<span class="badge badge-danger">Sent</span>':'<span class="badge badge-info">Received</span>';
+    const other=isSend?t.to:(isAdd?'—':t.from);
+    const amtColor=isSend?'color:var(--color-text-danger)':'color:var(--color-text-success)';
+    return `<tr><td>${t.date}</td><td>${badge}</td><td><span class="wallet-id">${other}</span></td><td style="color:var(--color-text-secondary)">${t.note||'—'}</td><td style="${amtColor}">${isSend?'-':'+'}${fmt(t.amount)}</td></tr>`;
+  }).join('');
+}
+function renderAdminUsers(){
+  const users=getUsers();
+  const tbody=document.getElementById('admin-users-list');
+  if(!users.length){tbody.innerHTML='<tr><td colspan="6" style="color:var(--color-text-secondary);text-align:center">No wallets yet</td></tr>';return;}
+  tbody.innerHTML=users.map(u=>`
+    <tr>
+      <td>${u.name}</td>
+      <td><span class="wallet-id">${u.id}</span></td>
+      <td style="color:var(--color-text-secondary)">${u.email}</td>
+      <td>${fmt(u.balance)}</td>
+      <td>${u.blocked?'<span class="badge badge-danger">Blocked</span>':'<span class="badge badge-success">Active</span>'}</td>
+      <td style="display:flex;gap:6px">
+        <button class="btn-sm ${u.blocked?'':'btn-danger'}" onclick="adminToggleBlock('${u.id}')">${u.blocked?'Unblock':'Block'}</button>
+        <button class="btn-sm btn-danger" onclick="adminDelete('${u.id}')">Delete</button>
+      </td>
+    </tr>`).join('');
+}
+function adminToggleBlock(id){
+  const users=getUsers();
+  const u=users.find(x=>x.id===id);
+  if(!u)return;
+  u.blocked=!u.blocked;
+  saveUsers(users);
+  showMsg('admin-msg',(u.blocked?'Blocked':'Unblocked')+' wallet '+id,'info');
+  renderAdminUsers();
+}
+function adminDelete(id){
+  if(!confirm('Delete wallet '+id+'? This cannot be undone.'))return;
+  let users=getUsers().filter(x=>x.id!==id);
+  saveUsers(users);
+  if(getSession()===id)clearSession();
+  showMsg('admin-msg','Wallet '+id+' deleted','info');
+  renderAdminUsers();
+}
+function renderAdminTx(){
+  const txs=getTx().reverse();
+  const tbody=document.getElementById('admin-tx-list');
+  if(!txs.length){tbody.innerHTML='<tr><td colspan="6" style="color:var(--color-text-secondary);text-align:center">No transactions yet</td></tr>';return;}
+  const badge=t=>t.type==='add'?'<span class="badge badge-success">Add</span>':t.type==='send'?'<span class="badge badge-info">Send</span>':'<span class="badge badge-warn">'+t.type+'</span>';
+  tbody.innerHTML=txs.map(t=>`
+    <tr>
+      <td>${t.date}</td>
+      <td><span class="wallet-id">${t.from}</span></td>
+      <td><span class="wallet-id">${t.to}</span></td>
+      <td>${badge(t)}</td>
+      <td>${fmt(t.amount)}</td>
+      <td style="color:var(--color-text-secondary)">${t.note||'—'}</td>
+    </tr>`).join('');
+}
+
+(function init(){
+  const session=getSession();
+  if(!session)return;
+  if(session==='__admin__'){showScreen('admin');renderAdminUsers();return;}
+  const u=getUsers().find(x=>x.id===session);
+  if(!u||u.blocked){clearSession();return;}
+  showScreen('user');loadDashboard();
+})();
+</script>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskBoard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo">TaskBoard</div>
+  <div class="header-actions">
+    <button id="addListBtn">+ Add List</button>
+    <button id="adminToggle">Admin Mode: OFF</button>
+  </div>
+</header>
+<div id="adminPanel" class="hidden">
+  <div class="admin-stats" id="statsBox"></div>
+  <div class="admin-btns">
+    <button id="clearBoard">Clear Board</button>
+    <button id="exportBtn">Export JSON</button>
+    <label id="importLabel">Import JSON<input type="file" id="importFile" accept=".json"></label>
+  </div>
+</div>
+<main id="board"></main>
+<div id="modal" class="hidden">
+  <div class="modal-box">
+    <h3 id="modalTitle">Card</h3>
+    <input type="text" id="cardTitle" placeholder="Title *">
+    <textarea id="cardDesc" placeholder="Description"></textarea>
+    <input type="date" id="cardDue">
+    <select id="cardPriority">
+      <option value="Low">Low</option>
+      <option value="Medium">Medium</option>
+      <option value="High">High</option>
+    </select>
+    <div class="modal-actions">
+      <button id="saveCard">Save</button>
+      <button id="cancelCard">Cancel</button>
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

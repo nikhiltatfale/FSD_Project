@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Appointment System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>🏥 Hospital Appointment System</h1>
+
+<section>
+  <h2>Book Appointment</h2>
+  <input id="name" placeholder="Patient Name">
+  <input id="age" type="number" placeholder="Age">
+  <input id="problem" placeholder="Problem">
+  <select id="doctor">
+    <option value="">Select Doctor</option>
+    <option>Dr. Sharma (General)</option>
+    <option>Dr. Mehta (Cardiology)</option>
+    <option>Dr. Rao (Orthopedics)</option>
+    <option>Dr. Kapoor (Neurology)</option>
+  </select>
+  <input id="date" type="date">
+  <input id="time" type="time">
+  <button onclick="bookAppointment()">Book</button>
+  <p id="bookMsg"></p>
+</section>
+
+<section>
+  <h2>Search My Appointment</h2>
+  <input id="searchName" placeholder="Enter your name">
+  <button onclick="searchAppointment()">Search</button>
+  <div id="searchResult"></div>
+</section>
+
+<section>
+  <h2>Admin Panel</h2>
+  <button onclick="loadAll()">View All Appointments</button>
+  <p id="totalCount"></p>
+  <table id="adminTable">
+    <thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Problem</th><th>Doctor</th><th>Date</th><th>Time</th><th>Action</th></tr></thead>
+    <tbody id="adminBody"></tbody>
+  </table>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

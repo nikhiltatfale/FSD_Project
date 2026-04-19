@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=IBM+Plex+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d0d0d;--surface:#161616;--border:#2a2a2a;--accent:#e8c547;--accent2:#c4543a;--text:#e8e4d9;--muted:#666;--font-head:'Playfair Display',serif;--font-body:'Lora',serif;--font-mono:'IBM Plex Mono',monospace}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh}
+header{border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;background:var(--bg);z-index:100}
+.logo{font-family:var(--font-mono);font-size:.85rem;color:var(--accent);letter-spacing:.2em;text-transform:uppercase}
+nav{display:flex;gap:.25rem}
+nav button{background:none;border:none;color:var(--muted);font-family:var(--font-mono);font-size:.75rem;padding:.4rem .8rem;cursor:pointer;letter-spacing:.05em;transition:color .2s}
+nav button:hover,nav button.active{color:var(--accent)}
+nav button.nav-write{border:1px solid var(--accent);color:var(--accent)}
+nav button.nav-write:hover{background:var(--accent);color:#000}
+#app{max-width:860px;margin:0 auto;padding:2.5rem 1.5rem}
+.toast{position:fixed;top:70px;right:1.5rem;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);padding:.75rem 1.25rem;font-family:var(--font-mono);font-size:.75rem;color:var(--text);z-index:999;opacity:0;transform:translateX(20px);transition:.3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(0)}
+.toast.err{border-left-color:var(--accent2)}
+h1,h2,h3{font-family:var(--font-head)}
+.page-title{font-size:2.2rem;color:var(--text);margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.post-grid{display:flex;flex-direction:column;gap:0}
+.post-card{padding:1.5rem 0;border-bottom:1px solid var(--border);cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;transition:background .15s}
+.post-card:hover .post-card-title{color:var(--accent)}
+.post-card-title{font-family:var(--font-head);font-size:1.4rem;line-height:1.3;transition:color .2s}
+.post-card-meta{font-family:var(--font-mono);font-size:.7rem;color:var(--muted);margin-top:.5rem;letter-spacing:.05em}
+.post-card-preview{color:var(--muted);font-size:.9rem;margin-top:.5rem;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post-card-date{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);white-space:nowrap;padding-top:.4rem}
+.post-detail-title{font-size:2.5rem;line-height:1.2;margin-bottom:1rem}
+.post-detail-meta{font-family:var(--font-mono);font-size:.75rem;color:var(--muted);margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);letter-spacing:.05em}
+.post-detail-content{font-size:1.05rem;line-height:1.85;color:#c8c4bb;white-space:pre-wrap}
+.post-actions{margin-top:2rem;display:flex;gap:.75rem}
+form{display:flex;flex-direction:column;gap:1.25rem;max-width:520px}
+.form-group{display:flex;flex-direction:column;gap:.4rem}
+label{font-family:var(--font-mono);font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+input,textarea{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:.75rem 1rem;font-family:var(--font-body);font-size:.95rem;outline:none;transition:border-color .2s;width:100%}
+input:focus,textarea:focus{border-color:var(--accent)}
+textarea{min-height:220px;resize:vertical;line-height:1.7}
+.btn{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.1em;padding:.65rem 1.5rem;cursor:pointer;border:none;transition:.2s;text-transform:uppercase}
+.btn-primary{background:var(--accent);color:#000}
+.btn-primary:hover{background:#d4b03e}
+.btn-danger{background:none;border:1px solid var(--accent2);color:var(--accent2)}
+.btn-danger:hover{background:var(--accent2);color:#fff}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--text);color:var(--text)}
+.tab-group{display:flex;gap:0;margin-bottom:2rem;border-bottom:1px solid var(--border)}
+.tab{background:none;border:none;color:var(--muted);font-family:var(--font-mono);font-size:.75rem;padding:.75rem 1.25rem;cursor:pointer;letter-spacing:.05em;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.5rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);padding:1.25rem}
+.stat-num{font-family:var(--font-head);font-size:2.5rem;color:var(--accent)}
+.stat-label{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem}
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;text-align:left;padding:.6rem .75rem;border-bottom:1px solid var(--border)}
+td{padding:.75rem;border-bottom:1px solid var(--border);font-size:.85rem;vertical-align:middle}
+.badge{font-family:var(--font-mono);font-size:.6rem;padding:.2rem .5rem;letter-spacing:.05em;text-transform:uppercase}
+.badge-admin{background:#1a2a1a;color:#6fcf6f;border:1px solid #2a4a2a}
+.badge-user{background:#1a1a2a;color:#6f9fcf;border:1px solid #2a2a4a}
+.badge-blocked{background:#2a1a1a;color:var(--accent2);border:1px solid #4a2a2a}
+.auth-tabs{display:flex;gap:0;margin-bottom:2rem}
+.empty{font-family:var(--font-mono);font-size:.8rem;color:var(--muted);padding:3rem 0;text-align:center;letter-spacing:.05em}
+.back-btn{font-family:var(--font-mono);font-size:.7rem;color:var(--muted);background:none;border:none;cursor:pointer;padding:0 0 1.5rem;letter-spacing:.05em}
+.back-btn:hover{color:var(--accent)}
+.my-post-card{padding:1.25rem;background:var(--surface);border:1px solid var(--border);margin-bottom:.75rem}
+.my-post-card-title{font-family:var(--font-head);font-size:1.2rem;cursor:pointer}
+.my-post-card-title:hover{color:var(--accent)}
+.my-post-card-actions{display:flex;gap:.5rem;margin-top:.75rem}
+.my-post-card-meta{font-family:var(--font-mono);font-size:.65rem;color:var(--muted);margin-top:.3rem}
+@media(max-width:600px){nav button span{display:none}.stat-grid{grid-template-columns:repeat(3,1fr)}.post-detail-title{font-size:1.8rem}}

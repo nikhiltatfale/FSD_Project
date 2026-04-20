@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RideX - Taxi Booking</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="logo">RIDEX</div>
+  <div class="nav-links">
+    <button onclick="showPanel('user')" class="nav-btn active" id="nav-user">Book Ride</button>
+    <button onclick="showPanel('driver')" class="nav-btn" id="nav-driver">Driver</button>
+  </div>
+</nav>
+
+<div id="panel-user" class="panel active">
+  <div class="hero-text">
+    <span>Your ride,</span><span class="accent"> your rules.</span>
+  </div>
+  <div class="card">
+    <h2>Book a Taxi</h2>
+    <div class="form-grid">
+      <input id="u-name" placeholder="Full Name" type="text">
+      <input id="u-phone" placeholder="Phone (10 digits)" type="tel">
+      <input id="u-pickup" placeholder="Pickup Location" type="text">
+      <input id="u-drop" placeholder="Drop Location" type="text">
+    </div>
+    <div class="car-select">
+      <label class="car-opt" onclick="selectCar('Mini',this)"><span class="car-icon">🚗</span><span>Mini</span><small>₹10/km + ₹50</small></label>
+      <label class="car-opt" onclick="selectCar('Sedan',this)"><span class="car-icon">🚙</span><span>Sedan</span><small>₹15/km + ₹70</small></label>
+      <label class="car-opt" onclick="selectCar('SUV',this)"><span class="car-icon">🚐</span><span>SUV</span><small>₹20/km + ₹100</small></label>
+    </div>
+    <div id="fare-preview" class="fare-preview hidden"></div>
+    <button onclick="bookRide()" class="btn-primary">Book Now</button>
+    <div id="booking-msg" class="msg"></div>
+  </div>
+
+  <div id="active-ride-card" class="card hidden">
+    <h2>Your Ride</h2>
+    <div id="ride-status-display"></div>
+    <button onclick="cancelRide()" id="cancel-btn" class="btn-danger">Cancel Ride</button>
+  </div>
+
+  <div id="history-section" class="card hidden">
+    <h2>Ride History</h2>
+    <div id="ride-history"></div>
+  </div>
+</div>
+
+<div id="panel-driver" class="panel">
+  <div class="card">
+    <h2>Driver Login</h2>
+    <div class="form-grid">
+      <input id="d-name" placeholder="Driver Name" type="text">
+      <input id="d-phone" placeholder="Phone" type="tel">
+    </div>
+    <button onclick="driverLogin()" class="btn-primary">Go Online</button>
+  </div>
+  <div id="driver-dashboard" class="hidden">
+    <div class="card">
+      <h2>Welcome, <span id="d-logged-name"></span></h2>
+      <div class="stat-row">
+        <div class="stat"><div id="d-earnings">₹0</div><small>Earnings</small></div>
+        <div class="stat"><div id="d-rides-done">0</div><small>Rides Done</small></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Available Rides <button onclick="loadDriverRides()" class="btn-sm">Refresh</button></h2>
+      <div id="available-rides"></div>
+    </div>
+    <div id="active-driver-ride" class="card hidden">
+      <h2>Active Ride</h2>
+      <div id="active-ride-info"></div>
+      <div class="btn-row">
+        <button onclick="startRide()" id="start-btn" class="btn-primary">Start Ride</button>
+        <button onclick="completeRide()" id="complete-btn" class="btn-success hidden">Complete Ride</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="panel-admin" class="panel">
+  <div id="admin-login-card" class="card">
+    <h2>Admin Access</h2>
+    <input id="a-user" placeholder="Username" type="text">
+    <input id="a-pass" placeholder="Password" type="password">
+    <button onclick="adminLogin()" class="btn-primary">Login</button>
+    <div id="admin-login-msg" class="msg"></div>
+  </div>
+  <div id="admin-dashboard" class="hidden">
+    <div class="card">
+      <h2>Admin Dashboard</h2>
+      <div class="stat-row" id="admin-stats"></div>
+      <button onclick="resetSystem()" class="btn-danger">Reset System</button>
+      <button onclick="loadAdminData()" class="btn-sm">Refresh</button>
+    </div>
+    <div class="card">
+      <h2>All Rides</h2>
+      <div id="admin-rides"></div>
+    </div>
+    <div class="card">
+      <h2>Users</h2>
+      <div id="admin-users"></div>
+    </div>
+    <div class="card">
+      <h2>Drivers</h2>
+      <div id="admin-drivers"></div>
+    </div>
+  </div>
+</div>
+
+<div id="admin-trigger" onclick="showPanel('admin')">⚙</div>
+<script src="script.js"></script>
+</body>
+</html>

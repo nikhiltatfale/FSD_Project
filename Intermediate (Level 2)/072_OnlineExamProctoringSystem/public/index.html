@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProctorX — Online Exam System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="registerView" class="view">
+  <div class="card">
+    <div class="tag">PROCTORX SYSTEM v1.0</div>
+    <h1>Online Exam</h1>
+    <h2>Candidate Registration</h2>
+    <label>Full Name</label>
+    <input id="rName" type="text" placeholder="Enter your full name">
+    <label>Roll Number</label>
+    <input id="rRoll" type="text" placeholder="e.g. CS2024001">
+    <label>Department</label>
+    <input id="rDept" type="text" placeholder="e.g. Computer Science">
+    <label>College</label>
+    <input id="rCollege" type="text" placeholder="Enter college name">
+    <button class="btn" onclick="startRegistration()">PROCEED TO EXAM →</button>
+  </div>
+</div>
+
+<div id="permView" class="view">
+  <div class="card">
+    <div class="icon">🎥</div>
+    <div class="tag">PERMISSION REQUIRED</div>
+    <h1>Camera & Mic</h1>
+    <h2>Required for proctoring</h2>
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:24px;line-height:1.6">This exam requires camera and microphone access for proctoring. The exam is conducted in full-screen mode. Any violations will be logged.</p>
+    <button class="btn" onclick="requestPermissions()">GRANT ACCESS & START</button>
+    <p id="permError" style="color:var(--accent2);font-size:0.75rem;margin-top:12px;display:none"></p>
+  </div>
+</div>
+
+<div id="examView" class="view">
+  <div class="exam-header">
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:0.9rem;color:var(--accent)">PROCTORX</span>
+      <span id="studentNameDisplay" style="font-size:0.7rem;color:var(--muted)"></span>
+    </div>
+    <div class="exam-meta">
+      <span><b id="qProgressDisplay">0/0</b> Questions</span>
+      <span>Violations: <b id="violationCount" style="color:var(--accent2)">0</b></span>
+    </div>
+    <div id="timerDisplay">--</div>
+  </div>
+  <div class="proctoring-bar">
+    <div class="p-indicator"><div class="dot" id="dotCam"></div><span>CAMERA</span></div>
+    <div class="p-indicator"><div class="dot" id="dotMic"></div><span>MIC</span></div>
+    <div class="p-indicator"><div class="dot" id="dotFace"></div><span>FACE</span></div>
+    <div class="p-indicator"><div class="dot" id="dotTab"></div><span>TAB</span></div>
+    <div class="p-indicator"><div class="dot" id="dotFS"></div><span>FULLSCREEN</span></div>
+    <div style="margin-left:auto;font-size:0.65rem" id="procStatus">PROCTORING ACTIVE</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="exam-body">
+    <div class="question-card">
+      <div class="q-counter" id="qCounter">QUESTION 1 OF 5</div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="optionsContainer"></div>
+      <button class="btn" id="nextBtn" onclick="nextQuestion()">NEXT QUESTION →</button>
+    </div>
+  </div>
+  <video id="webcamPreview" autoplay muted playsinline></video>
+</div>
+
+<div class="violation-toast" id="violationToast"></div>
+
+<div id="resultView" class="view">
+  <div class="result-card">
+    <div class="tag">EXAM COMPLETE</div>
+    <div class="score-big" id="scoreBig">--</div>
+    <div class="score-label">SCORE OUT OF <span id="scoreTotal">--</span></div>
+    <div class="result-detail" id="resultDetail"></div>
+    <button class="btn secondary" onclick="showView('registerView')">TAKE ANOTHER EXAM</button>
+  </div>
+</div>
+
+<div id="adminLoginView" class="view">
+  <div class="card">
+    <div class="tag">RESTRICTED ACCESS</div>
+    <h1>Admin Panel</h1>
+    <h2>Authorized Personnel Only</h2>
+    <label>Admin Password</label>
+    <input id="adminPass" type="password" placeholder="Enter password">
+    <button class="btn" onclick="adminLogin()">LOGIN →</button>
+    <p id="adminError" style="color:var(--accent2);font-size:0.75rem;margin-top:12px;display:none"></p>
+  </div>
+</div>
+
+<div id="adminDashboard" class="admin-layout">
+  <div class="admin-nav">
+    <h3>⬡ PROCTORX ADMIN</h3>
+    <button class="nav-tab active" onclick="adminTab('overview')">Overview</button>
+    <button class="nav-tab" onclick="adminTab('students')">Students</button>
+    <button class="nav-tab" onclick="adminTab('logs')">Logs</button>
+    <button class="nav-tab" onclick="adminTab('results')">Results</button>
+    <button class="nav-tab" onclick="adminTab('questions')">Questions</button>
+    <button class="nav-tab" onclick="adminTab('config')">Config</button>
+    <button class="nav-tab" style="margin-left:auto;color:var(--accent2)" onclick="adminLogout()">Logout</button>
+  </div>
+  <div class="admin-content">
+
+    <div id="panel-overview" class="panel active">
+      <div class="stat-row" id="statRow"></div>
+      <h4 style="font-family:'Syne',sans-serif;margin-bottom:12px">Recent Violations</h4>
+      <table><thead><tr><th>Student</th><th>Event</th><th>Detail</th><th>Time</th></tr></thead>
+      <tbody id="recentLogs"></tbody></table>
+    </div>
+
+    <div id="panel-students" class="panel">
+      <table><thead><tr><th>Name</th><th>Roll No</th><th>Dept</th><th>Violations</th><th>Status</th></tr></thead>
+      <tbody id="studentsTable"></tbody></table>
+    </div>
+
+    <div id="panel-logs" class="panel">
+      <table><thead><tr><th>Student</th><th>Event</th><th>Detail</th><th>Time</th></tr></thead>
+      <tbody id="logsTable"></tbody></table>
+    </div>
+
+    <div id="panel-results" class="panel">
+      <div style="margin-bottom:16px;display:flex;gap:10px">
+        <button class="btn secondary" style="width:auto;padding:8px 20px;font-size:0.75rem" onclick="downloadResults('json')">DOWNLOAD JSON</button>
+        <button class="btn secondary" style="width:auto;padding:8px 20px;font-size:0.75rem" onclick="downloadResults('csv')">DOWNLOAD CSV</button>
+      </div>
+      <table><thead><tr><th>Name</th><th>Roll No</th><th>Score</th><th>Percentage</th><th>Time</th></tr></thead>
+      <tbody id="resultsTable"></tbody></table>
+    </div>
+
+    <div id="panel-questions" class="panel">
+      <div class="admin-form">
+        <h4>Add New Question</h4>
+        <label>Question Text</label>
+        <input id="qFormText" type="text" placeholder="Enter question">
+        <div class="form-row">
+          <div><label>Option A</label><input id="qOpt0" type="text" placeholder="Option A"></div>
+          <div><label>Option B</label><input id="qOpt1" type="text" placeholder="Option B"></div>
+          <div><label>Option C</label><input id="qOpt2" type="text" placeholder="Option C"></div>
+          <div><label>Option D</label><input id="qOpt3" type="text" placeholder="Option D"></div>
+        </div>
+        <label>Correct Answer Index (0-3)</label>
+        <select id="qCorrect" style="margin-bottom:16px">
+          <option value="0">Option A (0)</option>
+          <option value="1">Option B (1)</option>
+          <option value="2">Option C (2)</option>
+          <option value="3">Option D (3)</option>
+        </select>
+        <button class="btn" style="width:auto;padding:10px 24px;font-size:0.8rem" onclick="addQuestion()">ADD QUESTION</button>
+      </div>
+    </div>
+
+    <div id="panel-config" class="panel">
+      <div class="admin-form">
+        <h4>Exam Configuration</h4>
+        <label>Violation Limit (auto-submit after N violations)</label>
+        <input id="cfgViolLimit" type="number" value="5" min="1" max="20">
+        <label>Exam Status</label>
+        <select id="cfgExamActive">
+          <option value="true">Active</option>
+          <option value="false">Stopped</option>
+        </select>
+        <button class="btn" style="width:auto;padding:10px 24px;font-size:0.8rem" onclick="saveConfig()">SAVE CONFIG</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

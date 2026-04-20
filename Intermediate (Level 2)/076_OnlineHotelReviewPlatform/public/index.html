@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StayRate — Hotel Reviews</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">StayRate</div>
+    <input type="text" id="searchInput" placeholder="Search hotels or locations…" oninput="filterHotels()">
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>Find your perfect stay.</h1>
+    <p>Real reviews from real travelers.</p>
+  </div>
+  <div id="hotelGrid" class="hotel-grid"></div>
+</main>
+
+<div id="reviewModal" class="modal hidden">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeModal('reviewModal')">✕</button>
+    <h2 id="modalHotelName"></h2>
+    <div id="reviewsList"></div>
+    <div class="divider"></div>
+    <h3>Write a Review</h3>
+    <input id="rvUsername" placeholder="Your name" />
+    <div class="star-input" id="starInput">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <textarea id="rvComment" placeholder="Share your experience…"></textarea>
+    <button class="btn-primary" onclick="submitReview()">Submit Review</button>
+    <div id="rvError" class="error-msg"></div>
+  </div>
+</div>
+
+<div id="adminLoginModal" class="modal hidden">
+  <div class="modal-box small">
+    <button class="close-btn" onclick="closeModal('adminLoginModal')">✕</button>
+    <h2>Admin Access</h2>
+    <input id="adminUser" placeholder="Username" />
+    <input id="adminPass" type="password" placeholder="Password" />
+    <button class="btn-primary" onclick="adminLogin()">Login</button>
+    <div id="loginError" class="error-msg"></div>
+  </div>
+</div>
+
+<div id="adminModal" class="modal hidden">
+  <div class="modal-box large">
+    <button class="close-btn" onclick="closeModal('adminModal')">✕</button>
+    <h2>Admin Dashboard</h2>
+    <div class="admin-section">
+      <h3>Add Hotel</h3>
+      <input id="aHotelName" placeholder="Hotel name" />
+      <input id="aHotelLoc" placeholder="Location" />
+      <textarea id="aHotelDesc" placeholder="Description"></textarea>
+      <button class="btn-primary" onclick="adminAddHotel()">Add Hotel</button>
+    </div>
+    <div class="admin-section">
+      <h3>All Hotels & Reviews</h3>
+      <div id="adminHotelList"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span id="footerTrigger">© 2025 StayRate. All rights reserved.</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

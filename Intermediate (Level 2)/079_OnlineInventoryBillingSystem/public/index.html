@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BillMaster Pro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo" id="logoClick">BillMaster Pro</div>
+  <nav>
+    <button class="nav-btn active" onclick="showSection('billing')">Billing</button>
+    <span id="adminNav" style="display:none">
+      <button class="nav-btn" onclick="showSection('dashboard')">Dashboard</button>
+      <button class="nav-btn" onclick="showSection('inventory')">Inventory</button>
+      <button class="nav-btn" onclick="showSection('history')">Sales History</button>
+      <button class="nav-btn logout-btn" onclick="adminLogout()">Logout</button>
+    </span>
+  </nav>
+</header>
+
+<div id="loginModal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <h2>Admin Login</h2>
+    <input type="text" id="adminUser" placeholder="Username">
+    <input type="password" id="adminPass" placeholder="Password">
+    <div class="modal-btns">
+      <button onclick="doLogin()">Login</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
+    <p id="loginErr" class="err"></p>
+  </div>
+</div>
+
+<main>
+<section id="billing" class="section active">
+  <div class="billing-wrap">
+    <div class="products-panel">
+      <div class="panel-head">
+        <h3>Products</h3>
+        <input type="text" id="searchInput" placeholder="Search products..." oninput="searchProducts()">
+      </div>
+      <div class="tax-row">
+        <label>Tax %: <input type="number" id="taxInput" value="18" min="0" max="100" step="0.5"></label>
+      </div>
+      <div id="productList" class="product-grid"></div>
+    </div>
+    <div class="cart-panel">
+      <h3>Cart</h3>
+      <div id="cartItems" class="cart-list"></div>
+      <div class="cart-summary">
+        <div class="sum-row"><span>Subtotal</span><span id="subtotalVal">₹0.00</span></div>
+        <div class="sum-row"><span>Tax (<span id="taxPct">18</span>%)</span><span id="taxVal">₹0.00</span></div>
+        <div class="sum-row grand"><span>Grand Total</span><span id="grandVal">₹0.00</span></div>
+        <button id="genBillBtn" onclick="generateBill()" disabled>Generate Bill</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="dashboard" class="section">
+  <h2>Dashboard</h2>
+  <div class="dash-grid" id="dashGrid"></div>
+  <h3>Low Stock Alerts</h3>
+  <table id="lowStockTable"><thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Qty</th></tr></thead><tbody></tbody></table>
+</section>
+
+<section id="inventory" class="section">
+  <div class="section-head">
+    <h2>Inventory</h2>
+    <button onclick="openAddProduct()">+ Add Product</button>
+  </div>
+  <div id="addProductForm" class="form-box" style="display:none">
+    <h4 id="formTitle">Add Product</h4>
+    <input type="hidden" id="editProductId">
+    <input type="text" id="pName" placeholder="Product Name">
+    <input type="text" id="pCategory" placeholder="Category">
+    <input type="number" id="pPrice" placeholder="Price (₹)" min="0" step="0.01">
+    <input type="number" id="pQty" placeholder="Quantity" min="0">
+    <div class="form-btns">
+      <button onclick="saveProduct()">Save</button>
+      <button onclick="cancelForm()">Cancel</button>
+    </div>
+    <p id="prodErr" class="err"></p>
+  </div>
+  <input type="text" id="invSearch" placeholder="Search inventory..." oninput="loadInventory()" style="margin-bottom:1rem;width:100%;padding:.5rem;border:1px solid var(--border);border-radius:6px;background:var(--bg2);color:var(--text)">
+  <table id="inventoryTable">
+    <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Qty</th><th>Actions</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section id="history" class="section">
+  <div class="section-head">
+    <h2>Sales History</h2>
+    <input type="text" id="billSearch" placeholder="Search bill number..." oninput="loadHistory()">
+  </div>
+  <div id="historyStats" class="history-stats"></div>
+  <table id="historyTable">
+    <thead><tr><th>Bill No</th><th>Date</th><th>Items</th><th>Subtotal</th><th>Tax</th><th>Grand Total</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</section>
+</main>
+
+<div id="printArea" style="display:none"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BugTrack — Online Bug Tracking System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<div class="header-inner">
+<div class="logo">&#9679; BugTrack</div>
+<nav>
+<button onclick="showSection('report')">Report Bug</button>
+<button onclick="showSection('bugs')">View Bugs</button>
+<button id="adminBtn" onclick="showAdminModal()">Admin</button>
+<button id="logoutBtn" onclick="logout()" style="display:none">Logout</button>
+</nav>
+</div>
+</header>
+<main>
+<section id="reportSection">
+<div class="card">
+<h2>Report a Bug</h2>
+<div class="form-grid">
+<input type="text" id="name" placeholder="Your Name" />
+<input type="email" id="email" placeholder="Your Email" />
+<input type="text" id="title" placeholder="Bug Title" class="full" />
+<textarea id="description" placeholder="Bug Description" class="full"></textarea>
+<select id="severity" class="full">
+<option value="">Select Severity</option>
+<option value="Low">Low</option>
+<option value="Medium">Medium</option>
+<option value="High">High</option>
+<option value="Critical">Critical</option>
+</select>
+<button class="btn-primary full" onclick="submitBug()">Submit Bug</button>
+</div>
+<div id="formMsg"></div>
+</div>
+</section>
+<section id="bugsSection" style="display:none">
+<div id="adminPanel" style="display:none">
+<div class="stats-row">
+<div class="stat-card"><span id="statTotal">0</span><label>Total</label></div>
+<div class="stat-card open"><span id="statOpen">0</span><label>Open</label></div>
+<div class="stat-card progress"><span id="statProgress">0</span><label>In Progress</label></div>
+<div class="stat-card resolved"><span id="statResolved">0</span><label>Resolved</label></div>
+</div>
+</div>
+<div class="filters">
+<input type="text" id="search" placeholder="Search by title..." oninput="renderBugs()" />
+<select id="filterSeverity" onchange="renderBugs()">
+<option value="">All Severities</option>
+<option value="Low">Low</option>
+<option value="Medium">Medium</option>
+<option value="High">High</option>
+<option value="Critical">Critical</option>
+</select>
+<select id="filterStatus" onchange="renderBugs()">
+<option value="">All Statuses</option>
+<option value="Open">Open</option>
+<option value="In Progress">In Progress</option>
+<option value="Resolved">Resolved</option>
+</select>
+</div>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>#</th><th>Title</th><th>Severity</th><th>Status</th><th>Reporter</th><th>Date</th><th id="actionHead" style="display:none">Actions</th></tr>
+</thead>
+<tbody id="bugTable"></tbody>
+</table>
+</div>
+</section>
+</main>
+<div id="adminModal" class="modal-bg" style="display:none">
+<div class="modal">
+<h3>Admin Login</h3>
+<input type="text" id="adminUser" placeholder="Username" />
+<input type="password" id="adminPass" placeholder="Password" />
+<div id="loginMsg"></div>
+<div class="modal-actions">
+<button class="btn-primary" onclick="adminLogin()">Login</button>
+<button onclick="closeModal()">Cancel</button>
+</div>
+</div>
+</div>
+<div id="detailModal" class="modal-bg" style="display:none">
+<div class="modal wide">
+<h3 id="detailTitle"></h3>
+<div id="detailBody"></div>
+<div class="modal-actions"><button onclick="closeDetailModal()">Close</button></div>
+</div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

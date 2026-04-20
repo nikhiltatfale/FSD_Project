@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College ERP</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+<div id="page-login" class="page active">
+  <div class="login-wrap">
+    <div class="login-brand">
+      <div class="brand-icon">🎓</div>
+      <h1>College ERP</h1>
+      <p>Academic Management System</p>
+    </div>
+    <div class="login-tabs">
+      <button class="tab-btn active" onclick="switchTab('student')">Student Login</button>
+      <button class="tab-btn" onclick="switchTab('admin')">Admin Login</button>
+    </div>
+    <div id="tab-student" class="tab-content active">
+      <input type="text" id="stu-id" placeholder="Student ID (e.g. S001)">
+      <input type="text" id="stu-name" placeholder="Full Name">
+      <button class="btn-primary" onclick="studentLogin()">Login</button>
+    </div>
+    <div id="tab-admin" class="tab-content">
+      <input type="text" id="adm-user" placeholder="Username">
+      <input type="password" id="adm-pass" placeholder="Password">
+      <button class="btn-primary" onclick="adminLogin()">Login</button>
+    </div>
+    <div id="login-error" class="error-msg"></div>
+  </div>
+</div>
+
+<div id="page-admin" class="page">
+  <nav class="sidebar">
+    <div class="sidebar-brand">🎓 ERP Admin</div>
+    <a onclick="adminNav('dashboard')" class="nav-link active">Dashboard</a>
+    <a onclick="adminNav('students')" class="nav-link">Students</a>
+    <a onclick="adminNav('attendance')" class="nav-link">Attendance</a>
+    <a onclick="adminNav('marks')" class="nav-link">Marks</a>
+    <a onclick="adminNav('notices')" class="nav-link">Notices</a>
+    <a onclick="logout()" class="nav-link logout">Logout</a>
+  </nav>
+  <main class="main-content">
+    <div id="admin-dashboard" class="section active">
+      <h2>Dashboard</h2>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num" id="stat-students">0</div><div class="stat-label">Students</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-notices">0</div><div class="stat-label">Notices</div></div>
+        <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Subjects</div></div>
+      </div>
+    </div>
+
+    <div id="admin-students" class="section">
+      <h2>Student Management</h2>
+      <div class="form-row">
+        <input type="text" id="new-id" placeholder="Student ID">
+        <input type="text" id="new-name" placeholder="Full Name">
+        <input type="text" id="new-dept" placeholder="Department">
+        <input type="text" id="new-year" placeholder="Year">
+        <button class="btn-primary" onclick="addStudent()">Add</button>
+      </div>
+      <table id="students-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Year</th><th>Action</th></tr></thead>
+        <tbody id="students-body"></tbody>
+      </table>
+    </div>
+
+    <div id="admin-attendance" class="section">
+      <h2>Attendance Management</h2>
+      <div class="form-row">
+        <select id="att-student"></select>
+        <input type="date" id="att-date">
+        <select id="att-status">
+          <option>Present</option>
+          <option>Absent</option>
+        </select>
+        <button class="btn-primary" onclick="markAttendance()">Mark</button>
+      </div>
+      <div id="att-history"></div>
+    </div>
+
+    <div id="admin-marks" class="section">
+      <h2>Marks Management</h2>
+      <div class="form-row">
+        <select id="marks-student"></select>
+        <select id="marks-subject">
+          <option>Maths</option><option>Science</option><option>English</option><option>Computer</option>
+        </select>
+        <input type="number" id="marks-score" placeholder="Score (0-100)" min="0" max="100">
+        <button class="btn-primary" onclick="addMarks()">Save</button>
+      </div>
+      <div id="marks-display"></div>
+    </div>
+
+    <div id="admin-notices" class="section">
+      <h2>Notice Board</h2>
+      <div class="form-col">
+        <input type="text" id="notice-title" placeholder="Notice Title">
+        <textarea id="notice-body" placeholder="Notice content..." rows="3"></textarea>
+        <button class="btn-primary" onclick="postNotice()">Post Notice</button>
+      </div>
+      <div id="notices-list"></div>
+    </div>
+  </main>
+</div>
+
+<div id="page-student" class="page">
+  <nav class="sidebar">
+    <div class="sidebar-brand">🎓 ERP Portal</div>
+    <a onclick="stuNav('profile')" class="nav-link active">Profile</a>
+    <a onclick="stuNav('attendance')" class="nav-link">Attendance</a>
+    <a onclick="stuNav('marks')" class="nav-link">Marks</a>
+    <a onclick="stuNav('notices')" class="nav-link">Notices</a>
+    <a onclick="logout()" class="nav-link logout">Logout</a>
+  </nav>
+  <main class="main-content">
+    <div id="stu-profile" class="section active">
+      <h2>My Profile</h2>
+      <div class="profile-card">
+        <div class="avatar">👤</div>
+        <div id="profile-info"></div>
+      </div>
+    </div>
+    <div id="stu-attendance" class="section">
+      <h2>My Attendance</h2>
+      <div id="att-percent" class="stat-highlight"></div>
+      <div id="att-records"></div>
+    </div>
+    <div id="stu-marks" class="section">
+      <h2>My Marks</h2>
+      <div id="marks-records"></div>
+    </div>
+    <div id="stu-notices" class="section">
+      <h2>Notice Board</h2>
+      <div id="stu-notices-list"></div>
+    </div>
+  </main>
+</div>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>

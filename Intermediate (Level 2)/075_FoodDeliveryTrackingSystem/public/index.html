@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FoodTrack</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo">FoodTrack</div>
+    <nav>
+      <button class="nav-btn active" onclick="show('order')">Order</button>
+      <button class="nav-btn" onclick="show('track')">Track</button>
+      <span id="adminTrigger" onclick="show('login')">·</span>
+    </nav>
+  </header>
+
+  <section id="orderSection" class="section active">
+    <div class="card">
+      <h2>Place Order</h2>
+      <div class="form-group"><input id="oName" placeholder="Full Name" type="text"></div>
+      <div class="form-group"><input id="oPhone" placeholder="Phone Number" type="tel"></div>
+      <div class="form-group"><input id="oAddress" placeholder="Delivery Address" type="text"></div>
+      <div class="form-group"><input id="oItem" placeholder="Food Item" type="text"></div>
+      <div class="form-group"><input id="oQty" placeholder="Quantity" type="number" min="1"></div>
+      <button class="btn" onclick="placeOrder()">Place Order</button>
+      <div id="orderResult"></div>
+    </div>
+  </section>
+
+  <section id="trackSection" class="section">
+    <div class="card">
+      <h2>Track Order</h2>
+      <div class="form-group row">
+        <input id="trackId" placeholder="Enter Order ID" type="text">
+        <button class="btn sm" onclick="trackOrder()">Track</button>
+      </div>
+      <div id="trackResult"></div>
+    </div>
+  </section>
+
+  <section id="loginSection" class="section">
+    <div class="card narrow">
+      <h2>Admin Login</h2>
+      <div class="form-group"><input id="aUser" placeholder="Username" type="text"></div>
+      <div class="form-group"><input id="aPass" placeholder="Password" type="password"></div>
+      <button class="btn" onclick="adminLogin()">Login</button>
+      <div id="loginErr"></div>
+    </div>
+  </section>
+
+  <section id="dashSection" class="section">
+    <div class="card wide">
+      <div class="dash-header">
+        <h2>Admin Dashboard</h2>
+        <div class="row">
+          <input id="searchId" placeholder="Search Order ID" type="text" oninput="loadOrders()">
+          <button class="btn sm outline" onclick="adminLogout()">Logout</button>
+        </div>
+      </div>
+      <div id="ordersTable"></div>
+    </div>
+  </section>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

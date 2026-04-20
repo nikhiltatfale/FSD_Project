@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Scheduler</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div id="page-candidate" class="page active">
+    <header>
+      <div class="logo">InterviewHub</div>
+      <button id="admin-link" onclick="showPage('login')">Admin</button>
+    </header>
+    <main>
+      <div class="hero">
+        <h1>Book Your Interview</h1>
+        <p>Select a slot and fill in your details below.</p>
+      </div>
+      <form id="booking-form" class="card">
+        <div class="field"><label>Full Name</label><input id="b-name" type="text" placeholder="John Doe" required></div>
+        <div class="field"><label>Email</label><input id="b-email" type="email" placeholder="john@email.com" required></div>
+        <div class="field"><label>Phone</label><input id="b-phone" type="tel" placeholder="+91 9876543210" required></div>
+        <div class="field"><label>Position Applying For</label><input id="b-position" type="text" placeholder="Software Engineer" required></div>
+        <div class="field"><label>Select Slot</label>
+          <select id="b-slot">
+            <option value="">-- Choose a slot --</option>
+          </select>
+        </div>
+        <button type="button" onclick="bookSlot()">Confirm Booking</button>
+        <div id="book-msg" class="msg"></div>
+      </form>
+    </main>
+  </div>
+
+  <div id="page-login" class="page">
+    <header>
+      <div class="logo">InterviewHub</div>
+      <button onclick="showPage('candidate')">← Back</button>
+    </header>
+    <main>
+      <div class="hero"><h1>Admin Login</h1></div>
+      <form class="card small">
+        <div class="field"><label>Username</label><input id="a-user" type="text" placeholder="admin"></div>
+        <div class="field"><label>Password</label><input id="a-pass" type="password" placeholder="••••"></div>
+        <button type="button" onclick="adminLogin()">Login</button>
+        <div id="login-msg" class="msg"></div>
+      </form>
+    </main>
+  </div>
+
+  <div id="page-dashboard" class="page">
+    <header>
+      <div class="logo">InterviewHub <span class="badge">Admin</span></div>
+      <button onclick="adminLogout()">Logout</button>
+    </header>
+    <main class="dashboard">
+      <section class="card">
+        <h2>Add Slot</h2>
+        <div class="row">
+          <input id="s-date" type="date">
+          <input id="s-time" type="time">
+          <button onclick="addSlot()">Add Slot</button>
+        </div>
+        <div id="add-msg" class="msg"></div>
+      </section>
+      <section class="card">
+        <h2>Slots</h2>
+        <div id="slots-list"></div>
+      </section>
+      <section class="card">
+        <div class="row space">
+          <h2>Bookings</h2>
+          <div class="row">
+            <input id="filter-date" type="date">
+            <button onclick="loadBookings()">Filter</button>
+            <button onclick="document.getElementById('filter-date').value=''; loadBookings()">All</button>
+          </div>
+        </div>
+        <div id="bookings-list"></div>
+      </section>
+    </main>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

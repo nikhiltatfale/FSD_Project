@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d0d0f;--surface:#16161a;--border:#2a2a32;--accent:#7c6af7;--accent2:#f7a26a;--text:#e8e8f0;--muted:#888899;--err:#f76a6a;--ok:#6af7a2}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+.page{display:none;min-height:100vh;flex-direction:column}
+.page.active{display:flex}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 40px;border-bottom:1px solid var(--border);background:var(--surface)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;letter-spacing:-.5px}
+.badge{background:var(--accent);color:#fff;font-size:.65rem;padding:2px 8px;border-radius:20px;margin-left:8px;font-family:'DM Sans',sans-serif;font-weight:500}
+header button{background:transparent;border:1px solid var(--border);color:var(--muted);padding:7px 16px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.85rem;transition:.2s}
+header button:hover{border-color:var(--accent);color:var(--text)}
+main{flex:1;padding:40px}
+.hero{max-width:600px;margin:0 auto 32px}
+.hero h1{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;margin-bottom:8px}
+.hero p{color:var(--muted);font-size:.95rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;max-width:600px;margin:0 auto 24px}
+.card.small{max-width:380px}
+.card h2{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:18px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:6px;font-weight:500;letter-spacing:.3px}
+input,select{width:100%;background:#0d0d0f;border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:.2s}
+input:focus,select:focus{border-color:var(--accent)}
+select option{background:var(--bg)}
+button[type=button],button[onclick]{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;font-size:.9rem;width:100%;margin-top:4px;transition:.2s}
+button[type=button]:hover,button[onclick]:hover{opacity:.85}
+.msg{font-size:.82rem;margin-top:10px;min-height:18px;font-weight:500}
+.msg.ok{color:var(--ok)}
+.msg.err{color:var(--err)}
+.dashboard{max-width:900px;margin:0 auto}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row input{width:auto;flex:1}
+.row button{width:auto;margin-top:0}
+.space{justify-content:space-between}
+.slot-item,.booking-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:.9rem;gap:12px;flex-wrap:wrap}
+.slot-item:last-child,.booking-item:last-child{border-bottom:none}
+.tag{font-size:.72rem;padding:3px 9px;border-radius:20px;font-weight:600}
+.tag.booked{background:#f76a6a22;color:var(--err)}
+.tag.free{background:#6af7a222;color:var(--ok)}
+.del-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:.78rem;font-family:'DM Sans',sans-serif;width:auto;margin-top:0;transition:.2s}
+.del-btn:hover{border-color:var(--err);color:var(--err)}
+.empty{color:var(--muted);font-size:.88rem;padding:16px 0}
+@media(max-width:600px){header{padding:14px 18px}main{padding:20px}button[type=button],button[onclick]{font-size:.82rem}}

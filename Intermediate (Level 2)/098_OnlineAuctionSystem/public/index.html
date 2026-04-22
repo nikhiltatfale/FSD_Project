@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AuctionX</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo">AUCTION<span>X</span></div>
+  <nav>
+    <button id="navUser" onclick="showView('user')">Live Auctions</button>
+    <button id="navAdmin" onclick="showView('adminLogin')" id="navAdminBtn">Admin</button>
+    <button id="navLogout" onclick="adminLogout()" style="display:none">Logout</button>
+  </nav>
+</header>
+
+<section id="viewUser">
+  <div class="section-head"><h2>Live Auctions</h2><span id="liveCount"></span></div>
+  <div id="itemsGrid"></div>
+</section>
+
+<section id="viewAdminLogin" style="display:none">
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <input id="loginUser" type="text" placeholder="Username">
+    <input id="loginPass" type="password" placeholder="Password">
+    <button onclick="adminLogin()">Login</button>
+    <div id="loginErr" class="err"></div>
+  </div>
+</section>
+
+<section id="viewAdmin" style="display:none">
+  <div class="admin-layout">
+    <div class="admin-sidebar">
+      <h3>Add Item</h3>
+      <input id="aName" placeholder="Item Name">
+      <input id="aDesc" placeholder="Description">
+      <input id="aPrice" type="number" placeholder="Start Price">
+      <button onclick="addItem()">Add Item</button>
+      <hr>
+      <button class="danger" onclick="resetSystem()">Reset All</button>
+    </div>
+    <div class="admin-main">
+      <h3>Manage Auctions</h3>
+      <div id="adminItemsList"></div>
+    </div>
+    <div class="admin-bids" id="bidsPanel">
+      <h3>Bid Log <span id="bidsFor"></span></h3>
+      <div id="bidsList"></div>
+    </div>
+  </div>
+</section>
+
+<div id="modal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <h3 id="modalTitle"></h3>
+    <input id="modalName" placeholder="Item Name">
+    <input id="modalDesc" placeholder="Description">
+    <input id="modalPrice" type="number" placeholder="Start Price">
+    <div class="modal-btns">
+      <button onclick="saveEdit()">Save</button>
+      <button class="danger" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

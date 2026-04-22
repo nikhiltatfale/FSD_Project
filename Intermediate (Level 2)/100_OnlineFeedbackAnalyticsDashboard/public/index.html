@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Feedback Analytics</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav id="nav">
+  <div class="logo">FeedbackIQ</div>
+  <div class="nav-links">
+    <button onclick="showSection('feedback')" class="nav-btn active" id="nav-feedback">Submit Feedback</button>
+    <button onclick="showSection('login')" class="nav-btn" id="nav-login">Admin Login</button>
+    <button onclick="logout()" class="nav-btn hidden" id="nav-logout">Logout</button>
+  </div>
+</nav>
+
+<section id="feedback-section" class="section">
+  <div class="form-card">
+    <h2>Share Your Feedback</h2>
+    <p class="subtitle">We value your opinion</p>
+    <div id="fb-msg" class="msg hidden"></div>
+    <div class="form-group">
+      <input type="text" id="fb-name" placeholder="Your Name" />
+    </div>
+    <div class="form-group">
+      <input type="email" id="fb-email" placeholder="Email Address" />
+    </div>
+    <div class="form-group">
+      <select id="fb-category">
+        <option value="">Select Category</option>
+        <option>Service</option>
+        <option>Product</option>
+        <option>Support</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="rating-label">Rating</label>
+      <div class="stars" id="stars">
+        <span class="star" data-v="1">★</span>
+        <span class="star" data-v="2">★</span>
+        <span class="star" data-v="3">★</span>
+        <span class="star" data-v="4">★</span>
+        <span class="star" data-v="5">★</span>
+      </div>
+      <input type="hidden" id="fb-rating" value="0" />
+    </div>
+    <div class="form-group">
+      <textarea id="fb-comment" placeholder="Your comment..." rows="4"></textarea>
+    </div>
+    <button class="btn-primary" onclick="submitFeedback()">Submit Feedback</button>
+  </div>
+</section>
+
+<section id="login-section" class="section hidden">
+  <div class="form-card">
+    <h2>Admin Login</h2>
+    <p class="subtitle">Access the analytics dashboard</p>
+    <div id="login-msg" class="msg hidden"></div>
+    <div class="form-group">
+      <input type="text" id="admin-user" placeholder="Username" />
+    </div>
+    <div class="form-group">
+      <input type="password" id="admin-pass" placeholder="Password" />
+    </div>
+    <button class="btn-primary" onclick="adminLogin()">Login</button>
+  </div>
+</section>
+
+<section id="dashboard-section" class="section hidden">
+  <div class="dash-header">
+    <h2>Analytics Dashboard</h2>
+    <div class="dash-actions">
+      <a href="/export" class="btn-export">Export CSV</a>
+    </div>
+  </div>
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card"><div class="stat-val" id="stat-total">0</div><div class="stat-label">Total Feedback</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-avg">0</div><div class="stat-label">Average Rating</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-top-cat">—</div><div class="stat-label">Top Category</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-today">0</div><div class="stat-label">Today</div></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Rating Distribution</h3>
+      <div id="rating-chart"></div>
+    </div>
+    <div class="chart-card">
+      <h3>Category Breakdown</h3>
+      <div id="cat-chart"></div>
+    </div>
+  </div>
+  <div class="filters-bar">
+    <input type="text" id="search" placeholder="Search name or email..." oninput="applyFilters()" />
+    <select id="filter-cat" onchange="applyFilters()">
+      <option value="">All Categories</option>
+      <option>Service</option>
+      <option>Product</option>
+      <option>Support</option>
+      <option>Other</option>
+    </select>
+    <select id="filter-rating" onchange="applyFilters()">
+      <option value="">All Ratings</option>
+      <option value="5">5 Stars</option>
+      <option value="4">4 Stars</option>
+      <option value="3">3 Stars</option>
+      <option value="2">2 Stars</option>
+      <option value="1">1 Star</option>
+    </select>
+  </div>
+  <div class="table-wrap">
+    <table id="fb-table">
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Category</th><th>Rating</th><th>Comment</th><th>Date</th><th>Action</th></tr>
+      </thead>
+      <tbody id="fb-tbody"></tbody>
+    </table>
+    <div id="no-data" class="no-data hidden">No feedback found.</div>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

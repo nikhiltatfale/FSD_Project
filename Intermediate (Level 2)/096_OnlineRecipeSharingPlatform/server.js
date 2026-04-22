@@ -1,0 +1,15 @@
+const express=require('express');const path=require('path');const app=express();
+app.use(express.json());app.use(express.static(path.join(__dirname,'public')));
+const users=[];const recipes=[];let recipeId=1;
+const admin={username:'admin',password:'admin123'};
+const sessions={};
+function genToken(){return Math.random().toString(36).slice(2)+Date.now().toString(36);}
+app.post('/register',(req,res)=>{const{username,password}=req.body;if(!username||!password)return res.status(400).json({error:'All fields required'});if(users.find(u=>u.username===username))return res.status(400).json({error:'Username taken'});users.push({username,password});res.json({success:true});});
+app.post('/login',(req,res)=>{const{username,password}=req.body;const user=users.find(u=>u.username===username&&u.password===password);if(!user)return res.status(401).json({error:'Invalid credentials'});const token=genToken();sessions[token]={username,role:'user'};res.json({token,username});});
+app.post('/admin-login',(req,res)=>{const{username,password}=req.body;if(username===admin.username&&password===admin.password){const token=genToken();sessions[token]={username,role:'admin'};return res.json({token,username});}res.status(401).json({error:'Invalid admin credentials'});});
+app.get('/recipes',(req,res)=>{res.json(recipes);});
+app.post('/add-recipe',(req,res)=>{const token=req.headers.authorization;if(!token||!sessions[token])return res.status(401).json({error:'Unauthorized'});const{title,ingredients,steps}=req.body;if(!title||title.length<3||!ingredients||!steps)return res.status(400).json({error:'All fields required, title min 3 chars'});recipes.unshift({id:recipeId++,title,ingredients,steps,author:sessions[token].username,date:new Date().toLocaleDateString()});res.json({success:true});});
+app.delete('/delete-recipe/:id',(req,res)=>{const token=req.headers.authorization;if(!token||!sessions[token]||sessions[token].role!=='admin')return res.status(403).json({error:'Forbidden'});const idx=recipes.findIndex(r=>r.id===parseInt(req.params.id));if(idx===-1)return res.status(404).json({error:'Not found'});recipes.splice(idx,1);res.json({success:true});});
+app.get('/users',(req,res)=>{const token=req.headers.authorization;if(!token||!sessions[token]||sessions[token].role!=='admin')return res.status(403).json({error:'Forbidden'});res.json(users.map(u=>({username:u.username})));});
+app.delete('/delete-user/:username',(req,res)=>{const token=req.headers.authorization;if(!token||!sessions[token]||sessions[token].role!=='admin')return res.status(403).json({error:'Forbidden'});const idx=users.findIndex(u=>u.username===req.params.username);if(idx===-1)return res.status(404).json({error:'Not found'});users.splice(idx,1);Object.keys(sessions).forEach(t=>{if(sessions[t].username===req.params.username)delete sessions[t];});res.json({success:true});});
+app.listen(3000,()=>console.log('Server running on http://localhost:3000'));

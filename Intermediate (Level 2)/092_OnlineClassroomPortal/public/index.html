@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Classroom Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ADMIN LOGIN MODAL -->
+    <div id="adminModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Login</h2>
+                <button class="close-btn" onclick="closeAdminModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="adminUsername" placeholder="Username">
+                <input type="password" id="adminPassword" placeholder="Password">
+                <button onclick="adminLogin()" class="btn-primary">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT LOGIN PAGE -->
+    <div id="studentLoginPage" class="page">
+        <div class="login-container">
+            <div class="login-box">
+                <h1>?? Online Classroom Portal</h1>
+                <p class="subtitle">Join your classroom</p>
+                <form onsubmit="joinClass(event)">
+                    <input type="text" id="studentName" placeholder="Your Name" required>
+                    <input type="email" id="studentEmail" placeholder="Your Email" required>
+                    <input type="text" id="classCode" placeholder="Class Code" required>
+                    <button type="submit" class="btn-primary">Join Class</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT DASHBOARD -->
+    <div id="studentDashboard" class="page hidden">
+        <div class="navbar">
+            <h1>?? Student Dashboard</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('studentDashboard')" class="nav-btn active">Home</button>
+                <button onclick="showPage('materialsPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('profilePage')" class="nav-btn">Profile</button>
+                <button onclick="logout()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <div class="dashboard-section">
+                <h2>?? Announcements</h2>
+                <div id="announcementsList"></div>
+            </div>
+            <div class="dashboard-section">
+                <h2>?? Quick Stats</h2>
+                <div class="stats-container">
+                    <div class="stat-card" onclick="showPage('assignmentsPage')">
+                        <h3>Assignments</h3>
+                        <p id="assignmentCount">0</p>
+                    </div>
+                    <div class="stat-card" onclick="showPage('quizzesPage')">
+                        <h3>Quizzes</h3>
+                        <p id="quizCount">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MATERIALS PAGE -->
+    <div id="materialsPage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Study Materials</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('studentDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('materialsPage')" class="nav-btn active">Materials</button>
+                <button onclick="showPage('assignmentsPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('profilePage')" class="nav-btn">Profile</button>
+                <button onclick="logout()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div id="materialsList" class="materials-list"></div>
+        </div>
+    </div>
+
+    <!-- ASSIGNMENTS PAGE -->
+    <div id="assignmentsPage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Assignments</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('studentDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('materialsPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsPage')" class="nav-btn active">Assignments</button>
+                <button onclick="showPage('quizzesPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('profilePage')" class="nav-btn">Profile</button>
+                <button onclick="logout()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div id="assignmentsList"></div>
+        </div>
+    </div>
+
+    <!-- QUIZZES PAGE -->
+    <div id="quizzesPage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Quizzes</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('studentDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('materialsPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesPage')" class="nav-btn active">Quizzes</button>
+                <button onclick="showPage('profilePage')" class="nav-btn">Profile</button>
+                <button onclick="logout()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div id="quizzesList"></div>
+        </div>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quizScreen" class="page hidden">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h2 id="quizTitle">Quiz</h2>
+                <div class="timer" id="timer"></div>
+            </div>
+            <div id="questionsContainer"></div>
+            <button onclick="submitQuiz()" class="btn-primary" style="margin-top: 20px;">Submit Quiz</button>
+        </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div id="profilePage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Profile</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('studentDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('materialsPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('profilePage')" class="nav-btn active">Profile</button>
+                <button onclick="logout()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div id="profileInfo" class="profile-card"></div>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD -->
+    <div id="adminDashboard" class="page hidden">
+        <div class="navbar">
+            <h1>?? Admin Dashboard</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('adminDashboard')" class="nav-btn active">Home</button>
+                <button onclick="showPage('classesPage')" class="nav-btn">Classes</button>
+                <button onclick="showPage('announcementsPage')" class="nav-btn">Announcements</button>
+                <button onclick="showPage('materialsAdminPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsAdminPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesAdminPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('submissionsPage')" class="nav-btn">Submissions</button>
+                <button onclick="showPage('resultsPage')" class="nav-btn">Quiz Results</button>
+                <button onclick="logoutAdmin()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Students</h3>
+                    <p id="adminTotalStudents">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Classes</h3>
+                    <p id="adminTotalClasses">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Assignments</h3>
+                    <p id="adminTotalAssignments">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Submissions</h3>
+                    <p id="adminTotalSubmissions">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Quizzes</h3>
+                    <p id="adminTotalQuizzes">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Quiz Results</h3>
+                    <p id="adminTotalResults">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLASSES PAGE -->
+    <div id="classesPage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Classes</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('adminDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('classesPage')" class="nav-btn active">Classes</button>
+                <button onclick="showPage('announcementsPage')" class="nav-btn">Announcements</button>
+                <button onclick="showPage('materialsAdminPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsAdminPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesAdminPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('submissionsPage')" class="nav-btn">Submissions</button>
+                <button onclick="showPage('resultsPage')" class="nav-btn">Quiz Results</button>
+                <button onclick="logoutAdmin()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div style="margin-bottom: 20px;">
+                <button onclick="createClass()" class="btn-primary">Create New Class</button>
+            </div>
+            <div id="classesList"></div>
+        </div>
+    </div>
+
+    <!-- ANNOUNCEMENTS ADMIN PAGE -->
+    <div id="announcementsPage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Announcements</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('adminDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('classesPage')" class="nav-btn">Classes</button>
+                <button onclick="showPage('announcementsPage')" class="nav-btn active">Announcements</button>
+                <button onclick="showPage('materialsAdminPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsAdminPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesAdminPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('submissionsPage')" class="nav-btn">Submissions</button>
+                <button onclick="showPage('resultsPage')" class="nav-btn">Quiz Results</button>
+                <button onclick="logoutAdmin()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="admin-form">
+                <textarea id="announcementText" placeholder="Enter announcement..." rows="4"></textarea>
+                <button onclick="addAnnouncement()" class="btn-primary">Post Announcement</button>
+            </div>
+            <div id="adminAnnouncementsList"></div>
+        </div>
+    </div>
+
+    <!-- MATERIALS ADMIN PAGE -->
+    <div id="materialsAdminPage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Study Materials</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('adminDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('classesPage')" class="nav-btn">Classes</button>
+                <button onclick="showPage('announcementsPage')" class="nav-btn">Announcements</button>
+                <button onclick="showPage('materialsAdminPage')" class="nav-btn active">Materials</button>
+                <button onclick="showPage('assignmentsAdminPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesAdminPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('submissionsPage')" class="nav-btn">Submissions</button>
+                <button onclick="showPage('resultsPage')" class="nav-btn">Quiz Results</button>
+                <button onclick="logoutAdmin()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="admin-form">
+                <input type="text" id="materialTitle" placeholder="Material Title">
+                <textarea id="materialContent" placeholder="Material Content..." rows="6"></textarea>
+                <button onclick="addMaterial()" class="btn-primary">Upload Material</button>
+            </div>
+            <div id="adminMaterialsList"></div>
+        </div>
+    </div>
+
+    <!-- ASSIGNMENTS ADMIN PAGE -->
+    <div id="assignmentsAdminPage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Assignments</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('adminDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('classesPage')" class="nav-btn">Classes</button>
+                <button onclick="showPage('announcementsPage')" class="nav-btn">Announcements</button>
+                <button onclick="showPage('materialsAdminPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsAdminPage')" class="nav-btn active">Assignments</button>
+                <button onclick="showPage('quizzesAdminPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('submissionsPage')" class="nav-btn">Submissions</button>
+                <button onclick="showPage('resultsPage')" class="nav-btn">Quiz Results</button>
+                <button onclick="logoutAdmin()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="admin-form">
+                <textarea id="assignmentQuestion" placeholder="Assignment Question..." rows="4"></textarea>
+                <button onclick="addAssignment()" class="btn-primary">Create Assignment</button>
+            </div>
+            <div id="adminAssignmentsList"></div>
+        </div>
+    </div>
+
+    <!-- QUIZZES ADMIN PAGE -->
+    <div id="quizzesAdminPage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Quizzes</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('adminDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('classesPage')" class="nav-btn">Classes</button>
+                <button onclick="showPage('announcementsPage')" class="nav-btn">Announcements</button>
+                <button onclick="showPage('materialsAdminPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsAdminPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesAdminPage')" class="nav-btn active">Quizzes</button>
+                <button onclick="showPage('submissionsPage')" class="nav-btn">Submissions</button>
+                <button onclick="showPage('resultsPage')" class="nav-btn">Quiz Results</button>
+                <button onclick="logoutAdmin()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="admin-form">
+                <input type="text" id="quizTitle" placeholder="Quiz Title">
+                <input type="number" id="quizTimer" placeholder="Timer (seconds)" value="30">
+                <div id="questionsForm"></div>
+                <button onclick="addQuestionField()" class="btn-secondary">Add Question</button>
+                <button onclick="addQuiz()" class="btn-primary">Create Quiz</button>
+            </div>
+            <div id="adminQuizzesList"></div>
+        </div>
+    </div>
+
+    <!-- SUBMISSIONS PAGE -->
+    <div id="submissionsPage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Submissions</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('adminDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('classesPage')" class="nav-btn">Classes</button>
+                <button onclick="showPage('announcementsPage')" class="nav-btn">Announcements</button>
+                <button onclick="showPage('materialsAdminPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsAdminPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesAdminPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('submissionsPage')" class="nav-btn active">Submissions</button>
+                <button onclick="showPage('resultsPage')" class="nav-btn">Quiz Results</button>
+                <button onclick="logoutAdmin()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div id="submissionsList"></div>
+        </div>
+    </div>
+
+    <!-- RESULTS PAGE -->
+    <div id="resultsPage" class="page hidden">
+        <div class="navbar">
+            <h1>?? Quiz Results</h1>
+            <div class="nav-buttons">
+                <button onclick="showPage('adminDashboard')" class="nav-btn">Home</button>
+                <button onclick="showPage('classesPage')" class="nav-btn">Classes</button>
+                <button onclick="showPage('announcementsPage')" class="nav-btn">Announcements</button>
+                <button onclick="showPage('materialsAdminPage')" class="nav-btn">Materials</button>
+                <button onclick="showPage('assignmentsAdminPage')" class="nav-btn">Assignments</button>
+                <button onclick="showPage('quizzesAdminPage')" class="nav-btn">Quizzes</button>
+                <button onclick="showPage('submissionsPage')" class="nav-btn">Submissions</button>
+                <button onclick="showPage('resultsPage')" class="nav-btn active">Quiz Results</button>
+                <button onclick="logoutAdmin()" class="nav-btn logout-btn">Logout</button>
+            </div>
+        </div>
+        <div class="content-container">
+            <div id="resultsList"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

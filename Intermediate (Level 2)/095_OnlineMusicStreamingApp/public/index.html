@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAVEX</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="login-page">
+  <div class="login-box">
+    <div class="logo">WAVEX</div>
+    <p class="tagline">Your music. Unleashed.</p>
+    <input id="login-input" type="text" placeholder="Enter your username" autocomplete="off">
+    <button onclick="loginUser()">Enter</button>
+    <div class="admin-link" onclick="showAdminLogin()">Admin Access →</div>
+  </div>
+</div>
+
+<div id="admin-login-page" style="display:none">
+  <div class="login-box">
+    <div class="logo">ADMIN</div>
+    <input id="admin-user-input" type="text" placeholder="Username" autocomplete="off">
+    <input id="admin-pass-input" type="password" placeholder="Password">
+    <button onclick="loginAdmin()">Login</button>
+    <div class="admin-link" onclick="showUserLogin()">← Back</div>
+    <div id="admin-err" class="err"></div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <aside id="sidebar">
+    <div class="logo">WAVEX</div>
+    <nav>
+      <div class="nav-item active" onclick="showSection('browse')">⊞ Browse</div>
+      <div class="nav-item" onclick="showSection('favorites')">♥ Favorites</div>
+      <div class="nav-item" onclick="showSection('playlist')">≡ Playlist</div>
+      <div class="nav-item" onclick="showSection('recent')">◷ Recent</div>
+    </nav>
+    <div id="user-info">
+      <span id="username-display"></span>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div id="topbar">
+      <input id="search" type="text" placeholder="Search songs or artists..." oninput="filterSongs()">
+    </div>
+
+    <section id="browse-section">
+      <h2>All Songs</h2>
+      <div id="songs-grid" class="songs-grid"></div>
+    </section>
+
+    <section id="favorites-section" style="display:none">
+      <h2>Favorites</h2>
+      <div id="favorites-grid" class="songs-grid"></div>
+    </section>
+
+    <section id="playlist-section" style="display:none">
+      <h2>My Playlist</h2>
+      <div id="playlist-controls">
+        <button onclick="playPlaylist()">▶ Play All</button>
+        <button onclick="clearPlaylist()">✕ Clear</button>
+      </div>
+      <div id="playlist-grid" class="songs-grid"></div>
+    </section>
+
+    <section id="recent-section" style="display:none">
+      <h2>Recently Played</h2>
+      <div id="recent-grid" class="songs-grid"></div>
+    </section>
+  </main>
+</div>
+
+<div id="admin-panel" style="display:none">
+  <div id="admin-sidebar">
+    <div class="logo">ADMIN</div>
+    <nav>
+      <div class="nav-item active" onclick="adminTab('songs')">Songs</div>
+      <div class="nav-item" onclick="adminTab('users')">Users</div>
+      <div class="nav-item" onclick="adminTab('add')">Add Song</div>
+    </nav>
+    <button class="logout-btn" style="margin:1rem" onclick="adminLogout()">Logout</button>
+  </div>
+  <div id="admin-main">
+    <div id="admin-songs-tab">
+      <h2>All Songs</h2>
+      <div id="admin-songs-list"></div>
+    </div>
+    <div id="admin-users-tab" style="display:none">
+      <h2>Users</h2>
+      <div id="admin-users-list"></div>
+    </div>
+    <div id="admin-add-tab" style="display:none">
+      <h2>Add Song</h2>
+      <div class="add-form">
+        <input id="a-title" type="text" placeholder="Title">
+        <input id="a-artist" type="text" placeholder="Artist">
+        <input id="a-image" type="text" placeholder="Image URL (optional)">
+        <input id="a-audio" type="text" placeholder="Audio URL">
+        <button onclick="addSong()">Add Song</button>
+        <div id="add-msg" class="err"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="player-bar" style="display:none">
+  <div id="player-thumb"><img id="player-img" src="" alt=""></div>
+  <div id="player-info">
+    <div id="player-title">—</div>
+    <div id="player-artist">—</div>
+  </div>
+  <div id="player-controls">
+    <button onclick="prevSong()">⏮</button>
+    <button id="play-btn" onclick="togglePlay()">▶</button>
+    <button onclick="nextSong()">⏭</button>
+  </div>
+  <div id="player-progress-wrap">
+    <span id="cur-time">0:00</span>
+    <input id="progress" type="range" value="0" min="0" max="100" step="0.1" oninput="seek()">
+    <span id="dur-time">0:00</span>
+  </div>
+  <div id="player-volume">
+    <span>🔊</span>
+    <input id="volume" type="range" value="80" min="0" max="100" oninput="setVolume()">
+  </div>
+</div>
+
+<audio id="audio"></audio>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FitTrack</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav id="navbar" class="hidden">
+  <div class="nav-brand">FitTrack</div>
+  <div class="nav-links">
+    <span id="nav-name"></span>
+    <button onclick="showSection('dashboard')">Dashboard</button>
+    <button onclick="showSection('add-log')">Add Log</button>
+    <button onclick="showSection('profile')">Profile</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div id="auth-section">
+  <div class="auth-box">
+    <h1>FitTrack</h1>
+    <div class="tab-row">
+      <button class="tab active" onclick="switchTab('login')">Login</button>
+      <button class="tab" onclick="switchTab('register')">Register</button>
+      <button class="tab" onclick="switchTab('admin')">Admin</button>
+    </div>
+    <div id="tab-login">
+      <input id="l-email" type="email" placeholder="Email">
+      <input id="l-pass" type="password" placeholder="Password">
+      <div id="l-err" class="err"></div>
+      <button class="btn-primary" onclick="doLogin()">Login</button>
+    </div>
+    <div id="tab-register" class="hidden">
+      <input id="r-name" placeholder="Full Name">
+      <input id="r-email" type="email" placeholder="Email">
+      <input id="r-pass" type="password" placeholder="Password (min 6)">
+      <input id="r-age" type="number" placeholder="Age">
+      <input id="r-height" type="number" placeholder="Height (cm)">
+      <input id="r-cw" type="number" placeholder="Current Weight (kg)">
+      <input id="r-tw" type="number" placeholder="Target Weight (kg)">
+      <div id="r-err" class="err"></div>
+      <button class="btn-primary" onclick="doRegister()">Register</button>
+    </div>
+    <div id="tab-admin" class="hidden">
+      <input id="a-email" type="email" placeholder="Admin Email">
+      <input id="a-pass" type="password" placeholder="Admin Password">
+      <div id="a-err" class="err"></div>
+      <button class="btn-primary" onclick="doAdminLogin()">Admin Login</button>
+    </div>
+  </div>
+</div>
+
+<div id="user-section" class="hidden">
+  <div id="dashboard" class="section">
+    <h2>My Progress</h2>
+    <div id="stats-cards" class="cards"></div>
+    <h3>Logs</h3>
+    <div class="table-wrap">
+      <table id="logs-table">
+        <thead><tr><th>Date</th><th>Steps</th><th>Calories</th><th>Workout</th><th>Duration</th><th>Weight</th><th>Actions</th></tr></thead>
+        <tbody id="logs-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="add-log" class="section hidden">
+    <h2 id="log-form-title">Add Log</h2>
+    <div class="form-grid">
+      <input id="log-date" type="date">
+      <input id="log-steps" type="number" placeholder="Steps">
+      <input id="log-cal" type="number" placeholder="Calories Burned">
+      <select id="log-type">
+        <option value="">Workout Type</option>
+        <option>Cardio</option><option>Strength</option><option>Yoga</option><option>HIIT</option><option>Cycling</option><option>Swimming</option><option>Other</option>
+      </select>
+      <input id="log-dur" type="number" placeholder="Duration (min)">
+      <input id="log-wt" type="number" placeholder="Weight (kg)">
+    </div>
+    <div id="log-err" class="err"></div>
+    <button class="btn-primary" onclick="submitLog()">Save Log</button>
+    <button class="btn-sec" onclick="cancelEdit()">Cancel</button>
+  </div>
+
+  <div id="profile" class="section hidden">
+    <h2>Profile</h2>
+    <div class="form-grid">
+      <input id="p-name" placeholder="Name">
+      <input id="p-email" type="email" placeholder="Email" disabled>
+      <input id="p-age" type="number" placeholder="Age">
+      <input id="p-height" type="number" placeholder="Height (cm)">
+      <input id="p-cw" type="number" placeholder="Current Weight (kg)">
+      <input id="p-tw" type="number" placeholder="Target Weight (kg)">
+    </div>
+    <button class="btn-primary" onclick="saveProfile()">Save Profile</button>
+    <div id="p-msg" class="succ"></div>
+  </div>
+</div>
+
+<div id="admin-section" class="hidden">
+  <nav class="admin-nav">
+    <div class="nav-brand">FitTrack Admin</div>
+    <div class="nav-links">
+      <button onclick="adminTab('a-overview')">Overview</button>
+      <button onclick="adminTab('a-users')">Users</button>
+      <button onclick="adminTab('a-logs')">All Logs</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </nav>
+  <div id="a-overview" class="section">
+    <h2>Platform Statistics</h2>
+    <div id="admin-stats" class="cards"></div>
+  </div>
+  <div id="a-users" class="section hidden">
+    <h2>All Users</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Age</th><th>Height</th><th>CW</th><th>TW</th><th>Action</th></tr></thead>
+      <tbody id="admin-users-body"></tbody></table>
+    </div>
+  </div>
+  <div id="a-logs" class="section hidden">
+    <h2>All Logs</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>ID</th><th>User</th><th>Date</th><th>Steps</th><th>Calories</th><th>Workout</th><th>Duration</th><th>Weight</th><th>Action</th></tr></thead>
+      <tbody id="admin-logs-body"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

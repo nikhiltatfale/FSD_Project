@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DocApprove</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+<nav id="navbar" class="hidden">
+  <div class="logo"><span>Doc</span>Approve</div>
+  <div class="right">
+    <span class="nav-user" id="navUser"></span>
+    <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div id="loginSection">
+  <div class="card">
+    <div class="logo-big"><span>Doc</span>Approve</div>
+    <div style="color:var(--muted);font-size:12px;font-family:'DM Mono',monospace;margin-bottom:24px">Document Approval System</div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('login')">Login</button>
+      <button class="tab" onclick="switchTab('register')">Register</button>
+    </div>
+    <div id="loginForm">
+      <div id="loginAlert"></div>
+      <div class="form-group"><label>Email</label><input id="loginEmail" type="email" placeholder="your@email.com"></div>
+      <div class="form-group"><label>Password</label><input id="loginPass" type="password" placeholder="Leave blank for users"></div>
+      <button class="btn btn-primary" style="width:100%" onclick="doLogin()">Login</button>
+      <div style="text-align:center;margin-top:14px;font-size:11px;color:var(--muted)">Admin? <a href="#" style="color:var(--accent)" onclick="showAdminModal()">Click here</a></div>
+    </div>
+    <div id="registerForm" class="hidden">
+      <div id="regAlert"></div>
+      <div class="form-group"><label>Name</label><input id="regName" type="text" placeholder="Your name"></div>
+      <div class="form-group"><label>Email</label><input id="regEmail" type="email" placeholder="your@email.com"></div>
+      <button class="btn btn-primary" style="width:100%" onclick="doRegister()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<section id="userSection" class="page hidden">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px">
+    <div>
+      <div class="page-title">My Documents</div>
+      <div class="page-sub">Upload and track your document approvals</div>
+    </div>
+    <button class="btn btn-primary" onclick="toggleUpload()">+ Upload Document</button>
+  </div>
+  <div id="uploadCard" class="card hidden" style="margin-bottom:24px">
+    <div style="font-size:16px;font-weight:800;margin-bottom:18px">Upload New Document</div>
+    <div id="uploadAlert"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Title</label><input id="docTitle" type="text" placeholder="Document title"></div>
+      <div class="form-group"><label>Description</label><input id="docDesc" type="text" placeholder="Brief description"></div>
+    </div>
+    <div class="form-group">
+      <label>File</label>
+      <div class="file-drop" id="fileDrop" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
+        <div style="font-size:24px">📄</div>
+        <p>Click or drag to upload</p>
+        <p style="font-size:11px">PDF, DOC, DOCX, PNG, JPG</p>
+        <div class="fname" id="fileName"></div>
+      </div>
+      <input type="file" id="fileInput" class="hidden" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" onchange="fileSelected(this)">
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="doUpload()">Submit Document</button>
+      <button class="btn btn-ghost" onclick="toggleUpload()">Cancel</button>
+    </div>
+  </div>
+  <div class="card">
+    <div id="userDocsBody">
+      <div class="empty">No documents yet. Upload your first document.</div>
+    </div>
+  </div>
+</section>
+
+<section id="adminSection" class="page hidden">
+  <div class="page-title">Admin Dashboard</div>
+  <div class="page-sub">Review and manage all submitted documents</div>
+  <div class="search-bar">
+    <input id="searchInput" type="text" placeholder="Search by name, email or title..." oninput="loadAdminDocs()">
+    <button class="btn btn-ghost" onclick="loadAdminDocs()">Search</button>
+  </div>
+  <div class="card">
+    <div id="adminDocsBody"><div class="empty">Loading...</div></div>
+  </div>
+</section>
+
+<div id="adminModal" class="overlay hidden">
+  <div class="modal">
+    <h2>Admin Login</h2>
+    <p>Enter your admin credentials</p>
+    <div id="adminAlert"></div>
+    <div class="form-group"><label>Email</label><input id="adminEmail" type="email" placeholder="admin@doc.com"></div>
+    <div class="form-group"><label>Password</label><input id="adminPassword" type="password" placeholder="••••••••"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" style="flex:1" onclick="doAdminLogin()">Login as Admin</button>
+      <button class="btn btn-ghost" onclick="closeAdminModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="remarkModal" class="overlay hidden">
+  <div class="modal">
+    <h2 id="remarkTitle">Add Remark</h2>
+    <p>Provide a remark for this action</p>
+    <div class="form-group"><label>Remark</label><textarea id="remarkInput" placeholder="Enter your remark..."></textarea></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" style="flex:1" onclick="submitAction()">Confirm</button>
+      <button class="btn btn-ghost" onclick="closeRemarkModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

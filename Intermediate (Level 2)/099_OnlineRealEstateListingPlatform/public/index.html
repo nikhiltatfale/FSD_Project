@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EstateVault — Premium Real Estate</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="logo">Estate<span>Vault</span></div>
+  <button class="nav-btn" id="admin-nav-btn" onclick="openAdminLogin()">Admin</button>
+</nav>
+
+<div id="main-content">
+  <section class="hero">
+    <h1>Find Your <em>Dream</em><br>Property</h1>
+    <p>Discover premium buy and rental listings across India's finest locations.</p>
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search by title or location..." oninput="renderProperties()">
+      <button onclick="renderProperties()">Search</button>
+    </div>
+  </section>
+  <div class="filters">
+    <span class="filter-label">Filter:</span>
+    <select id="filter-type" onchange="renderProperties()">
+      <option value="">All Types</option>
+      <option value="buy">Buy</option>
+      <option value="rent">Rent</option>
+    </select>
+    <select id="filter-location" onchange="renderProperties()">
+      <option value="">All Locations</option>
+    </select>
+    <select id="filter-price" onchange="renderProperties()">
+      <option value="">Any Price</option>
+      <option value="0-50000">Under ₹50,000</option>
+      <option value="50000-200000">₹50K – ₹2L</option>
+      <option value="200000-99999999">Above ₹2L</option>
+    </select>
+    <div class="stats"><span id="prop-count"></span></div>
+  </div>
+  <div class="grid" id="prop-grid"></div>
+</div>
+
+<div id="admin-panel" class="admin-panel">
+  <div class="admin-header">
+    <div><h2>Admin Dashboard</h2><p style="color:var(--muted);font-size:0.88rem">Manage listings and inquiries</p></div>
+    <button class="btn btn-outline" onclick="logout()">Logout</button>
+  </div>
+  <div class="admin-tabs">
+    <button class="tab active" onclick="showTab('tab-props')">Properties</button>
+    <button class="tab" onclick="showTab('tab-add')">Add Property</button>
+    <button class="tab" onclick="showTab('tab-inq')">Inquiries <span class="badge" id="inq-badge">0</span></button>
+  </div>
+  <div id="tab-props" class="tab-content active">
+    <div class="table-wrap"><table class="admin-table">
+      <thead><tr><th>Title</th><th>Type</th><th>Location</th><th>Price</th><th>Actions</th></tr></thead>
+      <tbody id="admin-table-body"></tbody>
+    </table></div>
+  </div>
+  <div id="tab-add" class="tab-content">
+    <div class="add-form">
+      <h3 id="form-title">Add New Property</h3>
+      <input type="hidden" id="edit-id">
+      <div class="form-row">
+        <div class="form-group"><label>Title</label><input type="text" id="f-title" placeholder="Property title"></div>
+        <div class="form-group"><label>Location</label><input type="text" id="f-location" placeholder="City"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Price (₹)</label><input type="number" id="f-price" placeholder="0"></div>
+        <div class="form-group"><label>Type</label><select id="f-type"><option value="buy">Buy</option><option value="rent">Rent</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Bedrooms</label><input type="number" id="f-beds" placeholder="0"></div>
+        <div class="form-group"><label>Bathrooms</label><input type="number" id="f-baths" placeholder="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Area (sqft)</label><input type="number" id="f-area" placeholder="0"></div>
+        <div class="form-group"><label>Image URLs (comma separated)</label><input type="text" id="f-images" placeholder="https://..."></div>
+      </div>
+      <div class="form-group"><label>Description</label><textarea id="f-desc" rows="3" placeholder="Property description..."></textarea></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-primary" onclick="submitProperty()">Save Property</button>
+        <button class="btn btn-outline" onclick="resetForm()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div id="tab-inq" class="tab-content">
+    <div class="table-wrap"><table class="admin-table">
+      <thead><tr><th>Property ID</th><th>Name</th><th>Email</th><th>Message</th></tr></thead>
+      <tbody id="inq-table-body"></tbody>
+    </table></div>
+  </div>
+</div>
+
+<div class="overlay" id="detail-overlay" onclick="closeOverlay(event,'detail-overlay')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2 id="d-title"></h2>
+      <button class="close-btn" onclick="document.getElementById('detail-overlay').classList.remove('active')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="img-gallery" id="d-gallery"></div>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">
+        <span class="tag" id="d-tag"></span>
+        <span id="d-price" style="font-size:1.3rem;font-weight:600;color:var(--accent)"></span>
+      </div>
+      <div class="card-location" id="d-loc"></div>
+      <div class="detail-grid">
+        <div class="detail-item"><label>Bedrooms</label><span id="d-beds"></span></div>
+        <div class="detail-item"><label>Bathrooms</label><span id="d-baths"></span></div>
+        <div class="detail-item"><label>Area</label><span id="d-area"></span></div>
+        <div class="detail-item"><label>Address</label><span id="d-addr"></span></div>
+      </div>
+      <p class="desc-text" id="d-desc"></p>
+      <div class="inquiry-form">
+        <h3>Contact Owner / Agent</h3>
+        <input type="hidden" id="inq-prop-id">
+        <div class="form-row">
+          <div class="form-group"><label>Your Name</label><input type="text" id="inq-name" placeholder="John Doe"></div>
+          <div class="form-group"><label>Your Email</label><input type="email" id="inq-email" placeholder="you@email.com"></div>
+        </div>
+        <div class="form-group"><label>Message</label><textarea id="inq-msg" rows="3" placeholder="I'm interested in this property..."></textarea></div>
+        <button class="btn btn-primary" onclick="submitInquiry()">Send Inquiry</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="login-overlay" onclick="closeOverlay(event,'login-overlay')">
+  <div class="modal modal-sm" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Admin Login</h2>
+      <button class="close-btn" onclick="document.getElementById('login-overlay').classList.remove('active')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Username</label><input type="text" id="login-user" placeholder="admin"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <p id="login-err" style="color:var(--danger);font-size:0.82rem;margin-bottom:12px;display:none">Invalid credentials</p>
+      <button class="btn btn-primary" style="width:100%" onclick="doLogin()">Login</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>

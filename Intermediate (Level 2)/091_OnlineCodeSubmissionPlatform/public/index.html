@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeJudge</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo">CodeJudge</div>
+    <div id="user-info" class="hidden"></div>
+  </header>
+
+  <section id="login-section">
+    <div class="card">
+      <h2>Enter the Arena</h2>
+      <input id="inp-name" type="text" placeholder="Your Name">
+      <input id="inp-email" type="email" placeholder="Your Email">
+      <button id="btn-start">Start Coding</button>
+    </div>
+  </section>
+
+  <section id="coding-section" class="hidden">
+    <div id="problem-panel">
+      <h2 id="prob-title"></h2>
+      <p id="prob-desc"></p>
+      <div class="meta">
+        <div><strong>Sample Input</strong><pre id="prob-si"></pre></div>
+        <div><strong>Sample Output</strong><pre id="prob-so"></pre></div>
+      </div>
+      <div class="constraints"><strong>Constraints:</strong> <span id="prob-con"></span></div>
+    </div>
+    <div id="editor-panel">
+      <div class="editor-top">
+        <select id="lang-select">
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="cpp">C++</option>
+        </select>
+        <button id="btn-submit">Submit Code</button>
+      </div>
+      <textarea id="code-area" spellcheck="false" placeholder="Write your solution here..."></textarea>
+      <div id="result-box" class="hidden">
+        <div id="result-status"></div>
+        <div id="result-score"></div>
+        <table id="result-table">
+          <thead><tr><th>Input</th><th>Expected</th><th>Got</th><th>Status</th></tr></thead>
+          <tbody id="result-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div id="admin-modal" class="hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-box">
+      <button id="modal-close">✕</button>
+      <h3>Admin Login</h3>
+      <input id="adm-user" type="text" placeholder="Username">
+      <input id="adm-pass" type="password" placeholder="Password">
+      <button id="btn-admin-login">Login</button>
+      <p id="admin-err" class="err hidden"></p>
+    </div>
+  </div>
+
+  <section id="admin-section" class="hidden">
+    <div class="admin-header">
+      <h2>Admin Dashboard</h2>
+      <button id="btn-logout">Logout</button>
+    </div>
+    <div id="stats-row">
+      <div class="stat-card"><div id="st-users">0</div><span>Users</span></div>
+      <div class="stat-card"><div id="st-subs">0</div><span>Submissions</span></div>
+      <div class="stat-card"><div id="st-rate">0%</div><span>Success Rate</span></div>
+    </div>
+    <div class="admin-tabs">
+      <button class="tab active" data-tab="problems">Problems</button>
+      <button class="tab" data-tab="submissions">Submissions</button>
+    </div>
+
+    <div id="tab-problems">
+      <button id="btn-add-problem">+ Add Problem</button>
+      <div id="problem-form" class="hidden">
+        <input id="pf-title" placeholder="Title">
+        <textarea id="pf-desc" placeholder="Description"></textarea>
+        <input id="pf-si" placeholder="Sample Input">
+        <input id="pf-so" placeholder="Sample Output">
+        <input id="pf-con" placeholder="Constraints">
+        <textarea id="pf-tc" placeholder='Test cases JSON: [{"input":[1,2],"expected":3}]'></textarea>
+        <div class="form-btns">
+          <button id="btn-save-problem">Save</button>
+          <button id="btn-cancel-problem">Cancel</button>
+        </div>
+      </div>
+      <div id="problems-list"></div>
+    </div>
+
+    <div id="tab-submissions" class="hidden">
+      <table id="sub-table">
+        <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Problem</th><th>Lang</th><th>Status</th><th>Score</th><th>Time</th><th>Code</th></tr></thead>
+        <tbody id="sub-body"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

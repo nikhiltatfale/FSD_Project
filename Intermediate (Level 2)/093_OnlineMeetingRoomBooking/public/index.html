@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meeting Room Booking System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>Meeting Room Booking System</h1>
+      <button id="adminLoginBtn" class="admin-toggle">Admin Login</button>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+      <!-- Room List Section -->
+      <section id="roomSection" class="section">
+        <h2>Available Meeting Rooms</h2>
+        <div id="roomList" class="room-grid"></div>
+      </section>
+
+      <!-- Booking Form Section -->
+      <section id="bookingSection" class="section">
+        <h2>Book a Room</h2>
+        <form id="bookingForm" class="form">
+          <div class="form-group">
+            <label for="userName">Your Name:</label>
+            <input type="text" id="userName" required>
+          </div>
+
+          <div class="form-group">
+            <label for="roomSelect">Select Room:</label>
+            <select id="roomSelect" required>
+              <option value="">-- Choose a room --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="bookingDate">Date:</label>
+            <input type="date" id="bookingDate" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="startTime">Start Time:</label>
+              <input type="time" id="startTime" required>
+            </div>
+            <div class="form-group">
+              <label for="endTime">End Time:</label>
+              <input type="time" id="endTime" required>
+            </div>
+          </div>
+
+          <div id="availabilityInfo" class="info-box"></div>
+
+          <button type="submit" class="btn btn-primary">Book Room</button>
+        </form>
+      </section>
+
+      <!-- My Bookings Section -->
+      <section id="myBookingsSection" class="section">
+        <h2>My Bookings</h2>
+        <div class="form-group">
+          <input type="text" id="filterUserName" placeholder="Enter your name to view bookings">
+          <button id="loadMyBookings" class="btn btn-secondary">Load Bookings</button>
+        </div>
+        <div id="myBookingsList" class="bookings-table"></div>
+      </section>
+    </main>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel hidden">
+      <!-- Admin Login Form -->
+      <div id="adminLoginForm" class="admin-login">
+        <h2>Admin Login</h2>
+        <form id="loginForm" class="form">
+          <div class="form-group">
+            <label for="adminUsername">Username:</label>
+            <input type="text" id="adminUsername" required>
+          </div>
+          <div class="form-group">
+            <label for="adminPassword">Password:</label>
+            <input type="password" id="adminPassword" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+
+      <!-- Admin Dashboard -->
+      <div id="adminDashboard" class="admin-dashboard hidden">
+        <div class="admin-header">
+          <h2>Admin Dashboard</h2>
+          <button id="adminLogout" class="btn btn-danger">Logout</button>
+        </div>
+
+        <!-- Room Management -->
+        <section class="admin-section">
+          <h3>Room Management</h3>
+          
+          <div class="subsection">
+            <h4>Add New Room</h4>
+            <form id="addRoomForm" class="form">
+              <div class="form-group">
+                <input type="text" id="newRoomName" placeholder="Room Name" required>
+              </div>
+              <div class="form-group">
+                <input type="number" id="newRoomCapacity" placeholder="Capacity" required>
+              </div>
+              <div class="form-group">
+                <input type="text" id="newRoomFacilities" placeholder="Facilities (comma separated)">
+              </div>
+              <button type="submit" class="btn btn-primary">Add Room</button>
+            </form>
+          </div>
+
+          <div class="subsection">
+            <h4>All Rooms</h4>
+            <div id="adminRoomList" class="admin-room-list"></div>
+          </div>
+        </section>
+
+        <!-- Block Time Slot -->
+        <section class="admin-section">
+          <h3>Block Time Slot</h3>
+          <form id="blockSlotForm" class="form">
+            <div class="form-group">
+              <label for="blockRoomSelect">Room:</label>
+              <select id="blockRoomSelect" required></select>
+            </div>
+            <div class="form-group">
+              <label for="blockDate">Date:</label>
+              <input type="date" id="blockDate" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="blockStartTime">Start Time:</label>
+                <input type="time" id="blockStartTime" required>
+              </div>
+              <div class="form-group">
+                <label for="blockEndTime">End Time:</label>
+                <input type="time" id="blockEndTime" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Block Slot</button>
+          </form>
+        </section>
+
+        <!-- All Bookings Management -->
+        <section class="admin-section">
+          <h3>All Bookings</h3>
+          <button id="loadAllBookings" class="btn btn-secondary">Load Bookings</button>
+          <div id="adminBookingsList" class="bookings-table"></div>
+        </section>
+
+        <!-- Statistics -->
+        <section class="admin-section">
+          <h3>Statistics</h3>
+          <div id="statsContainer" class="stats-grid"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

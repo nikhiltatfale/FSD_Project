@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LibraNet — Library Automation System</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav id="navbar">
+<div class="nav-brand">LibraNet</div>
+<div class="nav-links">
+<a href="#" onclick="showSection('home')" class="nav-link active" id="nav-home">Home</a>
+<a href="#" onclick="showSection('books')" class="nav-link" id="nav-books">Books</a>
+<a href="#" onclick="showSection('search')" class="nav-link" id="nav-search">Search</a>
+<a href="#" onclick="showSection('issued')" class="nav-link" id="nav-issued">My Books</a>
+<a href="#" onclick="showSection('admin-login')" class="nav-link" id="nav-admin">Admin</a>
+</div>
+<div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+</nav>
+
+<div id="mobile-menu" class="mobile-menu hidden">
+<a href="#" onclick="showSection('home');toggleMenu()">Home</a>
+<a href="#" onclick="showSection('books');toggleMenu()">Books</a>
+<a href="#" onclick="showSection('search');toggleMenu()">Search</a>
+<a href="#" onclick="showSection('issued');toggleMenu()">My Books</a>
+<a href="#" onclick="showSection('admin-login');toggleMenu()">Admin</a>
+</div>
+
+<section id="section-home" class="section active">
+<div class="hero">
+<div class="hero-text">
+<span class="hero-tag">Digital Library System</span>
+<h1>Discover. Read.<br><em>Explore.</em></h1>
+<p>Browse thousands of books, issue them instantly, and manage your reading journey — all in one place.</p>
+<div class="hero-btns">
+<button class="btn-primary" onclick="showSection('books')">Browse Books</button>
+<button class="btn-secondary" onclick="showSection('search')">Search Now</button>
+</div>
+</div>
+<div class="hero-visual">
+<div class="book-stack">
+<div class="stacked-book b1"></div>
+<div class="stacked-book b2"></div>
+<div class="stacked-book b3"></div>
+<div class="stacked-book b4"></div>
+</div>
+</div>
+</div>
+<div class="stats-bar">
+<div class="stat"><span id="stat-total">0</span><label>Total Books</label></div>
+<div class="stat"><span id="stat-avail">0</span><label>Available</label></div>
+<div class="stat"><span id="stat-issued">0</span><label>Issued</label></div>
+<div class="stat"><span id="stat-cats">0</span><label>Categories</label></div>
+</div>
+<div class="featured-section">
+<h2>Featured Books</h2>
+<div class="books-grid" id="featured-grid"></div>
+</div>
+</section>
+
+<section id="section-books" class="section">
+<div class="section-header">
+<h2>All Books</h2>
+<div class="filter-bar">
+<select id="filter-cat" onchange="renderBooks()">
+<option value="">All Categories</option>
+</select>
+<select id="sort-books" onchange="renderBooks()">
+<option value="title">Sort: Title</option>
+<option value="author">Sort: Author</option>
+<option value="avail">Sort: Available First</option>
+</select>
+</div>
+</div>
+<div class="books-grid" id="books-grid"></div>
+</section>
+
+<section id="section-search" class="section">
+<div class="search-hero">
+<h2>Search Books</h2>
+<div class="search-box">
+<input type="text" id="search-input" placeholder="Search by title, author or category..." oninput="doSearch()">
+<span class="search-icon">&#128269;</span>
+</div>
+</div>
+<div class="books-grid" id="search-grid"></div>
+<p id="search-empty" class="empty-msg hidden">No books found. Try a different keyword.</p>
+</section>
+
+<section id="section-issued" class="section">
+<div class="section-header"><h2>My Issued Books</h2></div>
+<div class="books-grid" id="issued-grid"></div>
+<p id="issued-empty" class="empty-msg hidden">You have no issued books.</p>
+</section>
+
+<section id="section-admin-login" class="section">
+<div class="auth-wrap">
+<div class="auth-card">
+<div class="auth-icon">&#128272;</div>
+<h2>Admin Login</h2>
+<p>Enter your credentials to access the dashboard.</p>
+<input type="text" id="admin-user" placeholder="Username" class="auth-input">
+<input type="password" id="admin-pass" placeholder="Password" class="auth-input">
+<p id="login-err" class="err-msg hidden">Invalid credentials. Try admin / admin123</p>
+<button class="btn-primary full" onclick="adminLogin()">Login</button>
+</div>
+</div>
+</section>
+
+<section id="section-admin-dashboard" class="section">
+<div class="dashboard">
+<div class="dash-sidebar">
+<div class="dash-brand">Admin Panel</div>
+<button class="dash-nav active" id="dtab-books" onclick="dashTab('books')">&#128218; Books</button>
+<button class="dash-nav" id="dtab-issued" onclick="dashTab('issued')">&#128203; Issued</button>
+<button class="dash-nav" id="dtab-add" onclick="dashTab('add')">&#43; Add Book</button>
+<button class="dash-nav logout" onclick="adminLogout()">&#128682; Logout</button>
+</div>
+<div class="dash-content">
+<div id="dash-books" class="dash-panel">
+<h3>Manage Books</h3>
+<div id="admin-books-list"></div>
+</div>
+<div id="dash-issued" class="dash-panel hidden">
+<h3>Issued Books</h3>
+<div id="admin-issued-list"></div>
+</div>
+<div id="dash-add" class="dash-panel hidden">
+<h3 id="form-title">Add New Book</h3>
+<div class="book-form">
+<input type="hidden" id="f-id">
+<input type="text" id="f-title" placeholder="Book Title" class="auth-input">
+<input type="text" id="f-author" placeholder="Author Name" class="auth-input">
+<input type="text" id="f-cat" placeholder="Category" class="auth-input">
+<input type="text" id="f-cover" placeholder="Cover Color (e.g. #4A90D9)" class="auth-input">
+<select id="f-avail" class="auth-input">
+<option value="true">Available</option>
+<option value="false">Issued</option>
+</select>
+<div class="form-btns">
+<button class="btn-primary" onclick="saveBook()">Save Book</button>
+<button class="btn-secondary" onclick="resetForm()">Clear</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<div id="modal-overlay" class="modal-overlay hidden" onclick="closeModal()">
+<div class="modal-card" onclick="event.stopPropagation()">
+<button class="modal-close" onclick="closeModal()">&#10005;</button>
+<div id="modal-body"></div>
+</div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ORMS - Online Recruitment Management System</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav id="navbar">
+  <div class="nav-brand" onclick="showSection('home')">ORMS</div>
+  <div class="nav-links">
+    <a onclick="showSection('home')">Jobs</a>
+    <a onclick="showSection('track')">Track</a>
+    <a onclick="showSection('adminLogin')" id="adminLink">Admin</a>
+    <a onclick="adminLogout()" id="logoutLink" style="display:none">Logout</a>
+  </div>
+</nav>
+
+<section id="home">
+  <div class="hero">
+    <h1>Find Your<br><span>Next Role.</span></h1>
+    <p>Browse open positions and apply in minutes.</p>
+  </div>
+  <div class="filters">
+    <input type="text" id="searchInput" placeholder="Search by title..." oninput="renderJobs()">
+    <select id="locationFilter" onchange="renderJobs()"><option value="">All Locations</option></select>
+    <select id="typeFilter" onchange="renderJobs()">
+      <option value="">All Types</option>
+      <option>Full-time</option>
+      <option>Part-time</option>
+      <option>Remote</option>
+      <option>Contract</option>
+    </select>
+  </div>
+  <div id="jobList" class="job-grid"></div>
+</section>
+
+<section id="jobDetail" style="display:none">
+  <button class="back-btn" onclick="showSection('home')">← Back</button>
+  <div id="jobDetailContent"></div>
+</section>
+
+<section id="applyForm" style="display:none">
+  <button class="back-btn" onclick="showSection('jobDetail')">← Back</button>
+  <div class="form-card">
+    <h2>Apply for <span id="applyJobTitle"></span></h2>
+    <div class="form-group"><label>Full Name *</label><input id="appName" type="text" placeholder="Your full name"></div>
+    <div class="form-group"><label>Email *</label><input id="appEmail" type="email" placeholder="you@email.com"></div>
+    <div class="form-group"><label>Phone *</label><input id="appPhone" type="tel" placeholder="+91 9999999999"></div>
+    <div class="form-group"><label>Resume Link / Summary *</label><textarea id="appResume" rows="4" placeholder="Paste your resume link or write a brief summary..."></textarea></div>
+    <button class="btn-primary" onclick="submitApplication()">Submit Application</button>
+    <div id="applyMsg" class="msg"></div>
+  </div>
+</section>
+
+<section id="track" style="display:none">
+  <div class="form-card">
+    <h2>Track Your Application</h2>
+    <div class="form-group"><label>Enter your Email</label><input id="trackEmail" type="email" placeholder="you@email.com"></div>
+    <button class="btn-primary" onclick="trackApplications()">Track</button>
+    <div id="trackResults"></div>
+  </div>
+</section>
+
+<section id="adminLogin" style="display:none">
+  <div class="form-card login-card">
+    <h2>Admin Login</h2>
+    <div class="form-group"><label>Username</label><input id="adminUser" type="text" placeholder="admin"></div>
+    <div class="form-group"><label>Password</label><input id="adminPass" type="password" placeholder="••••••••"></div>
+    <button class="btn-primary" onclick="adminLogin()">Login</button>
+    <div id="loginMsg" class="msg"></div>
+  </div>
+</section>
+
+<section id="adminDashboard" style="display:none">
+  <div class="dash-header">
+    <h2>Dashboard</h2>
+    <div class="dash-tabs">
+      <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
+      <button class="tab-btn" onclick="switchTab('manageJobs',this)">Jobs</button>
+      <button class="tab-btn" onclick="switchTab('manageApps',this)">Applicants</button>
+    </div>
+  </div>
+
+  <div id="overview" class="tab-panel">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="statJobs">0</div><div class="stat-label">Total Jobs</div></div>
+      <div class="stat-card"><div class="stat-num" id="statApps">0</div><div class="stat-label">Applications</div></div>
+      <div class="stat-card"><div class="stat-num" id="statShortlisted">0</div><div class="stat-label">Shortlisted</div></div>
+      <div class="stat-card"><div class="stat-num" id="statHired">0</div><div class="stat-label">Hired</div></div>
+    </div>
+  </div>
+
+  <div id="manageJobs" class="tab-panel" style="display:none">
+    <div class="panel-top">
+      <h3>Job Listings</h3>
+      <button class="btn-primary" onclick="openJobModal()">+ Add Job</button>
+    </div>
+    <div id="adminJobList"></div>
+  </div>
+
+  <div id="manageApps" class="tab-panel" style="display:none">
+    <div class="panel-top">
+      <h3>All Applicants</h3>
+      <input type="text" id="appSearch" placeholder="Search by name or email..." oninput="renderAdminApps()" style="width:260px">
+    </div>
+    <div id="adminAppList"></div>
+  </div>
+</section>
+
+<div id="jobModal" class="modal" style="display:none">
+  <div class="modal-box">
+    <h3 id="modalTitle">Add Job</h3>
+    <div class="form-group"><label>Title *</label><input id="jTitle" type="text"></div>
+    <div class="form-group"><label>Location *</label><input id="jLocation" type="text"></div>
+    <div class="form-group"><label>Type *</label>
+      <select id="jType">
+        <option>Full-time</option><option>Part-time</option><option>Remote</option><option>Contract</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Description *</label><textarea id="jDesc" rows="4"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeJobModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveJob()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>

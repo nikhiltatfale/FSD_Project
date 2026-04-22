@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SmartPark</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+  <div id="screen-auth" class="screen active">
+    <div class="auth-wrap">
+      <div class="brand">SMART<span>PARK</span></div>
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('login')">Login</button>
+        <button class="tab" onclick="switchTab('register')">Register</button>
+      </div>
+      <div id="tab-login">
+        <input id="login-user" placeholder="Username" class="inp">
+        <input id="login-pass" type="password" placeholder="Password" class="inp">
+        <button class="btn" onclick="userLogin()">LOGIN</button>
+        <button class="btn btn-ghost" onclick="showAdminLogin()">ADMIN LOGIN</button>
+      </div>
+      <div id="tab-register" style="display:none">
+        <input id="reg-user" placeholder="Username" class="inp">
+        <input id="reg-pass" type="password" placeholder="Password" class="inp">
+        <input id="reg-vehicle" placeholder="Vehicle Number" class="inp">
+        <button class="btn" onclick="userRegister()">REGISTER</button>
+      </div>
+      <div id="auth-msg" class="msg"></div>
+    </div>
+  </div>
+
+  <div id="screen-admin-login" class="screen">
+    <div class="auth-wrap">
+      <div class="brand">ADMIN<span>ACCESS</span></div>
+      <input id="adm-user" placeholder="Admin Username" class="inp">
+      <input id="adm-pass" type="password" placeholder="Admin Password" class="inp">
+      <button class="btn" onclick="adminLogin()">LOGIN AS ADMIN</button>
+      <button class="btn btn-ghost" onclick="showScreen('screen-auth')">BACK</button>
+      <div id="adm-msg" class="msg"></div>
+    </div>
+  </div>
+
+  <div id="screen-user" class="screen">
+    <nav class="navbar">
+      <div class="brand-sm">SMART<span>PARK</span></div>
+      <div class="nav-links">
+        <button class="nav-btn active" onclick="userNav('slots')">SLOTS</button>
+        <button class="nav-btn" onclick="userNav('history')">HISTORY</button>
+        <button class="nav-btn" onclick="logout()">LOGOUT</button>
+      </div>
+    </nav>
+    <div id="user-slots" class="content">
+      <div class="page-head">
+        <h2>PARKING SLOTS</h2>
+        <div class="legend">
+          <span class="dot available"></span>Available
+          <span class="dot booked"></span>Booked
+          <span class="dot occupied"></span>Occupied
+        </div>
+      </div>
+      <div id="slot-grid" class="slot-grid"></div>
+    </div>
+    <div id="user-history" class="content" style="display:none">
+      <h2>BOOKING HISTORY</h2>
+      <div id="history-list"></div>
+    </div>
+    <div id="user-booking" class="content" style="display:none">
+      <h2>BOOK SLOT <span id="booking-slot-label"></span></h2>
+      <input id="book-vehicle" placeholder="Vehicle Number" class="inp">
+      <input id="book-date" type="date" class="inp">
+      <input id="book-time" type="time" class="inp">
+      <button class="btn" onclick="confirmBooking()">CONFIRM BOOKING</button>
+      <button class="btn btn-ghost" onclick="userNav('slots')">CANCEL</button>
+      <div id="book-msg" class="msg"></div>
+    </div>
+    <div id="user-checkin" class="content" style="display:none">
+      <h2>CHECK-IN / CHECK-OUT</h2>
+      <div id="checkin-info"></div>
+      <button class="btn" id="checkin-btn" onclick="doCheckin()">CHECK IN</button>
+      <button class="btn btn-danger" id="checkout-btn" onclick="doCheckout()" style="display:none">CHECK OUT</button>
+      <button class="btn btn-ghost" onclick="userNav('slots')">BACK</button>
+      <div id="checkin-msg" class="msg"></div>
+    </div>
+  </div>
+
+  <div id="screen-admin" class="screen">
+    <nav class="navbar admin-nav">
+      <div class="brand-sm">ADMIN<span>PANEL</span></div>
+      <div class="nav-links">
+        <button class="nav-btn active" onclick="adminNav('dashboard')">DASHBOARD</button>
+        <button class="nav-btn" onclick="adminNav('slots')">SLOTS</button>
+        <button class="nav-btn" onclick="adminNav('bookings')">BOOKINGS</button>
+        <button class="nav-btn" onclick="adminNav('users')">USERS</button>
+        <button class="nav-btn" onclick="adminNav('reports')">REPORTS</button>
+        <button class="nav-btn" onclick="logout()">LOGOUT</button>
+      </div>
+    </nav>
+    <div id="admin-dashboard" class="content">
+      <h2>DASHBOARD</h2>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">TOTAL SLOTS</div></div>
+        <div class="stat-card available-card"><div class="stat-num" id="stat-avail">0</div><div class="stat-label">AVAILABLE</div></div>
+        <div class="stat-card booked-card"><div class="stat-num" id="stat-booked">0</div><div class="stat-label">BOOKED</div></div>
+        <div class="stat-card occupied-card"><div class="stat-num" id="stat-occ">0</div><div class="stat-label">OCCUPIED</div></div>
+      </div>
+      <div class="pricing-box">
+        <h3>PRICING</h3>
+        <div class="row-flex">
+          <input id="price-input" type="number" placeholder="Per Hour Rate (₹)" class="inp inp-sm">
+          <button class="btn btn-sm" onclick="updatePricing()">UPDATE</button>
+        </div>
+        <div id="price-msg" class="msg"></div>
+      </div>
+    </div>
+    <div id="admin-slots" class="content" style="display:none">
+      <h2>MANAGE SLOTS</h2>
+      <div class="row-flex">
+        <button class="btn" onclick="addSlot()">+ ADD SLOT</button>
+        <button class="btn btn-danger" onclick="resetSystem()">RESET SYSTEM</button>
+      </div>
+      <div id="admin-slot-grid" class="slot-grid"></div>
+    </div>
+    <div id="admin-bookings" class="content" style="display:none">
+      <h2>ALL BOOKINGS</h2>
+      <div id="all-bookings-list"></div>
+    </div>
+    <div id="admin-users" class="content" style="display:none">
+      <h2>ALL USERS</h2>
+      <div id="all-users-list"></div>
+    </div>
+    <div id="admin-reports" class="content" style="display:none">
+      <h2>REPORTS</h2>
+      <div id="reports-content"></div>
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

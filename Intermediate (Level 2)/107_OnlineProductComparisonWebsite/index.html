@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompareX</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav id="navbar">
+<div class="nav-brand">Compare<span>X</span></div>
+<div class="nav-links">
+<button onclick="showView('home')" class="nav-btn" id="nav-home">Products</button>
+<button onclick="showView('compare')" class="nav-btn" id="nav-compare">Compare <span id="compare-count" class="badge">0</span></button>
+<button onclick="showView('admin-login')" class="nav-btn" id="nav-admin">Admin</button>
+</div>
+</nav>
+
+<div id="view-home" class="view">
+<div class="hero">
+<h1>Find. Compare. <span>Decide.</span></h1>
+<p>Compare products side-by-side with real specs and ratings</p>
+</div>
+<div class="toolbar">
+<input type="text" id="search-input" placeholder="Search products..." oninput="applyFilters()">
+<select id="filter-category" onchange="applyFilters()">
+<option value="">All Categories</option>
+</select>
+<select id="filter-rating" onchange="applyFilters()">
+<option value="">Any Rating</option>
+<option value="4">4+ Stars</option>
+<option value="3">3+ Stars</option>
+</select>
+<select id="sort-price" onchange="applyFilters()">
+<option value="">Sort by Price</option>
+<option value="asc">Low to High</option>
+<option value="desc">High to Low</option>
+</select>
+<div class="price-range">
+<label>Price: ₹<span id="price-label">50000</span></label>
+<input type="range" id="filter-price" min="0" max="200000" value="200000" step="1000" oninput="document.getElementById('price-label').textContent=this.value;applyFilters()">
+</div>
+</div>
+<div id="product-grid" class="product-grid"></div>
+</div>
+
+<div id="view-compare" class="view hidden">
+<div class="page-header">
+<h2>Comparison Table</h2>
+<button class="btn-ghost" onclick="clearComparison()">Clear All</button>
+</div>
+<div id="compare-container"></div>
+</div>
+
+<div id="view-admin-login" class="view hidden">
+<div class="auth-box">
+<h2>Admin Login</h2>
+<input type="text" id="login-user" placeholder="Username">
+<input type="password" id="login-pass" placeholder="Password">
+<button class="btn-primary" onclick="adminLogin()">Login</button>
+<p id="login-error" class="error-msg"></p>
+</div>
+</div>
+
+<div id="view-admin" class="view hidden">
+<div class="page-header">
+<h2>Admin Dashboard</h2>
+<button class="btn-primary" onclick="openProductForm()">+ Add Product</button>
+<button class="btn-ghost" onclick="adminLogout()">Logout</button>
+</div>
+<div id="admin-table-wrap"></div>
+</div>
+
+<div id="modal-overlay" class="hidden">
+<div class="modal">
+<h3 id="modal-title">Add Product</h3>
+<input type="hidden" id="form-id">
+<div class="form-grid">
+<input type="text" id="form-name" placeholder="Product Name">
+<input type="number" id="form-price" placeholder="Price (₹)">
+<input type="text" id="form-brand" placeholder="Brand">
+<input type="text" id="form-category" placeholder="Category">
+<input type="number" id="form-rating" placeholder="Rating (0-5)" step="0.1" min="0" max="5">
+<input type="text" id="form-image" placeholder="Image URL">
+</div>
+<textarea id="form-features" placeholder="Features (comma separated)"></textarea>
+<textarea id="form-specs" placeholder="Specs (key:value, comma separated e.g. RAM:8GB,Storage:256GB)"></textarea>
+<div class="modal-actions">
+<button class="btn-primary" onclick="saveProduct()">Save</button>
+<button class="btn-ghost" onclick="closeModal()">Cancel</button>
+</div>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

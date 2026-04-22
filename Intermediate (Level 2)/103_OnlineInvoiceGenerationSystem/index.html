@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>InvoiceForge</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav id="navbar">
+  <div class="nav-brand">Invoice<span>Forge</span></div>
+  <div class="nav-links">
+    <button onclick="showSection('form-section')" class="nav-btn active" id="nav-create">Create</button>
+    <button onclick="showSection('history-section')" class="nav-btn" id="nav-history">History</button>
+    <button onclick="openAdminModal()" class="nav-btn admin-btn" id="nav-admin">Admin</button>
+  </div>
+</nav>
+
+<main>
+<section id="form-section" class="section active">
+  <div class="section-header"><h1>New Invoice</h1><span id="invoice-no-display"></span></div>
+  <div class="form-grid">
+    <div class="card">
+      <div class="card-title">Seller Details</div>
+      <input type="text" id="s-name" placeholder="Business Name" required>
+      <input type="text" id="s-addr" placeholder="Address" required>
+      <input type="email" id="s-email" placeholder="Email" required>
+      <input type="tel" id="s-phone" placeholder="Phone" required>
+      <input type="text" id="s-gst" placeholder="GST Number" required>
+    </div>
+    <div class="card">
+      <div class="card-title">Client Details</div>
+      <input type="text" id="c-name" placeholder="Client Name" required>
+      <input type="text" id="c-addr" placeholder="Address" required>
+      <input type="email" id="c-email" placeholder="Email" required>
+      <input type="tel" id="c-phone" placeholder="Phone" required>
+      <input type="text" id="c-gst" placeholder="GST Number" required>
+    </div>
+    <div class="card">
+      <div class="card-title">Invoice Details</div>
+      <input type="text" id="inv-no" placeholder="Invoice Number" readonly>
+      <input type="date" id="inv-date" required>
+      <input type="date" id="due-date" required>
+    </div>
+  </div>
+
+  <div class="card items-card">
+    <div class="card-title">Items</div>
+    <div class="items-header">
+      <span>Item Name</span><span>Qty</span><span>Price (₹)</span><span>Tax %</span><span>Total</span><span></span>
+    </div>
+    <div id="items-list"></div>
+    <button class="add-row-btn" onclick="addItemRow()">+ Add Item</button>
+  </div>
+
+  <div class="totals-row">
+    <div class="totals-box">
+      <div class="total-line"><span>Subtotal</span><span id="subtotal">₹0.00</span></div>
+      <div class="total-line"><span>Tax</span><span id="tax-total">₹0.00</span></div>
+      <div class="total-line grand"><span>Grand Total</span><span id="grand-total">₹0.00</span></div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn-ghost" onclick="previewInvoice()">Preview</button>
+    <button class="btn-primary" onclick="saveInvoice()">Save Invoice</button>
+  </div>
+</section>
+
+<section id="preview-section" class="section">
+  <div class="form-actions" style="margin-bottom:1.5rem">
+    <button class="btn-ghost" onclick="showSection('form-section')">← Back</button>
+    <button class="btn-primary" onclick="window.print()">Print / Download PDF</button>
+  </div>
+  <div id="invoice-preview" class="invoice-print"></div>
+</section>
+
+<section id="history-section" class="section">
+  <div class="section-header"><h1>Invoice History</h1></div>
+  <div id="history-list"></div>
+</section>
+
+<section id="admin-section" class="section">
+  <div class="section-header">
+    <h1>Admin Dashboard</h1>
+    <button class="btn-ghost" onclick="adminLogout()">Logout</button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Total Invoices</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-amount">₹0</div><div class="stat-label">Total Value</div></div>
+  </div>
+  <div class="admin-controls">
+    <input type="text" id="admin-search" placeholder="Search by invoice number..." oninput="adminSearch()">
+    <button class="btn-danger" onclick="resetSystem()">Reset System</button>
+  </div>
+  <div id="admin-invoice-list"></div>
+</section>
+</main>
+
+<div id="admin-modal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-title">Admin Login</div>
+    <input type="text" id="admin-user" placeholder="Username">
+    <input type="password" id="admin-pass" placeholder="Password">
+    <div id="login-error" class="error-msg"></div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeAdminModal()">Cancel</button>
+      <button class="btn-primary" onclick="adminLogin()">Login</button>
+    </div>
+  </div>
+</div>
+
+<div id="view-modal" class="modal-overlay">
+  <div class="modal modal-large">
+    <div id="view-invoice-content" class="invoice-print"></div>
+    <div class="modal-actions" style="margin-top:1rem">
+      <button class="btn-ghost" onclick="closeViewModal()">Close</button>
+      <button class="btn-primary" onclick="window.print()">Print</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

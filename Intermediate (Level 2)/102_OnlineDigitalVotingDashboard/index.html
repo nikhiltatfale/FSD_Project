@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoteChain — Digital Voting</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="noise"></div>
+<div id="grid-bg"></div>
+
+<header id="topbar">
+  <div id="logo">VOTE<span>CHAIN</span></div>
+  <div id="election-badge" class="badge-off">● ELECTION OFF</div>
+  <button id="admin-btn" onclick="showAdminModal()">ADMIN</button>
+</header>
+
+<section id="voter-section">
+  <div id="hero-text">
+    <p id="hero-sub">Secure • Transparent • Digital</p>
+    <h1>CAST YOUR<br><span>VOTE</span></h1>
+  </div>
+  <div id="voter-card">
+    <label>VOTER ID</label>
+    <input type="text" id="voter-id" placeholder="Enter your voter ID" autocomplete="off">
+    <button id="check-btn" onclick="checkVoter()">PROCEED →</button>
+    <p id="voter-msg"></p>
+  </div>
+</section>
+
+<section id="candidate-section" class="hidden">
+  <h2>SELECT CANDIDATE</h2>
+  <p id="voting-voter-id"></p>
+  <div id="candidate-list"></div>
+  <button id="back-btn" onclick="backToHome()">← BACK</button>
+</section>
+
+<section id="success-section" class="hidden">
+  <div id="success-card">
+    <div id="check-anim">✓</div>
+    <h2>VOTE CAST</h2>
+    <p id="success-msg"></p>
+    <button onclick="backToHome()">← VOTE AGAIN</button>
+  </div>
+</section>
+
+<div id="admin-modal" class="hidden">
+  <div id="modal-overlay" onclick="closeAdminModal()"></div>
+  <div id="modal-box">
+    <button id="modal-close" onclick="closeAdminModal()">✕</button>
+    <h3>ADMIN LOGIN</h3>
+    <input type="text" id="admin-user" placeholder="Username">
+    <input type="password" id="admin-pass" placeholder="Password">
+    <button onclick="adminLogin()">LOGIN →</button>
+    <p id="login-msg"></p>
+  </div>
+</div>
+
+<section id="admin-section" class="hidden">
+  <div id="admin-header">
+    <h2>ADMIN DASHBOARD</h2>
+    <div id="admin-controls">
+      <button id="toggle-btn" onclick="toggleElection()">START ELECTION</button>
+      <button id="reset-btn" onclick="resetElection()">RESET</button>
+      <button id="download-btn" onclick="downloadResults()">DOWNLOAD JSON</button>
+      <button id="logout-btn" onclick="adminLogout()">LOGOUT</button>
+    </div>
+  </div>
+
+  <div id="stats-row">
+    <div class="stat-box">
+      <span id="total-voters">0</span>
+      <label>TOTAL VOTERS</label>
+    </div>
+    <div class="stat-box">
+      <span id="total-candidates">0</span>
+      <label>CANDIDATES</label>
+    </div>
+    <div class="stat-box" id="status-box">
+      <span id="status-text">OFF</span>
+      <label>STATUS</label>
+    </div>
+  </div>
+
+  <div id="admin-grid">
+    <div id="results-panel">
+      <h3>LIVE RESULTS</h3>
+      <div id="results-list"></div>
+    </div>
+
+    <div id="right-col">
+      <div id="add-panel">
+        <h3>ADD CANDIDATE</h3>
+        <input type="text" id="new-name" placeholder="Candidate Name">
+        <input type="text" id="new-party" placeholder="Party Name">
+        <button onclick="addCandidate()">ADD →</button>
+        <p id="add-msg"></p>
+      </div>
+
+      <div id="log-panel">
+        <h3>VOTER LOG</h3>
+        <div id="log-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

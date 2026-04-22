@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tavola — Reserve Your Table</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+  <div class="logo">BookRestro</div>
+  <button id="adminToggleBtn" onclick="toggleAdminLogin()">Admin</button>
+</header>
+
+<section id="heroSection">
+  <div class="hero-text">
+    <p class="tagline">Reserve Your Table</p>
+    <h1>Fine Dining,<br>Effortless Booking</h1>
+  </div>
+</section>
+
+<section id="reservationSection">
+  <div class="section-label">Book a Table</div>
+  <form id="reservationForm">
+    <div class="form-row">
+      <div class="field">
+        <label>Your Name</label>
+        <input type="text" id="custName" placeholder="Full name">
+      </div>
+      <div class="field">
+        <label>Phone Number</label>
+        <input type="tel" id="custPhone" placeholder="10-digit number">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label>Date</label>
+        <input type="date" id="custDate">
+      </div>
+      <div class="field">
+        <label>Time Slot</label>
+        <select id="custTime">
+          <option value="">Select a slot</option>
+          <option value="12:00 PM">12:00 PM</option>
+          <option value="1:00 PM">1:00 PM</option>
+          <option value="2:00 PM">2:00 PM</option>
+          <option value="6:00 PM">6:00 PM</option>
+          <option value="7:00 PM">7:00 PM</option>
+          <option value="8:00 PM">8:00 PM</option>
+          <option value="9:00 PM">9:00 PM</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Guests</label>
+        <input type="number" id="custGuests" placeholder="1–10" min="1" max="10">
+      </div>
+    </div>
+    <div id="formError" class="error-msg"></div>
+    <button type="submit" class="btn-primary">Confirm Reservation</button>
+  </form>
+  <div id="confirmMsg" class="confirm-msg"></div>
+</section>
+
+<section id="adminLoginSection" class="hidden">
+  <div class="section-label">Admin Login</div>
+  <div class="admin-login-box">
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="adminUser" placeholder="admin">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="adminPass" placeholder="••••••••">
+    </div>
+    <div id="loginError" class="error-msg"></div>
+    <button class="btn-primary" onclick="adminLogin()">Login</button>
+  </div>
+</section>
+
+<section id="adminDashboard" class="hidden">
+  <div class="dash-header">
+    <div class="section-label">Admin Dashboard</div>
+    <div class="dash-controls">
+      <label>Max Tables/Slot:</label>
+      <input type="number" id="maxTablesInput" min="1" value="5">
+      <button class="btn-sm" onclick="updateMaxTables()">Update</button>
+      <button class="btn-outline" onclick="adminLogout()">Logout</button>
+    </div>
+  </div>
+  <div id="noReservations" class="empty-state">No reservations yet.</div>
+  <div class="table-wrap">
+    <table id="reservationsTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Guests</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="reservationsBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Tavola Restaurant. All rights reserved.</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

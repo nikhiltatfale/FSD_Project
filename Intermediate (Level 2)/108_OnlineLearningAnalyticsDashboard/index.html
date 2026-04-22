@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduMetrics — Admin Dashboard</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-brand">EduMetrics</div>
+    <div class="login-sub">Learning Analytics Platform</div>
+    <div class="login-form">
+      <div class="field">
+        <label>Username</label>
+        <input type="text" id="login-user" placeholder="admin" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="login-pass" placeholder="••••••••">
+      </div>
+      <div id="login-error" class="login-error"></div>
+      <button id="login-btn" onclick="doLogin()">Sign In →</button>
+    </div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <aside class="sidebar">
+    <div class="sidebar-brand">EduMetrics</div>
+    <nav>
+      <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+        <span class="nav-icon">◈</span> Dashboard
+      </a>
+      <a class="nav-item" data-page="students" onclick="navigate('students')">
+        <span class="nav-icon">◉</span> Students
+      </a>
+      <a class="nav-item" data-page="analytics" onclick="navigate('analytics')">
+        <span class="nav-icon">◐</span> Analytics
+      </a>
+    </nav>
+    <button class="logout-btn" onclick="doLogout()">⏻ Logout</button>
+  </aside>
+
+  <main class="main">
+
+    <section id="page-dashboard" class="page active">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <span class="page-date" id="current-date"></span>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card" style="--accent:#f5c542">
+          <div class="stat-label">Total Students</div>
+          <div class="stat-val" id="stat-students">0</div>
+        </div>
+        <div class="stat-card" style="--accent:#4ecdc4">
+          <div class="stat-label">Total Courses</div>
+          <div class="stat-val" id="stat-courses">0</div>
+        </div>
+        <div class="stat-card" style="--accent:#a29bfe">
+          <div class="stat-label">Avg Completion</div>
+          <div class="stat-val" id="stat-completion">0%</div>
+        </div>
+        <div class="stat-card" style="--accent:#fd79a8">
+          <div class="stat-label">Avg Score</div>
+          <div class="stat-val" id="stat-score">0</div>
+        </div>
+      </div>
+      <div class="dash-grid">
+        <div class="card">
+          <div class="card-title">Course Performance</div>
+          <div id="course-bars"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Completion Status</div>
+          <div id="status-chart"></div>
+        </div>
+      </div>
+      <div class="card mt">
+        <div class="card-title">Recent Students</div>
+        <table class="table">
+          <thead><tr><th>Name</th><th>Course</th><th>Progress</th><th>Status</th></tr></thead>
+          <tbody id="recent-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="page-students" class="page">
+      <div class="page-header">
+        <h1>Students</h1>
+        <button class="btn-add" onclick="openModal()">+ Add Student</button>
+      </div>
+      <div class="filter-bar">
+        <input type="text" id="search-input" placeholder="Search by name..." oninput="renderStudentTable()">
+        <select id="filter-course" onchange="renderStudentTable()">
+          <option value="">All Courses</option>
+        </select>
+        <select id="filter-status" onchange="renderStudentTable()">
+          <option value="">All Status</option>
+          <option value="Completed">Completed</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Not Started">Not Started</option>
+        </select>
+      </div>
+      <div class="card">
+        <table class="table" id="students-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Course</th><th>Progress</th><th>Score</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="students-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="page-analytics" class="page">
+      <div class="page-header"><h1>Analytics</h1></div>
+      <div class="analytics-grid">
+        <div class="card">
+          <div class="card-title">Progress Distribution</div>
+          <canvas id="progress-canvas" width="340" height="220"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">Score Distribution</div>
+          <canvas id="score-canvas" width="340" height="220"></canvas>
+        </div>
+      </div>
+      <div class="card mt">
+        <div class="card-title">Per-Course Breakdown</div>
+        <div id="course-breakdown"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="modal" class="modal-overlay hidden" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-title">Add Student</div>
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="f-name" placeholder="Jane Doe">
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="f-email" placeholder="jane@example.com">
+    </div>
+    <div class="field">
+      <label>Course</label>
+      <select id="f-course">
+        <option>Web Development</option>
+        <option>Data Science</option>
+        <option>UI/UX Design</option>
+        <option>Machine Learning</option>
+        <option>Cybersecurity</option>
+        <option>Cloud Computing</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Progress (%)</label>
+      <input type="number" id="f-progress" min="0" max="100" placeholder="0–100">
+    </div>
+    <div class="field">
+      <label>Score (0–100)</label>
+      <input type="number" id="f-score" min="0" max="100" placeholder="0–100">
+    </div>
+    <div id="modal-error" class="login-error"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveStudent()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

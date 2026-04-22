@@ -1,0 +1,24 @@
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f0f2f5;color:#333}
+.container{max-width:900px;margin:0 auto;padding:20px}
+h1{text-align:center;margin:20px 0;color:#2c3e50}
+h2{margin-bottom:15px;color:#2c3e50}
+.card{background:#fff;padding:25px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);margin-bottom:20px}
+input,select,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:4px;font-size:14px}
+textarea{height:80px;resize:vertical}
+button{padding:10px 20px;margin:6px 4px 0 0;border:none;border-radius:4px;cursor:pointer;font-size:14px;background:#3498db;color:#fff}
+button:hover{opacity:0.9}
+.btn-approve{background:#27ae60}
+.btn-reject{background:#e74c3c}
+.btn-delete{background:#7f8c8d}
+table{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}
+th,td{padding:10px;border:1px solid #ddd;text-align:left}
+th{background:#2c3e50;color:#fff}
+tr:nth-child(even){background:#f9f9f9}
+.status-Pending{color:#e67e22;font-weight:bold}
+.status-Approved{color:#27ae60;font-weight:bold}
+.status-Rejected{color:#e74c3c;font-weight:bold}
+footer{text-align:right;padding:10px 0}
+#adminTrigger{color:#bbb;font-size:12px;cursor:pointer;user-select:none}
+.hidden{display:none}
+#submitMsg,#loginMsg,#statusResult{margin-top:10px;font-size:14px}

@@ -1,0 +1,74 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SubsHub</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="toast"></div>
+<nav>
+  <div class="logo">SubsHub</div>
+  <div class="nav-links">
+    <a href="#" onclick="showSection('plans')">Plans</a>
+    <a href="#" onclick="showSection('register')">Register</a>
+    <a href="#" onclick="showSection('status')">My Status</a>
+    <span id="admin-trigger" onclick="showSection('admin-login')">⬡</span>
+  </div>
+</nav>
+<main>
+  <section id="plans" class="section active">
+    <div class="section-header"><h1>Choose Your Plan</h1><p>Simple, transparent pricing</p></div>
+    <div id="plans-grid" class="plans-grid"></div>
+  </section>
+  <section id="register" class="section">
+    <div class="section-header"><h1>Create Account</h1><p>Join in seconds</p></div>
+    <div class="form-card">
+      <input id="reg-name" type="text" placeholder="Full Name">
+      <input id="reg-email" type="email" placeholder="Email Address">
+      <button onclick="register()">Register</button>
+    </div>
+  </section>
+  <section id="status" class="section">
+    <div class="section-header"><h1>Subscription Status</h1><p>View and manage your plan</p></div>
+    <div class="form-card">
+      <input id="status-email" type="email" placeholder="Your Email">
+      <button onclick="checkStatus()">Check Status</button>
+    </div>
+    <div id="status-result"></div>
+  </section>
+  <section id="admin-login" class="section">
+    <div class="section-header"><h1>Admin Access</h1></div>
+    <div class="form-card">
+      <input id="admin-user" type="text" placeholder="Username">
+      <input id="admin-pass" type="password" placeholder="Password">
+      <button onclick="adminLogin()">Login</button>
+    </div>
+  </section>
+  <section id="admin" class="section">
+    <div class="section-header"><h1>Admin Panel</h1><p>Manage everything</p></div>
+    <div class="admin-stats" id="admin-stats"></div>
+    <div class="admin-grid">
+      <div class="admin-card">
+        <h2>Add Plan</h2>
+        <input id="plan-name" type="text" placeholder="Plan Name">
+        <input id="plan-price" type="number" placeholder="Price ($)">
+        <input id="plan-duration" type="number" placeholder="Duration (days)">
+        <button onclick="addPlan()">Add Plan</button>
+      </div>
+      <div class="admin-card">
+        <h2>All Plans</h2>
+        <div id="admin-plans-list"></div>
+      </div>
+    </div>
+    <div class="admin-card wide">
+      <h2>All Users</h2>
+      <div id="admin-users-table"></div>
+    </div>
+  </section>
+</main>
+<script src="script.js"></script>
+</body>
+</html>

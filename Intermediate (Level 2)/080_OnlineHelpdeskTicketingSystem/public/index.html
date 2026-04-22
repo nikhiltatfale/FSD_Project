@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HelpDesk</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo">HELPDESK</div>
+    <nav>
+      <button onclick="show('submit')">Submit Ticket</button>
+      <button onclick="show('track')">Track Ticket</button>
+      <span id="adminTrigger" onclick="show('adminLogin')">·</span>
+    </nav>
+  </header>
+  <main>
+    <section id="submit" class="view active">
+      <h1>Raise a Support Ticket</h1>
+      <form id="ticketForm">
+        <div class="row2">
+          <div class="field"><label>Name</label><input id="tName" placeholder="Your full name" required></div>
+          <div class="field"><label>Email</label><input id="tEmail" type="email" placeholder="your@email.com" required></div>
+        </div>
+        <div class="field"><label>Issue Title</label><input id="tTitle" placeholder="Brief summary of your issue" required></div>
+        <div class="field"><label>Description</label><textarea id="tDesc" rows="4" placeholder="Describe your issue in detail..." required></textarea></div>
+        <div class="field"><label>Priority</label>
+          <div class="prio-group">
+            <label class="prio-opt"><input type="radio" name="priority" value="Low"><span>Low</span></label>
+            <label class="prio-opt"><input type="radio" name="priority" value="Medium" checked><span>Medium</span></label>
+            <label class="prio-opt"><input type="radio" name="priority" value="High"><span>High</span></label>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Submit Ticket →</button>
+        <div id="submitMsg" class="msg"></div>
+      </form>
+    </section>
+    <section id="track" class="view">
+      <h1>Track Your Ticket</h1>
+      <div class="track-form">
+        <div class="field"><label>Ticket ID</label><input id="trackId" placeholder="TKT-XXXXXXXX"></div>
+        <div class="field"><label>Email</label><input id="trackEmail" type="email" placeholder="your@email.com"></div>
+        <button class="btn-primary" onclick="trackTicket()">Track →</button>
+        <div id="trackMsg" class="msg"></div>
+      </div>
+      <div id="trackResult"></div>
+    </section>
+    <section id="adminLogin" class="view">
+      <h1>Admin Login</h1>
+      <div class="track-form">
+        <div class="field"><label>Username</label><input id="aUser" placeholder="admin"></div>
+        <div class="field"><label>Password</label><input id="aPass" type="password" placeholder="••••••••"></div>
+        <button class="btn-primary" onclick="adminLogin()">Login →</button>
+        <div id="loginMsg" class="msg"></div>
+      </div>
+    </section>
+    <section id="adminDash" class="view">
+      <div class="dash-header">
+        <h1>Admin Dashboard</h1>
+        <div class="dash-controls">
+          <input id="searchBox" placeholder="Search by ID, email, status..." oninput="renderTickets()">
+          <button class="btn-outline" onclick="adminLogout()">Logout</button>
+        </div>
+      </div>
+      <div id="ticketList"></div>
+    </section>
+  </main>
+</div>
+<div id="modal" class="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

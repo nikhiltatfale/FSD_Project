@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo">📈 StockFolio</div>
+  <div class="tagline">Your Personal Portfolio Tracker</div>
+</header>
+
+<main>
+  <section class="summary" id="summary">
+    <div class="stat"><span class="label">Total Invested</span><span class="val" id="s-invested">₹0</span></div>
+    <div class="stat"><span class="label">Current Value</span><span class="val" id="s-current">₹0</span></div>
+    <div class="stat"><span class="label">Profit / Loss</span><span class="val" id="s-pl">₹0</span></div>
+    <div class="stat"><span class="label">Holdings</span><span class="val" id="s-count">0</span></div>
+  </section>
+
+  <section class="form-card">
+    <h2>Add Stock</h2>
+    <div class="form-row">
+      <input id="f-name" placeholder="Symbol (e.g. TCS)" />
+      <input id="f-qty" type="number" placeholder="Quantity" />
+      <input id="f-buy" type="number" placeholder="Buy Price ₹" />
+      <input id="f-cur" type="number" placeholder="Current Price ₹" />
+      <input id="f-date" type="date" />
+      <input id="f-user" placeholder="Your Name" />
+      <button onclick="addStock()">Add</button>
+    </div>
+    <div id="form-err" class="err"></div>
+  </section>
+
+  <section class="table-wrap">
+    <h2>Portfolio</h2>
+    <table id="tbl">
+      <thead><tr><th>Stock</th><th>User</th><th>Qty</th><th>Buy ₹</th><th>Current ₹</th><th>Invested</th><th>Value</th><th>P/L</th><th>Date</th><th></th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div id="empty" class="empty">No stocks added yet.</div>
+  </section>
+</main>
+
+<footer>
+  <span>StockFolio © 2025</span>
+  <span class="admin-link" onclick="showAdmin()">Admin</span>
+</footer>
+
+<div id="admin-modal" class="modal hidden">
+  <div class="modal-box">
+    <button class="close" onclick="closeAdmin()">✕</button>
+    <div id="admin-login">
+      <h2>Admin Login</h2>
+      <input id="a-user" placeholder="Username" />
+      <input id="a-pass" type="password" placeholder="Password" />
+      <button onclick="adminLogin()">Login</button>
+      <div id="a-err" class="err"></div>
+    </div>
+    <div id="admin-panel" class="hidden">
+      <h2>Admin Panel</h2>
+      <div class="admin-btns">
+        <button onclick="loadAdmin()">↻ Refresh</button>
+        <button class="danger" onclick="resetAll()">Reset All Data</button>
+      </div>
+      <table id="a-tbl">
+        <thead><tr><th>Stock</th><th>User</th><th>Qty</th><th>Buy ₹</th><th>Current ₹</th><th>P/L</th><th>Date</th><th></th></tr></thead>
+        <tbody id="a-tbody"></tbody>
+      </table>
+      <h3>Activity Log</h3>
+      <div id="logs"></div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

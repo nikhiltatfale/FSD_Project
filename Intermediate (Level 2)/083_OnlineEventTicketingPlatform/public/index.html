@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TicketFlow</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo">TicketFlow</div>
+  <nav>
+    <button onclick="showSection('events')">Events</button>
+    <span id="adminNavBtn" style="display:none"><button onclick="showSection('adminDash')">Dashboard</button><button onclick="adminLogout()">Logout</button></span>
+  </nav>
+</header>
+
+<main>
+  <section id="sec-events">
+    <div class="hero"><h1>Discover Events</h1><p>Book your next unforgettable experience</p></div>
+    <div id="eventsGrid" class="grid"></div>
+  </section>
+
+  <section id="sec-detail" style="display:none">
+    <button class="back" onclick="showSection('events')">← Back</button>
+    <div id="detailContent"></div>
+  </section>
+
+  <section id="sec-booking" style="display:none">
+    <button class="back" onclick="showSection('detail')">← Back</button>
+    <div class="formWrap">
+      <h2>Book Tickets</h2>
+      <div id="bookEventInfo" class="bookInfo"></div>
+      <input id="bName" placeholder="Full Name" type="text">
+      <input id="bEmail" placeholder="Email Address" type="email">
+      <input id="bPhone" placeholder="Phone Number" type="tel">
+      <input id="bTickets" placeholder="Number of Tickets" type="number" min="1">
+      <div id="bookErr" class="err"></div>
+      <button class="btnPrimary" onclick="submitBooking()">Confirm Booking</button>
+    </div>
+  </section>
+
+  <section id="sec-confirm" style="display:none">
+    <div class="confirmCard">
+      <div class="tick">✓</div>
+      <h2>Booking Confirmed!</h2>
+      <div id="confirmDetails"></div>
+      <button class="btnPrimary" onclick="showSection('events')">Browse More Events</button>
+    </div>
+  </section>
+
+  <section id="sec-adminLogin" style="display:none">
+    <div class="formWrap">
+      <h2>Admin Login</h2>
+      <input id="aUser" placeholder="Username" type="text">
+      <input id="aPass" placeholder="Password" type="password">
+      <div id="loginErr" class="err"></div>
+      <button class="btnPrimary" onclick="doAdminLogin()">Login</button>
+    </div>
+  </section>
+
+  <section id="sec-adminDash" style="display:none">
+    <div class="dashTabs">
+      <button onclick="dashTab('events')" id="tab-events" class="active">Events</button>
+      <button onclick="dashTab('bookings')" id="tab-bookings">Bookings</button>
+      <button onclick="dashTab('add')" id="tab-add">Add Event</button>
+    </div>
+
+    <div id="dash-events">
+      <h3>All Events</h3>
+      <div id="adminEventsList"></div>
+    </div>
+
+    <div id="dash-bookings" style="display:none">
+      <h3>All Bookings</h3>
+      <div id="adminBookingsList"></div>
+    </div>
+
+    <div id="dash-add" style="display:none">
+      <div class="formWrap">
+        <h3 id="addEditTitle">Add New Event</h3>
+        <input id="eName" placeholder="Event Name" type="text">
+        <input id="eDate" placeholder="Date" type="date">
+        <input id="eLocation" placeholder="Location" type="text">
+        <input id="ePrice" placeholder="Price (₹)" type="number">
+        <input id="eSeats" placeholder="Total Seats" type="number">
+        <textarea id="eDesc" placeholder="Description" rows="4"></textarea>
+        <input id="eEditId" type="hidden" value="">
+        <div id="addErr" class="err"></div>
+        <button class="btnPrimary" onclick="submitEvent()">Save Event</button>
+        <button id="cancelEdit" style="display:none;margin-left:10px" onclick="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span id="footerTrigger">© 2025 TicketFlow. All rights reserved.</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

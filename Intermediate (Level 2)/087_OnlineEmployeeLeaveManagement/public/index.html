@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leave Management</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Employee Leave Management</h1>
+  <div class="card" id="leaveForm">
+    <h2>Apply for Leave</h2>
+    <input type="text" id="name" placeholder="Employee Name">
+    <input type="text" id="empId" placeholder="Employee ID">
+    <input type="text" id="department" placeholder="Department">
+    <select id="leaveType">
+      <option value="">Select Leave Type</option>
+      <option>Sick</option>
+      <option>Casual</option>
+      <option>Paid</option>
+      <option>Emergency</option>
+    </select>
+    <input type="date" id="fromDate">
+    <input type="date" id="toDate">
+    <textarea id="reason" placeholder="Reason for Leave"></textarea>
+    <button onclick="applyLeave()">Submit</button>
+    <div id="submitMsg"></div>
+  </div>
+  <div class="card" id="statusSection">
+    <h2>Check Leave Status</h2>
+    <input type="text" id="checkEmpId" placeholder="Enter Employee ID">
+    <button onclick="checkStatus()">Check</button>
+    <div id="statusResult"></div>
+  </div>
+  <footer><span id="adminTrigger" onclick="toggleAdminLogin()">Admin</span></footer>
+  <div class="card hidden" id="adminLoginBox">
+    <h2>Admin Login</h2>
+    <input type="text" id="adminUser" placeholder="Username">
+    <input type="password" id="adminPass" placeholder="Password">
+    <button onclick="adminLogin()">Login</button>
+    <div id="loginMsg"></div>
+  </div>
+  <div class="hidden" id="adminPanel">
+    <div class="card">
+      <h2>Admin Dashboard</h2>
+      <input type="text" id="searchEmpId" placeholder="Search by Employee ID">
+      <button onclick="loadLeaves()">All Leaves</button>
+      <button onclick="searchLeaves()">Search</button>
+      <div id="adminTable"></div>
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HopeNet NGO</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav id="navbar">
+  <div class="nav-brand">Hope<span>Net</span></div>
+  <div class="nav-links">
+    <a href="#" onclick="show('home')">Home</a>
+    <a href="#" onclick="show('donate')">Donate</a>
+    <a href="#" onclick="show('volunteer')">Volunteer</a>
+    <a href="#" onclick="show('events')">Events</a>
+    <button class="nav-admin-btn" onclick="show('login')">Admin</button>
+  </div>
+</nav>
+
+<div id="toast"></div>
+
+<section id="home" class="page active">
+  <div class="hero">
+    <div class="hero-tag">Est. 2010 · Serving Humanity</div>
+    <h1>Change Starts<br>With <em>You.</em></h1>
+    <p>HopeNet empowers communities through education, clean water, and opportunity. Join thousands making a real difference.</p>
+    <div class="hero-btns">
+      <button onclick="show('donate')">Donate Now</button>
+      <button class="outline" onclick="show('volunteer')">Volunteer</button>
+    </div>
+  </div>
+  <div class="stats-bar">
+    <div><span>₹24L+</span><label>Raised</label></div>
+    <div><span>1200+</span><label>Volunteers</label></div>
+    <div><span>48</span><label>Projects</label></div>
+    <div><span>12</span><label>States</label></div>
+  </div>
+  <div class="mission-section">
+    <div class="mission-card">
+      <div class="m-icon">🌊</div>
+      <h3>Clean Water</h3>
+      <p>Providing safe drinking water to over 50,000 rural households across Maharashtra.</p>
+    </div>
+    <div class="mission-card">
+      <div class="m-icon">📚</div>
+      <h3>Education</h3>
+      <p>Free coaching, scholarships and digital literacy for underprivileged children.</p>
+    </div>
+    <div class="mission-card">
+      <div class="m-icon">🌱</div>
+      <h3>Environment</h3>
+      <p>Plantation drives and eco-awareness campaigns protecting our natural heritage.</p>
+    </div>
+  </div>
+</section>
+
+<section id="donate" class="page">
+  <div class="form-wrap">
+    <div class="form-header">
+      <h2>Make a Donation</h2>
+      <p>Every rupee counts. Your generosity transforms lives.</p>
+    </div>
+    <form onsubmit="submitDonate(event)">
+      <div class="field-row">
+        <div class="field"><label>Full Name*</label><input id="d-name" type="text" placeholder="Your name" required></div>
+        <div class="field"><label>Email*</label><input id="d-email" type="email" placeholder="you@email.com" required></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Phone</label><input id="d-phone" type="tel" placeholder="10-digit number"></div>
+        <div class="field"><label>Amount (₹)*</label><input id="d-amount" type="number" min="1" placeholder="500" required></div>
+      </div>
+      <div class="field"><label>Campaign*</label>
+        <select id="d-campaign" required>
+          <option value="">Select a campaign</option>
+          <option>Water For All</option>
+          <option>Learn & Grow</option>
+          <option>Green Earth</option>
+          <option>Health First</option>
+          <option>General Fund</option>
+        </select>
+      </div>
+      <div class="amount-chips">
+        <span onclick="setAmt(100)">₹100</span>
+        <span onclick="setAmt(500)">₹500</span>
+        <span onclick="setAmt(1000)">₹1000</span>
+        <span onclick="setAmt(5000)">₹5000</span>
+      </div>
+      <button type="submit" class="submit-btn">Donate Securely →</button>
+    </form>
+  </div>
+</section>
+
+<section id="volunteer" class="page">
+  <div class="form-wrap">
+    <div class="form-header">
+      <h2>Join as Volunteer</h2>
+      <p>Lend your time and skills — be the change you want to see.</p>
+    </div>
+    <form onsubmit="submitVolunteer(event)">
+      <div class="field-row">
+        <div class="field"><label>Full Name*</label><input id="v-name" type="text" placeholder="Your name" required></div>
+        <div class="field"><label>Email*</label><input id="v-email" type="email" placeholder="you@email.com" required></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Phone</label><input id="v-phone" type="tel" placeholder="10-digit number"></div>
+        <div class="field"><label>Availability*</label>
+          <select id="v-avail" required>
+            <option value="">Select</option>
+            <option>Weekends</option>
+            <option>Weekdays</option>
+            <option>Full-time</option>
+            <option>Flexible</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Skills / Interests*</label><textarea id="v-skills" rows="3" placeholder="Teaching, Photography, Medical, Tech..." required></textarea></div>
+      <button type="submit" class="submit-btn">Register as Volunteer →</button>
+    </form>
+  </div>
+</section>
+
+<section id="events" class="page">
+  <div class="page-header">
+    <h2>Events & Campaigns</h2>
+    <p>Join us on the ground. Every event is a step forward.</p>
+  </div>
+  <div id="events-grid" class="events-grid"></div>
+</section>
+
+<section id="login" class="page">
+  <div class="login-wrap">
+    <div class="login-box">
+      <div class="lock-icon">🔐</div>
+      <h2>Admin Login</h2>
+      <p>Restricted access — authorized personnel only</p>
+      <form onsubmit="submitLogin(event)">
+        <div class="field"><label>Username</label><input id="a-user" type="text" placeholder="admin" required></div>
+        <div class="field"><label>Password</label><input id="a-pass" type="password" placeholder="••••••••" required></div>
+        <button type="submit" class="submit-btn">Login →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="admin" class="page">
+  <div class="admin-wrap">
+    <div class="admin-topbar">
+      <h2>Admin Dashboard</h2>
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+    <div id="admin-stats" class="admin-stats"></div>
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="adminTab('donations')">Donations</button>
+      <button class="tab-btn" onclick="adminTab('volunteers')">Volunteers</button>
+      <button class="tab-btn" onclick="adminTab('events-admin')">Events</button>
+    </div>
+    <div id="donations-tab" class="tab-content active"></div>
+    <div id="volunteers-tab" class="tab-content"></div>
+    <div id="events-admin-tab" class="tab-content">
+      <div class="add-event-form">
+        <h3>Add New Event</h3>
+        <div class="field-row">
+          <div class="field"><label>Title</label><input id="e-title" placeholder="Event name"></div>
+          <div class="field"><label>Date</label><input id="e-date" type="date"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Location</label><input id="e-loc" placeholder="City/Venue"></div>
+          <div class="field"><label>Campaign</label><input id="e-camp" placeholder="Campaign name"></div>
+        </div>
+        <div class="field"><label>Description</label><textarea id="e-desc" rows="2" placeholder="Brief description"></textarea></div>
+        <button onclick="addEvent()" class="submit-btn small">Add Event</button>
+      </div>
+      <div id="events-table"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Hope<span>Net</span></div>
+    <p>Empowering communities since 2010. Registered NGO under Indian Trust Act.</p>
+    <p class="footer-tiny">© 2025 HopeNet. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

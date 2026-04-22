@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Screener</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>Resume<span>Screener</span></h1>
+    <p>Upload your resume and get instant screening results</p>
+  </header>
+
+  <section id="candidate-section">
+    <div class="card">
+      <h2>Apply for a Position</h2>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="name" placeholder="John Doe">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="john@example.com">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" id="phone" placeholder="+91 9876543210">
+      </div>
+      <div class="form-group">
+        <label>Job Role</label>
+        <select id="role"></select>
+      </div>
+      <div class="form-group">
+        <label>Resume (.txt or .pdf)</label>
+        <input type="file" id="resume" accept=".txt,.pdf">
+      </div>
+      <button id="submit-btn" onclick="submitResume()">Screen My Resume</button>
+      <div id="result" class="result hidden"></div>
+    </div>
+  </section>
+
+  <section id="admin-section" class="hidden">
+    <div class="card" id="login-card">
+      <h2>Admin Login</h2>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="admin-user" placeholder="admin">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="admin-pass" placeholder="••••••••">
+      </div>
+      <button onclick="adminLogin()">Login</button>
+      <div id="login-error" class="error hidden">Invalid credentials</div>
+    </div>
+
+    <div id="dashboard" class="hidden">
+      <div class="dash-header">
+        <h2>Admin Dashboard</h2>
+        <button class="secondary" onclick="logout()">Logout</button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('jobs-tab',this)">Job Roles</button>
+        <button class="tab" onclick="showTab('candidates-tab',this)">Candidates</button>
+      </div>
+
+      <div id="jobs-tab" class="tab-content">
+        <div class="card">
+          <h3>Add New Role</h3>
+          <div class="form-row">
+            <input type="text" id="new-role" placeholder="Role name">
+            <input type="text" id="new-keywords" placeholder="Keywords (comma separated)">
+            <button onclick="addJob()">Add</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Existing Roles</h3>
+          <table id="jobs-table">
+            <thead><tr><th>ID</th><th>Role</th><th>Keywords</th><th>Action</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="candidates-tab" class="tab-content hidden">
+        <div class="card">
+          <div class="filter-row">
+            <select id="filter-role" onchange="filterCandidates()"><option value="">All Roles</option></select>
+            <select id="filter-status" onchange="filterCandidates()">
+              <option value="">All Status</option>
+              <option>Selected</option>
+              <option>Review</option>
+              <option>Rejected</option>
+            </select>
+            <button onclick="exportCandidates()">Export JSON</button>
+          </div>
+          <table id="candidates-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Score</th><th>Status</th><th>Resume</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <span onclick="toggleAdmin()">© 2025 ResumeScreener</span>
+</footer>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeModal()">✕</button>
+    <h3>Resume Text</h3>
+    <pre id="modal-text"></pre>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SupportBot</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo" id="logo">
+      <span class="dot"></span>
+      <h1>SupportBot</h1>
+    </div>
+    <span class="status">● Online</span>
+  </header>
+  <div class="chat-window" id="chatWindow"></div>
+  <div class="input-area">
+    <input type="text" id="msgInput" placeholder="Type your message..." autocomplete="off">
+    <button id="sendBtn">Send</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="modal" id="adminModal">
+  <div class="modal-box" id="loginBox">
+    <h2>Admin Login</h2>
+    <input type="text" id="adminUser" placeholder="Username">
+    <input type="password" id="adminPass" placeholder="Password">
+    <div class="modal-btns">
+      <button id="loginBtn">Login</button>
+      <button id="closeModal">Cancel</button>
+    </div>
+    <p id="loginErr"></p>
+  </div>
+  <div class="modal-box dashboard" id="dashboard" style="display:none">
+    <div class="dash-header">
+      <h2>Admin Dashboard</h2>
+      <button id="logoutBtn">Logout</button>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-tab="logs">Chat Logs</button>
+      <button class="tab" data-tab="responses">Manage Responses</button>
+    </div>
+    <div class="tab-content" id="logsTab">
+      <button id="clearLogs">Clear All Logs</button>
+      <div id="logsList"></div>
+    </div>
+    <div class="tab-content" id="responsesTab" style="display:none">
+      <div class="add-form">
+        <input type="text" id="newKeyword" placeholder="Keyword">
+        <input type="text" id="newReply" placeholder="Reply">
+        <button id="addResponse">Add</button>
+      </div>
+      <div id="responsesList"></div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

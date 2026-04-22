@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TravelEase - Book Your Journey</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <div class="logo">✈ TravelEase</div>
+  <div class="nav-links">
+    <a href="#" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="showPage('search')">Search</a>
+    <a href="#" onclick="showPage('mybookings')">My Bookings</a>
+  </div>
+</nav>
+
+<div id="page-home" class="page active">
+  <div class="hero">
+    <h1>Find Your Perfect Journey</h1>
+    <p>Book flights, trains, buses and hotels at best prices</p>
+    <div class="search-box">
+      <div class="form-row">
+        <input type="text" id="h-from" placeholder="From City">
+        <input type="text" id="h-to" placeholder="To City">
+        <input type="date" id="h-date">
+        <select id="h-type">
+          <option value="">All Types</option>
+          <option>Flight</option>
+          <option>Train</option>
+          <option>Bus</option>
+          <option>Hotel</option>
+        </select>
+        <button onclick="doSearch()">Search</button>
+      </div>
+    </div>
+  </div>
+  <div class="features">
+    <div class="feature-card"><div class="icon">✈</div><h3>Flights</h3><p>Domestic & International</p></div>
+    <div class="feature-card"><div class="icon">🚂</div><h3>Trains</h3><p>Comfortable rail journeys</p></div>
+    <div class="feature-card"><div class="icon">🚌</div><h3>Buses</h3><p>Affordable road trips</p></div>
+    <div class="feature-card"><div class="icon">🏨</div><h3>Hotels</h3><p>Best stays at best prices</p></div>
+  </div>
+</div>
+
+<div id="page-search" class="page">
+  <div class="container">
+    <div class="search-filters">
+      <input type="text" id="s-from" placeholder="From">
+      <input type="text" id="s-to" placeholder="To">
+      <input type="date" id="s-date">
+      <select id="s-type">
+        <option value="">All Types</option>
+        <option>Flight</option>
+        <option>Train</option>
+        <option>Bus</option>
+        <option>Hotel</option>
+      </select>
+      <button onclick="doSearch()">Search</button>
+    </div>
+    <div id="results"></div>
+  </div>
+</div>
+
+<div id="page-mybookings" class="page">
+  <div class="container">
+    <h2>My Bookings</h2>
+    <div class="email-lookup">
+      <input type="email" id="lookup-email" placeholder="Enter your email">
+      <button onclick="fetchBookings()">Find Bookings</button>
+    </div>
+    <div id="my-bookings-list"></div>
+  </div>
+</div>
+
+<div id="page-admin" class="page">
+  <div class="container">
+    <div class="admin-header">
+      <h2>Admin Dashboard</h2>
+      <button class="btn-danger" onclick="adminLogout()">Logout</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="adminTab('listings')">Manage Listings</button>
+      <button class="tab-btn" onclick="adminTab('bookings')">All Bookings</button>
+      <button class="tab-btn" onclick="adminTab('users')">Users</button>
+    </div>
+    <div id="admin-listings" class="admin-section">
+      <h3>Add New Listing</h3>
+      <div class="admin-form">
+        <select id="a-type"><option>Flight</option><option>Train</option><option>Bus</option><option>Hotel</option></select>
+        <input type="text" id="a-from" placeholder="From">
+        <input type="text" id="a-to" placeholder="To">
+        <input type="date" id="a-date">
+        <input type="text" id="a-time" placeholder="Time">
+        <input type="number" id="a-price" placeholder="Price">
+        <button onclick="addListing()">Add Listing</button>
+      </div>
+      <div id="listings-table"></div>
+    </div>
+    <div id="admin-bookings" class="admin-section" style="display:none">
+      <div id="all-bookings-table"></div>
+    </div>
+    <div id="admin-users" class="admin-section" style="display:none">
+      <div id="users-table"></div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-admin-login" class="modal">
+  <div class="modal-box">
+    <h2>Admin Login</h2>
+    <input type="text" id="admin-user" placeholder="Username">
+    <input type="password" id="admin-pass" placeholder="Password">
+    <div id="login-error" class="error-msg"></div>
+    <div class="modal-btns">
+      <button onclick="adminLogin()">Login</button>
+      <button class="btn-secondary" onclick="closeAdminModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-book" class="modal">
+  <div class="modal-box">
+    <h2>Book Travel</h2>
+    <div id="book-travel-info"></div>
+    <input type="text" id="b-name" placeholder="Full Name">
+    <input type="email" id="b-email" placeholder="Email">
+    <input type="text" id="b-phone" placeholder="Phone">
+    <div id="book-error" class="error-msg"></div>
+    <div class="modal-btns">
+      <button onclick="confirmBooking()">Confirm Booking</button>
+      <button class="btn-secondary" onclick="closeBookModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-success" class="modal">
+  <div class="modal-box">
+    <div class="success-icon">✓</div>
+    <h2>Booking Confirmed!</h2>
+    <div id="success-details"></div>
+    <button onclick="closeSuccessModal()">Done</button>
+  </div>
+</div>
+
+<footer>
+  <span id="footer-text" onclick="footerClick()">© 2026 TravelEase. All rights reserved.</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

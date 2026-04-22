@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Learning Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+<nav>
+<h1 id="logo">📚 LearnTrack</h1>
+<div id="nav-user" class="hidden">
+<span id="nav-name"></span>
+<button class="btn-outline btn-sm" onclick="logout()">Logout</button>
+</div>
+</nav>
+<div id="auth-section">
+<div class="card" style="max-width:420px;margin:40px auto">
+<div class="tabs" style="margin-bottom:20px">
+<button class="tab active" onclick="switchTab('login')">Login</button>
+<button class="tab" onclick="switchTab('register')">Register</button>
+</div>
+<div id="login-form">
+<div class="form-group"><label>Email</label><input id="l-email" type="email" placeholder="you@example.com"></div>
+<div class="form-group"><label>Password</label><input id="l-pass" type="password" placeholder="Password"></div>
+<button class="btn-primary" style="width:100%" onclick="login()">Login</button>
+<div id="login-err"></div>
+</div>
+<div id="register-form" class="hidden">
+<div class="form-group"><label>Name</label><input id="r-name" placeholder="Your Name"></div>
+<div class="form-group"><label>Email</label><input id="r-email" type="email" placeholder="you@example.com"></div>
+<div class="form-group"><label>Password</label><input id="r-pass" type="password" placeholder="Password"></div>
+<button class="btn-primary" style="width:100%" onclick="register()">Register</button>
+<div id="register-err"></div>
+</div>
+</div>
+</div>
+<div id="dashboard-section" class="hidden">
+<div id="main-tabs" class="tabs">
+<button class="tab active" onclick="showView('home')">Dashboard</button>
+<button class="tab" onclick="showView('courses')">Courses</button>
+</div>
+<div id="view-home">
+<div class="stats-grid" id="stats-grid"></div>
+<div class="card">
+<h3 style="margin-bottom:10px;font-size:.95rem;color:#555">Overall Progress</h3>
+<div class="progress-bar"><div class="progress-fill" id="overall-progress" style="width:0%"></div></div>
+<p id="overall-pct" style="font-size:.85rem;color:#777;margin-top:6px">0%</p>
+</div>
+<div class="timer-box">
+<span>⏱</span>
+<div class="timer-display" id="timer-display">00:00</div>
+<select id="timer-course" style="padding:6px;border-radius:6px;border:1px solid #ddd;font-size:.85rem"></select>
+<button class="btn-success btn-sm" id="start-btn" onclick="startTimer()">Start</button>
+<button class="btn-danger btn-sm hidden" id="stop-btn" onclick="stopTimer()">Stop</button>
+</div>
+</div>
+<div id="view-courses" class="hidden">
+<div class="card">
+<h3 style="margin-bottom:14px">Add New Course</h3>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<input id="new-course-name" placeholder="Course name" style="flex:1;padding:9px 12px;border:1px solid #ddd;border-radius:6px;font-size:.9rem">
+<input id="new-course-topics" type="number" min="1" placeholder="# Topics" style="width:100px;padding:9px 12px;border:1px solid #ddd;border-radius:6px;font-size:.9rem">
+<button class="btn-primary" onclick="addCourse()">Add</button>
+</div>
+<div id="course-err" style="margin-top:8px"></div>
+</div>
+<div id="courses-list"></div>
+</div>
+</div>
+<div id="admin-modal" class="modal-overlay hidden">
+<div class="modal">
+<h2>🔐 Admin Login</h2>
+<div class="form-group"><label>Username</label><input id="a-user" placeholder="admin"></div>
+<div class="form-group"><label>Password</label><input id="a-pass" type="password" placeholder="password"></div>
+<div style="display:flex;gap:10px;margin-top:4px">
+<button class="btn-primary" onclick="adminLogin()">Login</button>
+<button class="btn-outline" onclick="closeAdmin()">Cancel</button>
+</div>
+<div id="admin-err"></div>
+</div>
+</div>
+<div id="admin-panel" class="modal-overlay hidden">
+<div class="modal" style="max-width:700px;max-height:85vh;overflow-y:auto">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+<h2>🛡 Admin Panel</h2>
+<button class="btn-outline btn-sm" onclick="document.getElementById('admin-panel').classList.add('hidden')">Close</button>
+</div>
+<div class="stats-grid" id="admin-stats" style="margin-bottom:16px"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<h3 style="font-size:.95rem">All Users</h3>
+<button class="btn-danger btn-sm" onclick="resetAll()">Reset All Data</button>
+</div>
+<table>
+<thead><tr><th>Name</th><th>Email</th><th>Courses</th><th>Progress</th><th>Time</th><th></th></tr></thead>
+<tbody id="admin-users-table"></tbody>
+</table>
+</div>
+</div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
